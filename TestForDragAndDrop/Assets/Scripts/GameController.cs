@@ -21,13 +21,16 @@ static class Constants
     public const float speedOfPairGame = 2.0f;
     public const float yPairUpper = 1.5f;
     public const float yPairLower = -1.5f;
-    public const float yPairTemp = -2.5f;
+    public const float yPairTemp = -4.5f;
+    public const float waitTimeInPairGame = 1.0f;
 }
 
-public class GameController : MonoBehaviour
+public class GameController : MonoBehaviour 
 {
     [SerializeField] private Button orderGame;
     [SerializeField] private Button pairGame;
+    [SerializeField] private Button giveNextCards;
+    [SerializeField] private Button evaluateCards;
     private int maxLevel = 14;
     private int minLevel = 4;
     private int idOfNewArrival = 0; //Itt tárolom az új felszálló indexét
@@ -46,6 +49,7 @@ public class GameController : MonoBehaviour
     new private GameObject camera;
     private readonly float[] cameraZPos = { -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -10.0f, -10.0f, -10.0f };
     private readonly float[] cameraZPosOrder = { -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -12.0f, -12.0f, -12.0f };
+
 
     void Awake()
     {
@@ -214,7 +218,7 @@ public class GameController : MonoBehaviour
 
     public void pairThem()
     {
-        camera.transform.localPosition = new Vector3(0, 0, cameraZPos[gameLevel - 1]);
+        camera.transform.localPosition = new Vector3(0, 0, -14);
 
         pairGame.gameObject.SetActive(true);
 
@@ -227,12 +231,6 @@ public class GameController : MonoBehaviour
         //Felrakom a kártyákat
         for (int i = 0; i < 2 * gameLevel; i++)
         {
-            GameObject[] border = GameObject.FindGameObjectsWithTag("instantiateBorder");
-
-            var bord = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
-            bord.tag = "Border";
-
-
             var card = Instantiate(parent[0], new Vector3(x, y, z), Quaternion.identity);
             card.tag = "Parent";
             card.GetComponentInChildren<CardModel>().tag = "CardModel";
@@ -242,6 +240,33 @@ public class GameController : MonoBehaviour
             {
                 x = 5;
             }
+        }
+
+        loadInObjects();
+
+        for (int i = 0; i < listForMain.Count/2; i++)
+        {
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures[i];
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId((int)loadAsset.getIds()[i]);
+        }
+
+        for (int j = 0; j < gameLevel; j++)
+        {
+            GameObject[] border = GameObject.FindGameObjectsWithTag("instantiateBorder");
+
+            var bordStarter = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
+            var bordPair1 = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
+            var bordPair2 = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
+            
+            bordStarter.tag = "starterBorder";
+            bordStarter.GetComponent<Border>().setIsAvailable(true);
+            bordStarter.GetComponent<Border>().setIsStarter(true);
+
+            bordPair1.tag = "pair1Border";
+            bordPair1.GetComponent<Border>().setIsAvailable(false);
+
+            bordPair2.tag = "pair2Border";
+            bordPair2.GetComponent<Border>().setIsAvailable(true);
         }
 
         StartCoroutine(showPair());
@@ -257,34 +282,100 @@ public class GameController : MonoBehaviour
 
             positionForSmoothStep(parent[i], -2, 0, 0, true, Constants.speedOfPairGame);
 
-            positionForSmoothStep(parent[2*gameLevel - i - 1], 2, 0, 0, true, Constants.speedOfPairGame);
+            positionForSmoothStep(parent[2 * gameLevel - i - 1], 2, 0, 0, true, Constants.speedOfPairGame);
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(Constants.waitTimeInPairGame);
 
             positionForSmoothStep(parent[i], -5, -10, 0, true, Constants.speedOfPairGame);
 
-            positionForSmoothStep(parent[2*gameLevel - i - 1], 5, -10, 0, true, Constants.speedOfPairGame);
+            positionForSmoothStep(parent[2 * gameLevel - i - 1], 5, -10, 0, true, Constants.speedOfPairGame);
         }
 
+        yield return new WaitForSeconds(2);
 
         double x = calcx(gameLevel, 1);
 
-        GameObject[] border = GameObject.FindGameObjectsWithTag("Border");
+        GameObject[] starterBorder = GameObject.FindGameObjectsWithTag("starterBorder");
+        GameObject[] pair1Border = GameObject.FindGameObjectsWithTag("pair1Border");
+        GameObject[] pair2Border = GameObject.FindGameObjectsWithTag("pair2Border");
 
         for (int j = 0; j < gameLevel; j++)
         {
-            border[j].GetComponent<Border>().transform.position = new Vector3((float)x, Constants.yPairUpper, 0);
-            border[j].GetComponent<Border>().setIsAvailable(true);
+            starterBorder[j].GetComponent<Border>().transform.position = new Vector3((float)x, Constants.yPairTemp, 0);
+            starterBorder[j].GetComponent<Border>().tag = "Border";
+            starterBorder[j].GetComponent<Border>().setOccupied(true);
+            starterBorder[j].GetComponent<Border>().setCard(parent[j].GetComponentInChildren<CardModel>());
+            starterBorder[j].GetComponent<Border>().setId(parent[j].GetComponentInChildren<CardModel>().getCardId());
 
-            positionForSmoothStep(parent[j], (float)x, Constants.yPairTemp, 0, true, Constants.speedOfPairGame);
+            pair1Border[j].GetComponent<Border>().transform.position = new Vector3((float)x, Constants.yPairLower, 0);
 
+            pair2Border[j].GetComponent<Border>().transform.position = new Vector3((float)x, Constants.yPairUpper, 0);
+            pair2Border[j].GetComponent<Border>().tag = "Border";
+
+            parent[j].transform.position = new Vector3((float)x, Constants.yPairTemp, 0);
+            parent[j].GetComponentInChildren<CardModel>().setBorder(starterBorder[j].GetComponent<Border>());
             parent[j].GetComponentInChildren<DragAndDrop>().setDrag(true);
-
-            //positionForSmoothStep(parent[2 * gameLevel - j - 1], (float)x, Constants.yPairLower, 0, true, Constants.speedOfPairGame);
 
             x += Constants.padding + Constants.cardSize;
 
-            yield return new WaitForSeconds(2);
+            giveNextCards.gameObject.SetActive(true);
+        }
+    }
+
+    public void giveNextCard()
+    {
+        GameObject[] borders = GameObject.FindGameObjectsWithTag("Border");
+        int counter = 0;
+        for(int i = 0; i < borders.Length; i++)
+        {
+            if(borders[i].transform.position.y == Constants.yPairUpper && borders[i].GetComponent<Border>().getOccupied() == true)
+            {
+                counter++;
+            }
+        }
+        if(counter == gameLevel)
+        {
+            giveNextCards.gameObject.SetActive(false);
+            evaluateCards.gameObject.SetActive(true);
+
+            GameObject[] border = GameObject.FindGameObjectsWithTag("Border");
+            GameObject[] parent = GameObject.FindGameObjectsWithTag("Parent");
+
+            double x = calcx(gameLevel, 1);
+
+            for (int i = 0; i < border.Length; i++)
+            {
+                if (border[i].GetComponent<Border>().getOccupied())
+                {
+                    border[i].GetComponent<Border>().tag = "pair2Border";
+                    border[i].GetComponent<Border>().setIsAvailable(false);
+                }
+                else
+                {
+                    border[i].GetComponent<Border>().tag = "starterBorder";
+                }
+            }
+
+            GameObject[] starterBorder = GameObject.FindGameObjectsWithTag("starterBorder");
+            GameObject[] pair1Border = GameObject.FindGameObjectsWithTag("pair1Border");
+
+            for (int j = gameLevel; j < 2 * gameLevel; j++)
+            {
+                starterBorder[j - gameLevel].GetComponent<Border>().tag = "Border";
+                starterBorder[j - gameLevel].GetComponent<Border>().setOccupied(true);
+                starterBorder[j - gameLevel].GetComponent<Border>().setCard(parent[j].GetComponentInChildren<CardModel>());
+                starterBorder[j - gameLevel].GetComponent<Border>().setId(parent[j].GetComponentInChildren<CardModel>().getCardId());
+
+                parent[j].transform.position = new Vector3((float)x, Constants.yPairTemp, 0);
+                parent[j].GetComponentInChildren<CardModel>().setBorder(starterBorder[j - gameLevel].GetComponent<Border>());
+                parent[j].GetComponentInChildren<DragAndDrop>().setDrag(true);
+
+                pair1Border[j - gameLevel].GetComponent<Border>().tag = "Border";
+                pair1Border[j - gameLevel].GetComponent<Border>().setIsAvailable(true);
+
+                x += Constants.padding + Constants.cardSize;
+
+            }
         }
     }
 

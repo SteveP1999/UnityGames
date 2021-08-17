@@ -1,12 +1,11 @@
-﻿using UnityEngine.EventSystems;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using UnityEngine.EventSystems;
 
-public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class DragAndDropForPairGame : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-
     private Vector3 _dragOffset;
     private Camera _cam;
     private bool canDrag = false;
@@ -14,7 +13,8 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
     private Vector3 startingPos;
     [SerializeField] private GameController gc;
     [SerializeField] private float _speed = 100;
-    
+
+
     void Awake()
     {
         _cam = Camera.main;
@@ -76,22 +76,21 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
 
             if (calculateDistance() < 1.0f)
             {
-                this.GetComponentInParent<CardModel>().transform.position = startingPos; 
-
-                if (borders[borderNumber].GetComponent<Border>().getCard() == null && borders[borderNumber].GetComponent<Border>().getIsAvailable())
+                this.GetComponentInParent<CardModel>().transform.position = startingPos;
+                if (borders[borderNumber].GetComponent<Border>().getIsAvailable() && borders[borderNumber].GetComponent<Border>().getOccupied() == false)
                 {
                     Debug.Log("Case 1");
 
-                    //Old border:
-                    this.GetComponentInParent<CardModel>().getBorder().setCard(null);
-                    this.GetComponentInParent<CardModel>().getBorder().setId(-1);
-                    this.GetComponentInParent<CardModel>().getBorder().setOccupied(false);
+                    //Old border setting:
+                    this.GetComponentInParent<CardModel>().getBorder().GetComponent<Border>().setOccupied(false);
+                    this.GetComponentInParent<CardModel>().getBorder().GetComponent<Border>().setId(-1);
+                    this.GetComponentInParent<CardModel>().getBorder().GetComponent<Border>().setCard(null);
 
-                    //Card settings:
+                    //Cards position:
+                    this.GetComponentInParent<CardModel>().GetComponentInParent<ParentScript>().transform.position = borders[borderNumber].transform.position;
                     this.GetComponentInParent<CardModel>().setBorder(borders[borderNumber].GetComponent<Border>());
-                    this.GetComponentInParent<CardModel>().GetComponentInParent<ParentScript>().transform.position = borders[borderNumber].GetComponent<Border>().transform.position;
 
-                    //New border settings:
+                    //New border setting:
                     borders[borderNumber].GetComponent<Border>().setCard(this.GetComponentInParent<CardModel>());
                     borders[borderNumber].GetComponent<Border>().setId(this.GetComponentInParent<CardModel>().getCardId());
                     borders[borderNumber].GetComponent<Border>().setOccupied(true);
@@ -103,12 +102,11 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
                         Debug.Log("Case 2");
                         //Old border:
                         this.GetComponentInParent<CardModel>().getBorder().setCard(borders[borderNumber].GetComponent<Border>().getCard());
-                        this.GetComponentInParent<CardModel>().getBorder().setId(borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId());
+                        this.GetComponentInParent<CardModel>().getBorder().setId(borders[borderNumber].GetComponent<Border>().getCard().getCardId());
 
                         //Old card:
                         borders[borderNumber].GetComponent<Border>().getCard().setBorder(this.GetComponentInParent<CardModel>().getBorder());
-                        //borders[borderNumber].GetComponent<Border>().getCard().transform.position = this.GetComponentInParent<CardModel>().getBorder().GetComponent<Border>().transform.position;
-                        Vector3 destination = this.GetComponentInChildren<CardModel>().getBorder().GetComponent<Border>().transform.position;
+                        Vector3 destination = this.GetComponentInParent<CardModel>().getBorder().GetComponent<Border>().transform.position;
                         for (int i = 0; i < cards.Length; i++)
                         {
                             if (cards[i].GetComponentInChildren<CardModel>().getCardId() == borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId())
@@ -124,7 +122,6 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
                         //New card:
                         this.GetComponentInParent<CardModel>().setBorder(borders[borderNumber].GetComponent<Border>());
                         this.GetComponentInParent<CardModel>().GetComponentInParent<ParentScript>().transform.position = borders[borderNumber].GetComponent<Border>().transform.position;
-                        //ITT VÁASKFNAGJKBLGABSGLKJABSGASG
                     }
                     else
                     {

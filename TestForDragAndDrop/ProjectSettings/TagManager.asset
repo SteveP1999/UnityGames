@@ -13,6 +13,8 @@ TagManager:
   - instantiateBorder
   - Border
   - starterBorder
+  - pair1Border
+  - pair2Border
   layers:
   - Default
   - TransparentFX
