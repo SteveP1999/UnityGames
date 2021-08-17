@@ -8,7 +8,7 @@ public class Border : MonoBehaviour
     [SerializeField] private bool isAvailable = false;
     [SerializeField] private bool isStarter = false;
     [SerializeField] private int id;
-    [SerializeField] private CardModel card;
+    [SerializeField] private CardModel card = null;
 
 
     public void setIsStarter(bool val)

@@ -12,10 +12,9 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
     private bool canDrag = false;
     private int borderNumber = 0;
     private Vector3 startingPos;
-    public GameController gc;
-
+    [SerializeField] private GameController gc;
     [SerializeField] private float _speed = 100;
-
+    
     void Awake()
     {
         _cam = Camera.main;
@@ -35,7 +34,7 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(canDrag)
+        if (canDrag)
         {
             startingPos = transform.position;
             transform.position = new Vector3(transform.position.x, transform.position.y, -0.1f);
@@ -54,9 +53,9 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
     private Border findNewPlace()
     {
         GameObject[] borders = GameObject.FindGameObjectsWithTag("Border");
-        for(int i = 0; i < borders.Length; i++)
+        for (int i = 0; i < borders.Length; i++)
         {
-            if(!borders[i].GetComponent<Border>().getOccupied() && borders[i].GetComponent<Border>().getIsStarter())
+            if (!borders[i].GetComponent<Border>().getOccupied() && borders[i].GetComponent<Border>().getIsStarter())
             {
                 Debug.Log("Most volt üres");
                 return borders[i].GetComponent<Border>();
@@ -70,94 +69,126 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
     {
         Border newBorder = findNewPlace();
 
-        if(canDrag)
+        if (canDrag)
         {
             GameObject[] borders = GameObject.FindGameObjectsWithTag("Border");
             GameObject[] cards = GameObject.FindGameObjectsWithTag("Parent");
 
             if (calculateDistance() < 1.0f)
             {
+                this.GetComponentInParent<CardModel>().transform.position = startingPos; 
 
-                if (newBorder == null && borders[borderNumber].GetComponent<Border>().getCard() != null)
+                if (borders[borderNumber].GetComponent<Border>().getCard() == null)
                 {
+                    Debug.Log("Case 1");
+                    Debug.Log("Üres mezőre húztunk");
                     //Old border:
-                    this.GetComponentInParent<CardModel>().getBorder().setCard(borders[borderNumber].GetComponent<Border>().getCard());
-                    this.GetComponentInParent<CardModel>().getBorder().setId(borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId());
+                    this.GetComponentInParent<CardModel>().getBorder().setCard(null);
+                    this.GetComponentInParent<CardModel>().getBorder().setId(-1);
+                    this.GetComponentInParent<CardModel>().getBorder().setOccupied(false);
 
-                    //Old card:
-                    borders[borderNumber].GetComponent<Border>().getCard().setBorder(this.GetComponentInParent<CardModel>().getBorder());
-                    borders[borderNumber].GetComponent<Border>().getCard().transform.position = this.GetComponentInParent<CardModel>().getBorder().GetComponent<Border>().transform.position;
-                    //Vector3 destination = this.GetComponentInParent<CardModel>().getBorder().GetComponent<Border>().transform.position;
-                    //for (int i = 0; i < cards.Length; i++)
-                    //{
-                    //    if (cards[i].GetComponentInChildren<CardModel>().getCardId() == borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId())
-                    //    {
-                    //        gc.positionForSmoothStep(cards[i], destination.x, destination.y, destination.z, true, Constants.speedOfArrivalZeroing);
-                    //    }
-                    //}
+                    //Card settings:
+                    this.GetComponentInParent<CardModel>().setBorder(borders[borderNumber].GetComponent<Border>());
+                    this.GetComponentInParent<CardModel>().GetComponentInParent<ParentScript>().transform.position = borders[borderNumber].GetComponent<Border>().transform.position;
 
-
-                    //New border:
+                    //New border settings:
                     borders[borderNumber].GetComponent<Border>().setCard(this.GetComponentInParent<CardModel>());
                     borders[borderNumber].GetComponent<Border>().setId(this.GetComponentInParent<CardModel>().getCardId());
-
-                    //New card:
-                    this.GetComponentInParent<CardModel>().setBorder(borders[borderNumber].GetComponent<Border>());
-                    this.GetComponentInParent<CardModel>().transform.position = borders[borderNumber].GetComponent<Border>().transform.position;
+                    borders[borderNumber].GetComponent<Border>().setOccupied(true);
                 }
                 else
                 {
-                    //Old cards settings:
-                    if (borders[borderNumber].GetComponent<Border>().getOccupied() == true)
+                    if (newBorder == null && borders[borderNumber].GetComponent<Border>().getOccupied() != false)
                     {
-                        Debug.Log("Bejutottam az old cards settingsbe");
+                        Debug.Log("Case 2");
+                        //Old border:
+                        this.GetComponentInParent<CardModel>().getBorder().setCard(borders[borderNumber].GetComponent<Border>().getCard());
+                        this.GetComponentInParent<CardModel>().getBorder().setId(borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId());
 
-                        //Settings for the border  where the card went:
-                        newBorder.GetComponent<Border>().setCard(borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>());
-                        newBorder.GetComponent<Border>().setOccupied(true);
-                        newBorder.GetComponent<Border>().setId(borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId());
+                        //Old card:
+                        borders[borderNumber].GetComponent<Border>().getCard().setBorder(this.GetComponentInParent<CardModel>().getBorder());
+                        //borders[borderNumber].GetComponent<Border>().getCard().transform.position = this.GetComponentInParent<CardModel>().getBorder().GetComponent<Border>().transform.position;
+                        Vector3 destination = this.GetComponentInChildren<CardModel>().getBorder().GetComponent<Border>().transform.position;
+                        for (int i = 0; i < cards.Length; i++)
+                        {
+                            if (cards[i].GetComponentInChildren<CardModel>().getCardId() == borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId())
+                            {
+                                gc.positionForSmoothStep(cards[i], destination.x, destination.y, 0, true, 0.5f);
+                            }
+                        }
 
-                        borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().setBorder(newBorder);
-                        
-                        //Vector3 destination = newBorder.transform.position;
+                        //New border:
+                        borders[borderNumber].GetComponent<Border>().setCard(this.GetComponentInParent<CardModel>());
+                        borders[borderNumber].GetComponent<Border>().setId(this.GetComponentInParent<CardModel>().getCardId());
+
+                        //New card:
+                        this.GetComponentInParent<CardModel>().setBorder(borders[borderNumber].GetComponent<Border>());
+                        this.GetComponentInParent<CardModel>().GetComponentInParent<ParentScript>().transform.position = borders[borderNumber].GetComponent<Border>().transform.position;
+                        //ITT VÁASKFNAGJKBLGABSGLKJABSGASG
+                    }
+                    else
+                    {
+                  
+                        if (borders[borderNumber].GetComponent<Border>().getOccupied() == true)
+                        {
+                            Debug.Log("Case 3");
+                            Debug.Log("Bejutottam az old cards settingsbe");
+
+                            //Settings for the border  where the card went:
+                            newBorder.GetComponent<Border>().setCard(borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>());
+                            newBorder.GetComponent<Border>().setOccupied(true);
+                            newBorder.GetComponent<Border>().setId(borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId());
+
+                            //Old cards settings:
+                            borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().setBorder(newBorder);
+                            //borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().GetComponentInParent<ParentScript>().transform.position = newBorder.transform.position;
+                            Vector3 destination2 = newBorder.transform.position;
+                            for (int i = 0; i < cards.Length; i++)
+                            {
+                                if (cards[i].GetComponentInChildren<CardModel>().getCardId() == borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId())
+                                {
+                                    gc.positionForSmoothStep(cards[i], destination2.x, destination2.y, destination2.z, true, 0.5f);
+                                }
+                            }
+                        }
+
+                        Debug.Log("Case 4");
+                        //Old border settings:
+                        if (this.GetComponent<CardModel>().getBorder() != null)
+                        {
+                            this.GetComponentInParent<CardModel>().getBorder().setOccupied(false);
+                            this.GetComponentInParent<CardModel>().getBorder().setCard(null);
+                            this.GetComponentInParent<CardModel>().getBorder().setId(-1);
+                        }
+
+                        //New card settings
+                        this.GetComponentInParent<CardModel>().GetComponentInParent<ParentScript>().transform.position = borders[borderNumber].transform.position; //askgjbaosgbobasgkiasggag
+                        this.GetComponentInParent<CardModel>().setBorder(borders[borderNumber].GetComponent<Border>());
+                        Vector3 destination = borders[borderNumber].GetComponent<Border>().transform.position; //newBorder.transform.position;  //Itt változtattam most 14:40
                         //for (int i = 0; i < cards.Length; i++)
                         //{
                         //    if (cards[i].GetComponentInChildren<CardModel>().getCardId() == borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId())
                         //    {
-                        //        gc.positionForSmoothStep(cards[i], destination.x, destination.y, destination.z, true, Constants.speedOfArrivalZeroing);
+                        //        gc.positionForSmoothStep(cards[i], destination.x, destination.y, destination.z, true, 0.5f);
                         //    }
                         //}
-                        borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().transform.position = newBorder.transform.position;
+                        //New border settings:
+                        borders[borderNumber].GetComponent<Border>().setOccupied(true);
+                        borders[borderNumber].GetComponent<Border>().setId(this.GetComponent<CardModel>().getCardId());
+                        borders[borderNumber].GetComponent<Border>().setCard(this.GetComponent<CardModel>());
                     }
-
-                    //Old border settings:
-                    if (this.GetComponent<CardModel>().getBorder() != null)
-                    {
-                        this.GetComponentInParent<CardModel>().getBorder().setOccupied(false);
-                        this.GetComponentInParent<CardModel>().getBorder().setCard(null);
-                        this.GetComponentInParent<CardModel>().getBorder().setId(-1);
-                    }
-
-                    //Card settings
-                    transform.position = borders[borderNumber].transform.position;
-                    this.GetComponentInParent<CardModel>().setBorder(borders[borderNumber].GetComponent<Border>());
-
-                    //New border settings:
-                    borders[borderNumber].GetComponent<Border>().setOccupied(true);
-                    borders[borderNumber].GetComponent<Border>().setId(this.GetComponent<CardModel>().getCardId());
-                    borders[borderNumber].GetComponent<Border>().setCard(this.GetComponent<CardModel>());
                 }
             }
             else
             {
-                transform.position = startingPos;
+                this.GetComponentInParent<CardModel>().transform.position = startingPos;
             }
         }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        
+
     }
 
     public double calculateDistance()
@@ -165,11 +196,11 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
         GameObject[] borders = GameObject.FindGameObjectsWithTag("Border");
 
         double[] distances = new double[borders.Length];
-        for(int i = 0; i < borders.Length; i++)
+        for (int i = 0; i < borders.Length; i++)
         {
             float a = (transform.position.x - borders[i].transform.position.x) * (transform.position.x - borders[i].transform.position.x);
             float b = (transform.position.y - borders[i].transform.position.y) * (transform.position.y - borders[i].transform.position.y);
-            if(borders[i].GetComponent<Border>().getIsAvailable() == true)
+            if (borders[i].GetComponent<Border>().getIsAvailable() == true)
             {
                 distances[i] = Math.Abs(Math.Sqrt(a * a + b * b));
             }
