@@ -522,7 +522,7 @@ public class GameController : MonoBehaviour
                 {
                     GameObject go = objs[i];
                     go.GetComponent<ParentScript>().reveal();
-                    //yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSeconds(0.2f);
                 }
             }
         }

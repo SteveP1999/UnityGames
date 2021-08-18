@@ -7,7 +7,7 @@ public class StartButton : MonoBehaviour
     public GameController gc;
     public void OnMouseDown()
     {
-        int caseSwitch = 2;
+        int caseSwitch = 1;
 
         switch (caseSwitch)
         {
