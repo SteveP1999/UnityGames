@@ -17,6 +17,7 @@ public enum Player
     none
 }
 
+[System.Serializable]
 public class Profile
 {
     private string name;
@@ -26,6 +27,30 @@ public class Profile
     private int level;
 
     private Player player;
+
+    private bool active;
+
+    private bool dataChanged;
+
+    public void setDataChanged(bool val)
+    {
+        dataChanged = val;
+    }
+
+    public bool getDataChanged()
+    {
+        return dataChanged;
+    }
+
+    public void setActive(bool val)
+    {
+        active = val;
+    }
+
+    public bool getActive()
+    {
+        return active;
+    }
 
     public void setName(string name)
     {

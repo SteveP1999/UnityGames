@@ -6,15 +6,47 @@ using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using TMPro;
 
 public class ProfileManager : MonoBehaviour
 {
+    [SerializeField] private TMP_InputField[] inputFields;
+
     public Profile[] profiles = new Profile[3];
     private string secretKey = "mySecretKey";
     public string addPlayerURL =
             "http://localhost/UnityGame/addplayer.php?";
     public string connectionURL =
              "http://localhost/UnityGame/connection.php";
+
+
+    public void activityChanged(int id)
+    {
+        if(profiles[id].getActive() == false)
+        {
+            for(int i = 0; i < 2; i++)
+            {
+                profiles[i].setActive(false);
+            }
+            profiles[id].setActive(true);
+        }
+        else
+        {
+            profiles[id].setActive(false);
+        }
+    }
+
+    public void dataChange(int id)
+    {
+        profiles[id].setDataChanged(true);
+    }
+
+    public void usernameValue(int id)
+    {
+        profiles[id].setName(inputFields[id].text);
+        Debug.Log(profiles[id].getName());
+    }
+
 
     public void test()
     {
@@ -107,8 +139,6 @@ public class ProfileManager : MonoBehaviour
         prof.setName("");
         prof.Player = Player.none;
         prof.Age = Age.none;
-
-
     }
 
     private void addProfile(int index, string name, Age age, int level, Player player)

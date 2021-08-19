@@ -7,47 +7,64 @@ using UnityEngine.UI;
 
 static class Constants
 {
-    public const float cardSize = 1.812f;
-    public const float yMid = 0.0f;
-    public const float yUp = 1.0f;
-    public const float yDown = -2.0f;
-    public const float padding = 0.2f;
+    //Timing:
     public const float speedOfFirstPositioning = 0.5f;
     public const float speedOfZeroing = 0.3f;
     public const float speedOfArrivalZeroing = 0.5f;
     public const float speedOfThreeShuffles = 0.1f;
+    public const float waitTimeInPairGame = 3.5f;
+    public const float speedOfPairGame = 2.0f;
+
+
+    //Positioning:
+    public const float cardSize = 1.812f;
+    public const float padding = 0.2f;
+
+    public const float yMid = 0.0f;
+    public const float yUp = 1.0f;
+    public const float yDown = -2.0f;
+
     public const float yOrder = 1.2f;
     public const float yOrderBorder = -2.0f;
-    public const float speedOfPairGame = 2.0f;
+
     public const float yPairUpper = 1.5f;
     public const float yPairLower = -1.5f;
     public const float yPairTemp = -4.5f;
-    public const float waitTimeInPairGame = 1.0f;
 }
 
 public class GameController : MonoBehaviour 
 {
+
     [SerializeField] private Button orderGame;
     [SerializeField] private Button pairGame;
     [SerializeField] private Button giveNextCards;
     [SerializeField] private Button evaluateCards;
-    private int maxLevel = 14;
-    private int minLevel = 4;
-    private int idOfNewArrival = 0; //Itt tárolom az új felszálló indexét
-    [SerializeField] private int gameLevel = 6; //Szint, ez határozza meg mennyi kártya van a játékban
+
+    //Game:
+    private int maxLevel = 14; //Maximum level
+    private int minLevel = 4; //Minimum level
+    private int idOfNewArrival = 0; //Contains the id of the new arrival
+    [SerializeField] private int gameLevel = 6; //Game level
+    private GameObject[] objs; //Container for the cards
+    private ArrayList listForMain = new ArrayList(); //
+    private bool canBeSelected = false; //Engedélyező, hogy megtippelhessük az új felszállót
+    private int rightGuesses = 0; //Counter a jó tippekhez
+    private int wrongGuesses = 0; //Counter a rossz tippekhez
+
+    //Timing:
     private float waitTimeForRevealReference = 2;
     private float waitTimeForReveal = 2; //Mennyi idő teljen el aközött, hogy kitettük a lapokat és elkezdjük felfordítani őket.
     private float waitBetweenCardsAndNewArrival = 2;  //Mennyi idő teljen el az összes lap felfordítása után ameddig az új felszállót betesszük
     private float waitBetweenCardsFlipping = 2; //Mennyi idő teljen el az egyik lap lefordítása és a másik lap felfordítása között
-    private GameObject[] objs; //Ebben tárolom a kártyákat, ha új keletkezik frissítem
-    private ArrayList listForMain = new ArrayList();
-    private bool canBeSelected = false; //Engedélyező, hogy megtippelhessük az új felszállót
-    private int rightGuesses = 0; //Counter a jó tippekhez
-    private int wrongGuesses = 0; //Counter a rossz tippekhez
+
+    //Assets:
     public List<Texture2D> textures; //A textúrákat itt tároljuk el, amiket betöltünk
     public LoadAsset loadAsset; //Hivatkozás a LoadAsset osztályra
+    
+    
+    //Camera settings:
     new private GameObject camera;
-    private readonly float[] cameraZPos = { -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -10.0f, -10.0f, -10.0f };
+    private readonly float[] cameraZPosNewArrival = { -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -10.0f, -10.0f, -10.0f };
     private readonly float[] cameraZPosOrder = { -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -12.0f, -12.0f, -12.0f };
 
 
@@ -56,6 +73,10 @@ public class GameController : MonoBehaviour
         camera = GameObject.Find("CardCamera");
     }
 
+
+
+    //----------------------------------------------------------------------------------------------------------------------------------
+    //Game no. 1:
     public void putThemInOrder()
     {
         ArrayList orderedIds = new ArrayList();
@@ -123,10 +144,141 @@ public class GameController : MonoBehaviour
         StartCoroutine(revealCards(parent));
     }
 
+    //----------------------------------------------------------------------------------------------------------------------------------
+
+    //Game no. 2:
+
+    public void pairThem()
+    {
+        camera.transform.localPosition = new Vector3(0, 0, -14);
+
+        pairGame.gameObject.SetActive(true);
+
+        GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
+
+        float x = -5;
+        float y = 10;
+        float z = 0;
+
+        //Felrakom a kártyákat
+        for (int i = 0; i < 2 * gameLevel; i++)
+        {
+            var card = Instantiate(parent[0], new Vector3(x, y, z), Quaternion.identity);
+            card.tag = "Parent";
+            card.GetComponentInChildren<CardModel>().tag = "CardModel";
+            card.transform.Rotate(0, 180, 0);
+
+            if (i == gameLevel - 1)
+            {
+                x = 5;
+            }
+        }
+
+        loadInObjects();
+
+        for (int i = 0; i < listForMain.Count / 2; i++)
+        {
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures[i];
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId((int)loadAsset.getIds()[i]);
+        }
+
+        for (int j = 0; j < gameLevel; j++)
+        {
+            GameObject[] border = GameObject.FindGameObjectsWithTag("instantiateBorder");
+
+            var bordStarter = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
+            var bordPair1 = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
+            var bordPair2 = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
+
+            bordStarter.tag = "starterBorder";
+            bordStarter.GetComponent<Border>().setIsAvailable(true);
+            bordStarter.GetComponent<Border>().setIsStarter(true);
+
+            bordPair1.tag = "pair1Border";
+            bordPair1.GetComponent<Border>().setIsAvailable(false);
+
+            bordPair2.tag = "pair2Border";
+            bordPair2.GetComponent<Border>().setIsAvailable(true);
+        }
+
+        StartCoroutine(showPair());
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------------
+
+    //Game no. 3:
+
+    public void newArrival()
+    {
+        camera.transform.localPosition = new Vector3(0, 0, cameraZPosNewArrival[gameLevel - 1]);
+
+        float delay = gameLevel * waitBetweenCardsFlipping + waitTimeForReveal + waitBetweenCardsAndNewArrival - 2;
+
+        GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
+
+        //Felrakom a kártyákat
+        for (int i = 0; i < gameLevel; i++)
+        {
+            var card = Instantiate(parent[0], new Vector3(0, 0, 0), Quaternion.identity);
+            card.tag = "Parent";
+            card.GetComponentInChildren<CardModel>().tag = "CardModel";
+        }
+
+        loadInObjects();
+
+        for (int i = 0; i < listForMain.Count; i++)
+        {
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures[i];
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId((int)loadAsset.getIds()[i]);
+        }
+
+        //Megkeressük az összes kártyát és megfelelően pozícionáljuk őket
+        parent = GameObject.FindGameObjectsWithTag("Parent");
+
+        shuffleIndexes(loadAsset.getIds());
+
+        startPositioning(parent, 0.2f, 0.2f, 0.1f);
+
+        positionCards2(parent, 1);
+
+        //Felfordítjuk a kártyákat egyesével
+        for (int j = 0; j < listForMain.Count; j++)
+        {
+            for (int i = 0; i < loadAsset.getIds().Count; i++)
+            {
+                if (parent[i].GetComponentInChildren<CardModel>().getCardId() == (int)loadAsset.getIds()[j])
+                {
+                    GameObject go = parent[i];
+                    ParentScript ps = go.GetComponent<ParentScript>();
+                    StartCoroutine(waitABitAndReveal(waitTimeForReveal, ps));
+                    waitTimeForReveal += waitBetweenCardsFlipping;
+                }
+            }
+        }
+
+        StartCoroutine(waitAndPositionAllCardsInZero(delay + 5));
+
+        //Kirakjuk az új felszállót és becsúsztatjuk a 0,0-ba
+        StartCoroutine(WaitaBitAndAddNewArrival(delay + 6));
+
+        //Ide jön a shuffle:
+        StartCoroutine(shuffle(parent, delay + 7));
+
+        //Megkeverjük, újra kitesszük
+        StartCoroutine(waitABitAndDoAll(delay + 9));
+
+        //Felfordítjuk egyesével a kártyákat és várunk a tippre
+        StartCoroutine(tippingPosition(delay + 10));
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------------
+
+    //Functions for game no 1. (Order game):
+
     private void posCardsForOrder(GameObject[] parent, float y)
     {
         double x = calcx(parent.Length, 1.0f);
-        for(int i = 0; i < parent.Length; i++)
+        for (int i = 0; i < parent.Length; i++)
         {
             parent[i].transform.position = new Vector3((float)x, y, 0);
             x += Constants.padding + Constants.cardSize;
@@ -216,61 +368,8 @@ public class GameController : MonoBehaviour
     }
 
 
-    public void pairThem()
-    {
-        camera.transform.localPosition = new Vector3(0, 0, -14);
+    //Functions for game no. 2 (Pair game):
 
-        pairGame.gameObject.SetActive(true);
-
-        GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
-
-        float x = -5;
-        float y = 10;
-        float z = 0;
-
-        //Felrakom a kártyákat
-        for (int i = 0; i < 2 * gameLevel; i++)
-        {
-            var card = Instantiate(parent[0], new Vector3(x, y, z), Quaternion.identity);
-            card.tag = "Parent";
-            card.GetComponentInChildren<CardModel>().tag = "CardModel";
-            card.transform.Rotate(0, 180, 0);
-
-            if(i == gameLevel - 1)
-            {
-                x = 5;
-            }
-        }
-
-        loadInObjects();
-
-        for (int i = 0; i < listForMain.Count/2; i++)
-        {
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures[i];
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId((int)loadAsset.getIds()[i]);
-        }
-
-        for (int j = 0; j < gameLevel; j++)
-        {
-            GameObject[] border = GameObject.FindGameObjectsWithTag("instantiateBorder");
-
-            var bordStarter = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
-            var bordPair1 = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
-            var bordPair2 = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
-            
-            bordStarter.tag = "starterBorder";
-            bordStarter.GetComponent<Border>().setIsAvailable(true);
-            bordStarter.GetComponent<Border>().setIsStarter(true);
-
-            bordPair1.tag = "pair1Border";
-            bordPair1.GetComponent<Border>().setIsAvailable(false);
-
-            bordPair2.tag = "pair2Border";
-            bordPair2.GetComponent<Border>().setIsAvailable(true);
-        }
-
-        StartCoroutine(showPair());
-    }
 
     IEnumerator showPair()
     {
@@ -436,82 +535,13 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void newArrival()
-    {
-        camera.transform.localPosition = new  Vector3(0, 0, cameraZPos[gameLevel - 1]);
-
-        float delay = gameLevel * waitBetweenCardsFlipping + waitTimeForReveal + waitBetweenCardsAndNewArrival - 2;
-
-        GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
-
-        //Felrakom a kártyákat
-        for (int i = 0; i < gameLevel; i++)
-        {
-            var card = Instantiate(parent[0], new Vector3(0, 0, 0), Quaternion.identity);
-            card.tag = "Parent";
-            card.GetComponentInChildren<CardModel>().tag = "CardModel";
-        }
-
-        loadInObjects();
-
-        for(int i = 0; i < listForMain.Count; i++)
-        {
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures[i];
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId((int)loadAsset.getIds()[i]);
-        }
-
-        //Megkeressük az összes kártyát és megfelelően pozícionáljuk őket
-        parent = GameObject.FindGameObjectsWithTag("Parent");
-
-        shuffleIndexes(loadAsset.getIds());
-
-        startPositioning(parent, 0.2f, 0.2f, 0.1f);
-
-        positionCards2(parent, 1);
-
-        //Felfordítjuk a kártyákat egyesével
-        for (int j = 0; j < listForMain.Count; j++)
-        {
-            for (int i = 0; i < loadAsset.getIds().Count; i++)
-            {
-                if (parent[i].GetComponentInChildren<CardModel>().getCardId() == (int)loadAsset.getIds()[j])
-                {
-                    GameObject go = parent[i];
-                    ParentScript ps = go.GetComponent<ParentScript>();
-                    StartCoroutine(waitABitAndReveal(waitTimeForReveal, ps));
-                    waitTimeForReveal += waitBetweenCardsFlipping;
-                }
-            }
-        }
-
-        StartCoroutine(waitAndPositionAllCardsInZero(delay + 5));
-        
-        //Kirakjuk az új felszállót és becsúsztatjuk a 0,0-ba
-        StartCoroutine(WaitaBitAndAddNewArrival(delay + 6));
-
-        //Ide jön a shuffle:
-        StartCoroutine(shuffle(parent, delay + 7));
-        
-        //Megkeverjük, újra kitesszük
-        StartCoroutine(waitABitAndDoAll(delay + 9));
-
-        //Felfordítjuk egyesével a kártyákat és várunk a tippre
-        StartCoroutine(tippingPosition(delay + 10));    
-    } 
-
-    private void loadInObjects()
-    {
-        GameObject[] temp1 = GameObject.FindGameObjectsWithTag("CardModel");
-        for(int i = 0; i < temp1.Length; i++)
-        {
-            listForMain.Add(temp1[i]);
-        }
-    }
+    //Functions for game no. 3 (New Arrival):
 
     //A játék legvégére az előkészítés, ennek lefutása után tudunk tippelni, hogy melyik az új felszálló
     IEnumerator tippingPosition(float n)
     {
         yield return new WaitForSeconds(n);
+        shuffleIndexes(loadAsset.getIds());
         objs = GameObject.FindGameObjectsWithTag("Parent");
         GameObject[] cards = GameObject.FindGameObjectsWithTag("CardModel");
         for (int i = 0; i < objs.Length; i++)
@@ -520,7 +550,7 @@ public class GameController : MonoBehaviour
             {
                 if (cards[j].GetComponent<CardModel>().getCardId() == (int)loadAsset.getIds()[i])
                 {
-                    GameObject go = objs[i];
+                    GameObject go = objs[j];
                     go.GetComponent<ParentScript>().reveal();
                     yield return new WaitForSeconds(0.2f);
                 }
@@ -529,6 +559,7 @@ public class GameController : MonoBehaviour
         //Engedélyezzük a tippet
         canBeSelected = true;
     }
+
 
     //Kisorsolja az új felszállót, eltárolja az indexét majd felteszi a pályára 
     IEnumerator WaitaBitAndAddNewArrival(float n)
@@ -546,30 +577,12 @@ public class GameController : MonoBehaviour
         positionForSmoothStep(card, 0, 0, gameLevel * -0.2f, true, Constants.speedOfArrivalZeroing);
     }
 
-    public void positionForSmoothStep(GameObject parent, float xEnd, float yEnd, float zEnd, bool canStart, float duration)
-    {
-        parent.GetComponent<ParentScript>().startTime = Time.time;
-
-        parent.GetComponent<ParentScript>().xStart = parent.transform.position.x;
-        parent.GetComponent<ParentScript>().yStart = parent.transform.position.y;
-        parent.GetComponent<ParentScript>().zStart = parent.transform.position.z;
-
-        parent.GetComponent<ParentScript>().xEnd = xEnd;
-        parent.GetComponent<ParentScript>().yEnd = yEnd;
-        parent.GetComponent<ParentScript>().zEnd = zEnd;
-
-        parent.GetComponent<ParentScript>().duration = duration;
-        parent.GetComponent<ParentScript>().canStart = canStart;
-        parent.GetComponent<ParentScript>().t = 0;
-    }
-
-
     IEnumerator waitAndPositionAllCardsInZero(float n)
     {
         yield return new WaitForSeconds(n);
         float z = 0;
-        for(int i = 0; i < gameLevel; i++)
-        {            
+        for (int i = 0; i < gameLevel; i++)
+        {
             GameObject[] parent = GameObject.FindGameObjectsWithTag("Parent");
 
             positionForSmoothStep(parent[i], 0, 0, z, true, Constants.speedOfZeroing);
@@ -577,23 +590,6 @@ public class GameController : MonoBehaviour
             z -= 0.2f;
         }
     }
-
-    IEnumerator shuffle(GameObject[] parent, float n)
-    {
-        yield return new WaitForSeconds(n);
-        float x = 2 * Constants.cardSize;
-        for(int i = 0; i < 3; i++)
-        {
-            positionForSmoothStep(parent[i], x, parent[i].transform.position.y, (gameLevel + 1 + i) * -0.2f, true, Constants.speedOfThreeShuffles);
-
-            yield return new WaitForSeconds(Constants.speedOfThreeShuffles);
-
-            positionForSmoothStep(parent[i], 0, 0, parent[i].transform.position.z, true, Constants.speedOfThreeShuffles);
-
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
-
 
     //Az új felszálló után megkever mindent és kiteszi őket elrendezve
     IEnumerator waitABitAndDoAll(float n)
@@ -613,38 +609,20 @@ public class GameController : MonoBehaviour
     //Felfordítja a lapokat egyesével kettő másodpercre majd vissza
     IEnumerator waitABitAndReveal(float n, ParentScript ps)
     {
-        if(ps != null)
+        if (ps != null)
         {
             yield return new WaitForSeconds(n);
             ps.revealAndHide();
         }
     }
 
-    //Egy lista tartalmát megkeveri
-    public void shuffleIndexes(ArrayList list)  
-    {
-        RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
-        int n = list.Count;
-        while (n > 1)
-        {
-            byte[] box = new byte[1];
-            do provider.GetBytes(box);
-            while (!(box[0] < n * (Byte.MaxValue / n)));
-            int k = (box[0] % n);
-            n--;
-            int value = (int)list[k];
-            list[k] = list[n];
-            list[n] = value;
-        }
-    }
-
-    //Az elején elrendezi a kártyákat, 1. variáns
+    //Az elején elrendezi a kártyákat
     private void startPositioning(GameObject[] parent, float xOffset, float yOffset, float zOffset)
     {
         float x = 0;
         float y = 0;
         float z = 0;
-        for(int i = 0; i < parent.Length; i++)
+        for (int i = 0; i < parent.Length; i++)
         {
             double val = parent.Length;
             parent[i].transform.position = new Vector3(x, y, z);
@@ -661,7 +639,7 @@ public class GameController : MonoBehaviour
                 yOffset *= -1;
                 zOffset *= -1;
             }
-        }    
+        }
     }
 
     private void positionCards2(GameObject[] objs, float n)      //Pálya szélessége: -5.34 + 1.812/2 = 6,246 * 2 = 12,492
@@ -726,43 +704,9 @@ public class GameController : MonoBehaviour
         }
     }
 
-    // Ez volt: return -(cardNumber / 2) * (Constants.cardSize * scale) - Constants.padding / 2;
-    private double calcx(double cardNumber, float scale)
-    {
-        return -(((cardNumber / 2) - 0.5f) * ((Constants.cardSize * scale) + Constants.padding));
-    }
-
-    public void resetGame()
-    {
-        //Törli az összes kártyát kivéve egyet
-        GameObject[] temp = GameObject.FindGameObjectsWithTag("Parent");
-        for (int i = 0; i < temp.Length; i++)
-        {
-            DestroyImmediate(temp[i]);
-        }
-
-        //Visszaállítjuk a várakozásokat a helyes értékekre
-        waitTimeForReveal = waitTimeForRevealReference;
-        canBeSelected = false;
-
-        //Kiürítjuk a listánkat
-        listForMain.Clear();
-
-        //Kiüríti az id listát
-        loadAsset.getIds().Clear();
-
-        //Üríti a textúrák listáját
-        textures.Clear();
-
-        //Újra kisorsolunk textúrákat
-        loadAsset.generateNewIds(gameLevel, loadAsset.getIds());
-        loadAsset.loadTextures();
-    }
-
-
     public void guessedRight(bool right)
     {
-        if(right)
+        if (right)
         {
             rightGuesses += 1;
             wrongGuesses = 0;
@@ -838,8 +782,108 @@ public class GameController : MonoBehaviour
         newArrival();
     }
 
+    public void resetGame()
+    {
+        //Törli az összes kártyát kivéve egyet
+        GameObject[] temp = GameObject.FindGameObjectsWithTag("Parent");
+        for (int i = 0; i < temp.Length; i++)
+        {
+            DestroyImmediate(temp[i]);
+        }
 
-    //Innentől Getter-Setterek:
+        //Visszaállítjuk a várakozásokat a helyes értékekre
+        waitTimeForReveal = waitTimeForRevealReference;
+        canBeSelected = false;
+
+        //Kiürítjuk a listánkat
+        listForMain.Clear();
+
+        //Kiüríti az id listát
+        loadAsset.getIds().Clear();
+
+        //Üríti a textúrák listáját
+        textures.Clear();
+
+        //Újra kisorsolunk textúrákat
+        loadAsset.generateNewIds(gameLevel, loadAsset.getIds());
+        loadAsset.loadTextures();
+    }
+
+
+
+    //Basic funtions that all games use:
+
+    private void loadInObjects()
+    {
+        GameObject[] temp1 = GameObject.FindGameObjectsWithTag("CardModel");
+        for(int i = 0; i < temp1.Length; i++)
+        {
+            listForMain.Add(temp1[i]);
+        }
+    }
+
+    public void positionForSmoothStep(GameObject parent, float xEnd, float yEnd, float zEnd, bool canStart, float duration)
+    {
+        parent.GetComponent<ParentScript>().startTime = Time.time;
+
+        parent.GetComponent<ParentScript>().xStart = parent.transform.position.x;
+        parent.GetComponent<ParentScript>().yStart = parent.transform.position.y;
+        parent.GetComponent<ParentScript>().zStart = parent.transform.position.z;
+
+        parent.GetComponent<ParentScript>().xEnd = xEnd;
+        parent.GetComponent<ParentScript>().yEnd = yEnd;
+        parent.GetComponent<ParentScript>().zEnd = zEnd;
+
+        parent.GetComponent<ParentScript>().duration = duration;
+        parent.GetComponent<ParentScript>().canStart = canStart;
+        parent.GetComponent<ParentScript>().t = 0;
+    }
+
+
+    IEnumerator shuffle(GameObject[] parent, float n)
+    {
+        yield return new WaitForSeconds(n);
+        float x = 2 * Constants.cardSize;
+        for(int i = 0; i < 3; i++)
+        {
+            positionForSmoothStep(parent[i], x, parent[i].transform.position.y, (gameLevel + 1 + i) * -0.2f, true, Constants.speedOfThreeShuffles);
+
+            yield return new WaitForSeconds(Constants.speedOfThreeShuffles);
+
+            positionForSmoothStep(parent[i], 0, 0, parent[i].transform.position.z, true, Constants.speedOfThreeShuffles);
+
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    //Egy lista tartalmát megkeveri
+    public void shuffleIndexes(ArrayList list)  
+    {
+        RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+        int n = list.Count;
+        while (n > 1)
+        {
+            byte[] box = new byte[1];
+            do provider.GetBytes(box);
+            while (!(box[0] < n * (Byte.MaxValue / n)));
+            int k = (box[0] % n);
+            n--;
+            int value = (int)list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+    }
+
+    
+
+    // Ez volt: return -(cardNumber / 2) * (Constants.cardSize * scale) - Constants.padding / 2;
+    private double calcx(double cardNumber, float scale)
+    {
+        return -(((cardNumber / 2) - 0.5f) * ((Constants.cardSize * scale) + Constants.padding));
+    }
+
+
+    //Getter and setters for variables:
 
     public void addToTexture(Texture2D texture)
     {

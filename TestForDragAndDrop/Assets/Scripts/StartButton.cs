@@ -1,28 +1,44 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class StartButton : MonoBehaviour
 {
-    public GameController gc;
+    [SerializeField] private GameController gc;
+    [SerializeField] private Toggle Toggle1;
+    [SerializeField] private Toggle Toggle2;
+    [SerializeField] private Toggle Toggle3;
+    [SerializeField] private Text mainText;
+    [SerializeField] private Text instruction;
+
     public void OnMouseDown()
     {
-        int caseSwitch = 1;
+        int caseSwitch = 2;
 
-        switch (caseSwitch)
+        if (SceneManager.GetActiveScene().buildIndex != 1 && (Toggle1.isOn || Toggle2.isOn || Toggle3.isOn))
         {
-            case 1:
-                gc.newArrival();
-                break;
-            case 2:
-                gc.pairThem();
-                break;
-            case 3:
-                gc.putThemInOrder();
-                break;
-            default:
-                Debug.Log("No such case as given");
-                break;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        else if(SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            switch (caseSwitch)
+            {
+                case 1:
+                    mainText.text = "Ki az új felszálló?";
+                    gc.newArrival();
+                    break;
+                case 2:
+                    mainText.text = "Állítsd párba a lapokat!";
+                    gc.pairThem();
+                    break;
+                case 3:
+                    mainText.text = "Rakd sorba a lapokat";
+                    gc.putThemInOrder();
+                    break;
+                default:
+                    Debug.Log("No such case as given");
+                    break;
+            }
         }
     }
 }
