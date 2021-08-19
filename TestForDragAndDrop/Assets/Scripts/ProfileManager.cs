@@ -6,11 +6,10 @@ using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using TMPro;
 
 public class ProfileManager : MonoBehaviour
 {
-    [SerializeField] private TMP_InputField[] inputFields;
+    [SerializeField] private InputField[] inputFields;
 
     public Profile[] profiles = new Profile[3];
     private string secretKey = "mySecretKey";
@@ -44,7 +43,6 @@ public class ProfileManager : MonoBehaviour
     public void usernameValue(int id)
     {
         profiles[id].setName(inputFields[id].text);
-        Debug.Log(profiles[id].getName());
     }
 
 

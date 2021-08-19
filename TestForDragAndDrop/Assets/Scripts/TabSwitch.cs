@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
+
 public class TabSwitch : MonoBehaviour
 {
-    [SerializeField] private TMP_InputField UsernameInput1;
-    [SerializeField] private TMP_InputField UsernameInput2;
-    [SerializeField] private TMP_InputField UsernameInput3;
+    [SerializeField] private InputField UsernameInput1;
+    [SerializeField] private InputField UsernameInput2;
+    [SerializeField] private InputField UsernameInput3;
 
     private int selectedRowId;
     void Update()

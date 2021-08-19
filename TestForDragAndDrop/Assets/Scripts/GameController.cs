@@ -14,13 +14,14 @@ static class Constants
     public const float speedOfThreeShuffles = 0.1f;
     public const float waitTimeInPairGame = 3.5f;
     public const float speedOfPairGame = 2.0f;
-
+    public const float shuffleDelay = 1.0f;
+    public const float cardChangeSpeed = 0.2f;
 
     //Positioning:
     public const float cardSize = 1.812f;
     public const float padding = 0.2f;
 
-    public const float yMid = 0.0f;
+    public const float yMid = -0.5f;
     public const float yUp = 1.0f;
     public const float yDown = -2.0f;
 
@@ -30,10 +31,16 @@ static class Constants
     public const float yPairUpper = 1.5f;
     public const float yPairLower = -1.5f;
     public const float yPairTemp = -4.5f;
+
+    //
+    public const int maxLevel = 14; //Maximum level
+    public const int minLevel = 4; //Minimum level
 }
 
 public class GameController : MonoBehaviour 
 {
+
+    public delegate void cardsNumberChanged();
 
     [SerializeField] private Button orderGame;
     [SerializeField] private Button pairGame;
@@ -41,8 +48,6 @@ public class GameController : MonoBehaviour
     [SerializeField] private Button evaluateCards;
 
     //Game:
-    private int maxLevel = 14; //Maximum level
-    private int minLevel = 4; //Minimum level
     private int idOfNewArrival = 0; //Contains the id of the new arrival
     [SerializeField] private int gameLevel = 6; //Game level
     private GameObject[] objs; //Container for the cards
@@ -64,15 +69,14 @@ public class GameController : MonoBehaviour
     
     //Camera settings:
     new private GameObject camera;
-    private readonly float[] cameraZPosNewArrival = { -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -10.0f, -10.0f, -10.0f };
-    private readonly float[] cameraZPosOrder = { -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -12.0f, -12.0f, -12.0f };
+    private readonly float[] cameraZPosNewArrival = { -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.5f, -9.0f, -9.0f, -10.5f };
+    private readonly float[] cameraZPosOrder = { -7.0f, -7.0f, -7.0f, -7.0f, -7.0f, -7.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -12.0f, -12.0f, -12.0f };
 
 
     void Awake()
     {
         camera = GameObject.Find("CardCamera");
     }
-
 
 
     //----------------------------------------------------------------------------------------------------------------------------------
@@ -83,7 +87,7 @@ public class GameController : MonoBehaviour
 
         orderGame.gameObject.SetActive(true);
 
-        camera.transform.localPosition = new Vector3(0, 0, cameraZPosOrder[gameLevel - 1]);
+        camera.transform.localPosition = new Vector3(0, 0.5f, cameraZPosOrder[gameLevel - 1]);
 
         GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
         GameObject[] border = GameObject.FindGameObjectsWithTag("instantiateBorder");
@@ -210,6 +214,10 @@ public class GameController : MonoBehaviour
 
     public void newArrival()
     {
+        //cardsNumberChanged CNG = new cardsNumberChanged(setCameraZPos);
+        //CNG.Invoke();
+
+
         camera.transform.localPosition = new Vector3(0, 0, cameraZPosNewArrival[gameLevel - 1]);
 
         float delay = gameLevel * waitBetweenCardsFlipping + waitTimeForReveal + waitBetweenCardsAndNewArrival - 2;
@@ -256,19 +264,19 @@ public class GameController : MonoBehaviour
             }
         }
 
-        StartCoroutine(waitAndPositionAllCardsInZero(delay + 5));
+        StartCoroutine(waitAndPositionAllCardsInZero(delay + Constants.shuffleDelay));
 
         //Kirakjuk az új felszállót és becsúsztatjuk a 0,0-ba
-        StartCoroutine(WaitaBitAndAddNewArrival(delay + 6));
+        StartCoroutine(WaitaBitAndAddNewArrival(delay + Constants.shuffleDelay + 1.0f));
 
         //Ide jön a shuffle:
-        StartCoroutine(shuffle(parent, delay + 7));
+        StartCoroutine(shuffle(parent, delay + Constants.shuffleDelay + 2.0f));
 
         //Megkeverjük, újra kitesszük
-        StartCoroutine(waitABitAndDoAll(delay + 9));
+        StartCoroutine(waitABitAndDoAll(delay + Constants.shuffleDelay + 3.5f));
 
         //Felfordítjuk egyesével a kártyákat és várunk a tippre
-        StartCoroutine(tippingPosition(delay + 10));
+        StartCoroutine(tippingPosition(delay + Constants.shuffleDelay + 5.0f));
     }
 
     //----------------------------------------------------------------------------------------------------------------------------------
@@ -574,6 +582,9 @@ public class GameController : MonoBehaviour
         card.GetComponentInChildren<CardModel>().rend.materials[2].mainTexture = textures[textures.Count - 1];
         card.GetComponentInChildren<CardModel>().setCardId(idOfNewArrival);
 
+        GameObject[] cards = GameObject.FindGameObjectsWithTag("CardModel");
+        camera.transform.localPosition = new Vector3(0, 0, cameraZPosNewArrival[cards.Length]);
+
         positionForSmoothStep(card, 0, 0, gameLevel * -0.2f, true, Constants.speedOfArrivalZeroing);
     }
 
@@ -679,9 +690,8 @@ public class GameController : MonoBehaviour
 
     private void pos2(GameObject[] objs, double xUpper, double yUpper, double xLower, double yLower)
     {
-        int waitBetween = 2;
-        double val = objs.Length;
-        for (int i = 0; i < objs.Length; i++)
+        double cardCount = objs.Length;
+        for (int i = 0; i < cardCount; i++)
         {
             for (int j = 0; j < loadAsset.getIds().Count; j++)
             {
@@ -691,10 +701,8 @@ public class GameController : MonoBehaviour
 
                     positionForSmoothStep(objs[j], b.x, b.y, b.z, true, Constants.speedOfFirstPositioning);
 
-                    waitBetween += 2;
-
                     xUpper += Constants.padding + Constants.cardSize;
-                    if (objs.Length > 5 && Math.Ceiling(val / 2) - 1 == i)
+                    if (objs.Length > 5 && Math.Ceiling(cardCount / 2) - 1 == i)
                     {
                         xUpper = xLower;
                         yUpper = yLower;
@@ -714,7 +722,7 @@ public class GameController : MonoBehaviour
             if (rightGuesses == 2)
             {
                 rightGuesses = 0;                //Emeljük a tétet
-                if (gameLevel < maxLevel)
+                if (gameLevel < Constants.maxLevel)
                 {
                     newGameStarted(1);
                 }
@@ -736,7 +744,7 @@ public class GameController : MonoBehaviour
             if (wrongGuesses == 2)
             {
                 wrongGuesses = 0;              //Csökkentjük a tétet
-                if (gameLevel > minLevel)
+                if (gameLevel > Constants.minLevel)
                 {
                     newGameStarted(2);
                 }
@@ -810,7 +818,6 @@ public class GameController : MonoBehaviour
     }
 
 
-
     //Basic funtions that all games use:
 
     private void loadInObjects()
@@ -844,7 +851,7 @@ public class GameController : MonoBehaviour
     {
         yield return new WaitForSeconds(n);
         float x = 2 * Constants.cardSize;
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 4; i++)
         {
             positionForSmoothStep(parent[i], x, parent[i].transform.position.y, (gameLevel + 1 + i) * -0.2f, true, Constants.speedOfThreeShuffles);
 
@@ -852,7 +859,7 @@ public class GameController : MonoBehaviour
 
             positionForSmoothStep(parent[i], 0, 0, parent[i].transform.position.z, true, Constants.speedOfThreeShuffles);
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(Constants.speedOfThreeShuffles + 0.1f);
         }
     }
 
@@ -875,12 +882,17 @@ public class GameController : MonoBehaviour
     }
 
     
-
     // Ez volt: return -(cardNumber / 2) * (Constants.cardSize * scale) - Constants.padding / 2;
     private double calcx(double cardNumber, float scale)
     {
         return -(((cardNumber / 2) - 0.5f) * ((Constants.cardSize * scale) + Constants.padding));
     }
+
+    private void setCameraZPos()
+    {
+
+    }
+
 
 
     //Getter and setters for variables:

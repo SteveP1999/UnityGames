@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class ActivePlayerScript : MonoBehaviour
@@ -9,7 +6,7 @@ public class ActivePlayerScript : MonoBehaviour
     [SerializeField] private Toggle toggle1;
     [SerializeField] private Toggle toggle2;
     [SerializeField] private Toggle activePlayer;
-    [SerializeField] private TMP_InputField inputField;
+    [SerializeField] private InputField inputField;
 
     void Update()
     {

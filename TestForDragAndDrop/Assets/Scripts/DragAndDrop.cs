@@ -73,9 +73,15 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
         {
             GameObject[] borders = GameObject.FindGameObjectsWithTag("Border");
             GameObject[] cards = GameObject.FindGameObjectsWithTag("Parent");
+            GameObject[] test = GameObject.FindGameObjectsWithTag("CardModel");
 
             if (calculateDistance() < 1.0f)
             {
+                for(int i =0; i < test.Length;i++)
+                {
+                    test[i].GetComponentInChildren<DragAndDrop>().setDrag(false);
+                }
+
                 this.GetComponentInParent<CardModel>().transform.position = startingPos; 
 
                 if (borders[borderNumber].GetComponent<Border>().getCard() == null && borders[borderNumber].GetComponent<Border>().getIsAvailable())
@@ -113,7 +119,7 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
                         {
                             if (cards[i].GetComponentInChildren<CardModel>().getCardId() == borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId())
                             {
-                                gc.positionForSmoothStep(cards[i], destination.x, destination.y, 0, true, 0.5f);
+                                gc.positionForSmoothStep(cards[i], destination.x, destination.y, 0, true, Constants.cardChangeSpeed);
                             }
                         }
 
@@ -146,10 +152,11 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
                             {
                                 if (cards[i].GetComponentInChildren<CardModel>().getCardId() == borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId())
                                 {
-                                    gc.positionForSmoothStep(cards[i], destination2.x, destination2.y, destination2.z, true, 0.5f);
+                                    gc.positionForSmoothStep(cards[i], destination2.x, destination2.y, destination2.z, true, Constants.cardChangeSpeed);
                                 }
                             }
                         }
+
 
                         Debug.Log("Case 4");
                         //Old border settings:
@@ -174,6 +181,19 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
             {
                 this.GetComponentInParent<CardModel>().transform.position = startingPos;
             }
+
+            StartCoroutine(unlockDrag());
+        }
+    }
+
+    IEnumerator unlockDrag()
+    {
+        yield return new WaitForSeconds(Constants.cardChangeSpeed);
+        GameObject[] test = GameObject.FindGameObjectsWithTag("CardModel");
+
+        for (int i = 0; i < test.Length; i++)
+        {
+            test[i].GetComponentInChildren<DragAndDrop>().setDrag(false);
         }
     }
 

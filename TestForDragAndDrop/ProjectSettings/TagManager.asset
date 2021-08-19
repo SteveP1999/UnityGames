@@ -15,6 +15,7 @@ TagManager:
   - starterBorder
   - pair1Border
   - pair2Border
+  - Dummy
   layers:
   - Default
   - TransparentFX

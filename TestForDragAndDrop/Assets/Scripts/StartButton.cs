@@ -13,7 +13,7 @@ public class StartButton : MonoBehaviour
 
     public void OnMouseDown()
     {
-        int caseSwitch = 2;
+        int caseSwitch = 3;
 
         if (SceneManager.GetActiveScene().buildIndex != 1 && (Toggle1.isOn || Toggle2.isOn || Toggle3.isOn))
         {
