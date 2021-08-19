@@ -25,8 +25,8 @@ static class Constants
     public const float yUp = 1.0f;
     public const float yDown = -2.0f;
 
-    public const float yOrder = 1.2f;
-    public const float yOrderBorder = -2.0f;
+    public const float yOrder = -2.0f;
+    public const float yOrderBorder = 1.0f;
 
     public const float yPairUpper = 1.5f;
     public const float yPairLower = -1.5f;
@@ -70,7 +70,7 @@ public class GameController : MonoBehaviour
     //Camera settings:
     new private GameObject camera;
     private readonly float[] cameraZPosNewArrival = { -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.5f, -9.0f, -9.0f, -10.5f };
-    private readonly float[] cameraZPosOrder = { -7.0f, -7.0f, -7.0f, -7.0f, -7.0f, -7.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -12.0f, -12.0f, -12.0f };
+    private readonly float[] cameraZPosOrder = { -7.0f, -7.0f, -7.0f, -8.0f, -7.0f, -7.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -12.0f, -12.0f, -12.0f };
 
 
     void Awake()
@@ -87,7 +87,7 @@ public class GameController : MonoBehaviour
 
         orderGame.gameObject.SetActive(true);
 
-        camera.transform.localPosition = new Vector3(0, 0.5f, cameraZPosOrder[gameLevel - 1]);
+        camera.transform.localPosition = new Vector3(0, 0, cameraZPosOrder[gameLevel - 1]);
 
         GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
         GameObject[] border = GameObject.FindGameObjectsWithTag("instantiateBorder");
@@ -103,7 +103,7 @@ public class GameController : MonoBehaviour
             card.GetComponentInChildren<CardModel>().tag = "CardModel";
             card.GetComponentInChildren<CardModel>().setBorder(starterBord.GetComponent<Border>());
 
-            card.transform.Rotate(0, 180, 0);
+            //card.transform.Rotate(0, 180, 0);
 
             bord.tag = "Border";
             bord.GetComponent<Border>().setIsAvailable(true);

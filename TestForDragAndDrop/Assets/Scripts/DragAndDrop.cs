@@ -129,8 +129,15 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
 
                         //New card:
                         this.GetComponentInParent<CardModel>().setBorder(borders[borderNumber].GetComponent<Border>());
-                        this.GetComponentInParent<CardModel>().GetComponentInParent<ParentScript>().transform.position = borders[borderNumber].GetComponent<Border>().transform.position;
-                        //ITT VÁASKFNAGJKBLGABSGLKJABSGASG
+                        Vector3 dest = borders[borderNumber].transform.position;
+                        for (int i = 0; i < cards.Length; i++)
+                        {
+                            if (cards[i].GetComponentInChildren<CardModel>().getCardId() == this.GetComponentInParent<CardModel>().getCardId())
+                            {
+                                gc.positionForSmoothStep(cards[i], dest.x, dest.y, dest.z, true, Constants.cardChangeSpeed);
+                            }
+                        }
+                        //this.GetComponentInParent<CardModel>().GetComponentInParent<ParentScript>().transform.position = borders[borderNumber].GetComponent<Border>().transform.position;
                     }
                     else
                     {
@@ -168,7 +175,15 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
                         }
 
                         //New card settings
-                        this.GetComponentInParent<CardModel>().GetComponentInParent<ParentScript>().transform.position = borders[borderNumber].transform.position; //askgjbaosgbobasgkiasggag
+                        Vector3 dest = borders[borderNumber].transform.position;
+                        for (int i = 0; i < cards.Length; i++)
+                        {
+                            if (cards[i].GetComponentInChildren<CardModel>().getCardId() == this.GetComponentInParent<CardModel>().getCardId())
+                            {
+                                gc.positionForSmoothStep(cards[i], dest.x, dest.y, dest.z, true, Constants.cardChangeSpeed);
+                            }
+                        }
+                        //this.GetComponentInParent<CardModel>().GetComponentInParent<ParentScript>().transform.position = borders[borderNumber].transform.position; //askgjbaosgbobasgkiasggag
                         this.GetComponentInParent<CardModel>().setBorder(borders[borderNumber].GetComponent<Border>());
 
                         borders[borderNumber].GetComponent<Border>().setOccupied(true);
@@ -188,12 +203,12 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
 
     IEnumerator unlockDrag()
     {
-        yield return new WaitForSeconds(Constants.cardChangeSpeed);
+        yield return new WaitForSeconds(Constants.cardChangeSpeed + 0.1f);
         GameObject[] test = GameObject.FindGameObjectsWithTag("CardModel");
 
         for (int i = 0; i < test.Length; i++)
         {
-            test[i].GetComponentInChildren<DragAndDrop>().setDrag(false);
+            test[i].GetComponentInChildren<DragAndDrop>().setDrag(true);
         }
     }
 
