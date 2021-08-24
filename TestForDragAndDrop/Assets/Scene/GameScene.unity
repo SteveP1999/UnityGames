@@ -2175,7 +2175,7 @@ MonoBehaviour:
   pairGame: {fileID: 604165589}
   giveNextCards: {fileID: 1825972983}
   evaluateCards: {fileID: 1228071314}
-  gameLevel: 5
+  gameLevel: 10
   canBeSelected: 0
   profileManager: {fileID: 0}
   textures: []

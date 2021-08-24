@@ -32,6 +32,12 @@ public class Profile
 
     private bool dataChanged;
 
+    private int gameLevelOrder;
+
+    private int gameLevelPair;
+    
+    private int gameLevelNewArrival;
+
     public void setDataChanged(bool val)
     {
         dataChanged = val;
