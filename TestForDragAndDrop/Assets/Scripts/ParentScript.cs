@@ -16,6 +16,7 @@ public class ParentScript : MonoBehaviour
     public bool canStart = false;
     public float t = 0;
     private Animator anim;
+    [SerializeField] private GameController gc;
 
     void Update()
     {

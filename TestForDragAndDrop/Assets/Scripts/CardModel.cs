@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardModel : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class CardModel : MonoBehaviour
     [SerializeField] private int cardId;
     private GameObject pair;
     [SerializeField] private Border border;
+    [SerializeField] private StartButton startButton;
+    [SerializeField] private Text winOrLost;
+
 
     public void setBorder(Border val)
     {
@@ -48,16 +52,42 @@ public class CardModel : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (gc.getCanBeSelected())
+
+        if (startButton.caseSwitch == 1 && gc.getCanBeSelected())
         {
+            GameObject[] parent = GameObject.FindGameObjectsWithTag("Parent");
+
+            for (int i = 0; i < parent.Length; i++)
+            {
+                if (parent[i].GetComponentInChildren<CardModel>().getCardId() == cardId)
+                {
+                    gc.positionForSmoothStep(parent[i], 0, 0, -2f, true, 2f);
+                }
+            }
             if (cardId == gc.getIdOfNewArrival())
             {
-                gc.guessedRight(true);
+                StartCoroutine(wonOrLostMessage(true));
             }
             else
             {
-                gc.guessedRight(false);
+                StartCoroutine(wonOrLostMessage(false));
             }
+        }
+    }
+
+    IEnumerator wonOrLostMessage(bool won)
+    {
+        yield return new WaitForSeconds(2.0f);
+
+        if(won)
+        {
+            winOrLost.text = "Gratulálok, ügyes vagy nyertél!";
+            winOrLost.gameObject.SetActive(true);
+        }
+        else
+        {
+            winOrLost.text = "Sajnos ez most nem sikerült, próbáld újra";
+            winOrLost.gameObject.SetActive(true);
         }
     }
 }

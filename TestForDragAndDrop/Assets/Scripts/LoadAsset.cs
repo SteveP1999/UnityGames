@@ -5,7 +5,8 @@ using UnityEngine;
 public class LoadAsset : MonoBehaviour
 {
     public GameController gc;
-    AssetBundle myLoadedAssetBundle;
+    AssetBundle myLoadedAssetBundle1;
+    AssetBundle myLoadedAssetBundle2;
     private string path;
     [System.NonSerialized]
     public Texture2D texture;
@@ -158,7 +159,7 @@ public class LoadAsset : MonoBehaviour
                 break;
             case "Francia":
                 path = @"C:\Users\SteveP1\Desktop\AssetBundles\francia";
-                loadAssetBundle(path);
+                loadAssetBundle(path, myLoadedAssetBundle1);
                 generateNewIds(gc.getGameLevel(), ids);
                 loadTextures();
                 break;
@@ -192,7 +193,7 @@ public class LoadAsset : MonoBehaviour
         }
     }
 
-    void loadAssetBundle(string buildUrl)
+    void loadAssetBundle(string buildUrl, AssetBundle myLoadedAssetBundle)
     {
         myLoadedAssetBundle = AssetBundle.LoadFromFile(buildUrl);
         assetList = myLoadedAssetBundle.LoadAllAssets<Texture2D>();

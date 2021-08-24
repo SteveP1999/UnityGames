@@ -16,6 +16,7 @@ static class Constants
     public const float speedOfPairGame = 2.0f;
     public const float shuffleDelay = 1.0f;
     public const float cardChangeSpeed = 0.2f;
+    public const float speedOfChoosenCard = 1.0f;
 
     //Positioning:
     public const float cardSize = 1.812f;
@@ -32,16 +33,13 @@ static class Constants
     public const float yPairLower = -1.5f;
     public const float yPairTemp = -4.5f;
 
-    //
+    //Game settings:
     public const int maxLevel = 14; //Maximum level
     public const int minLevel = 4; //Minimum level
 }
 
-public class GameController : MonoBehaviour 
+public class GameController : MonoBehaviour
 {
-
-    public delegate void cardsNumberChanged();
-
     [SerializeField] private Button orderGame;
     [SerializeField] private Button pairGame;
     [SerializeField] private Button giveNextCards;
@@ -52,9 +50,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private int gameLevel = 6; //Game level
     private GameObject[] objs; //Container for the cards
     private ArrayList listForMain = new ArrayList(); //
-    private bool canBeSelected = false; //Engedélyező, hogy megtippelhessük az új felszállót
+    [SerializeField] private bool canBeSelected = false; //Engedélyező, hogy megtippelhessük az új felszállót
     private int rightGuesses = 0; //Counter a jó tippekhez
     private int wrongGuesses = 0; //Counter a rossz tippekhez
+    [SerializeField] private ProfileManager profileManager;
 
     //Timing:
     private float waitTimeForRevealReference = 2;
@@ -65,8 +64,8 @@ public class GameController : MonoBehaviour
     //Assets:
     public List<Texture2D> textures; //A textúrákat itt tároljuk el, amiket betöltünk
     public LoadAsset loadAsset; //Hivatkozás a LoadAsset osztályra
-    
-    
+
+
     //Camera settings:
     new private GameObject camera;
     private readonly float[] cameraZPosNewArrival = { -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.5f, -9.0f, -9.0f, -10.5f };
@@ -125,7 +124,7 @@ public class GameController : MonoBehaviour
         }
 
         parent = GameObject.FindGameObjectsWithTag("Parent");
-        
+
         border = GameObject.FindGameObjectsWithTag("Border");
 
         GameObject[] starterBorder = GameObject.FindGameObjectsWithTag("starterBorder");
@@ -137,7 +136,7 @@ public class GameController : MonoBehaviour
         posCardsForOrder(parent, Constants.yOrder);
         posCardsForOrder(starterBorder, Constants.yOrder);
 
-        for(int i = 0; i < starterBorder.Length; i++)
+        for (int i = 0; i < starterBorder.Length; i++)
         {
             starterBorder[i].tag = "Border";
         }
@@ -214,10 +213,6 @@ public class GameController : MonoBehaviour
 
     public void newArrival()
     {
-        //cardsNumberChanged CNG = new cardsNumberChanged(setCameraZPos);
-        //CNG.Invoke();
-
-
         camera.transform.localPosition = new Vector3(0, 0, cameraZPosNewArrival[gameLevel - 1]);
 
         float delay = gameLevel * waitBetweenCardsFlipping + waitTimeForReveal + waitBetweenCardsAndNewArrival - 2;
@@ -433,14 +428,14 @@ public class GameController : MonoBehaviour
     {
         GameObject[] borders = GameObject.FindGameObjectsWithTag("Border");
         int counter = 0;
-        for(int i = 0; i < borders.Length; i++)
+        for (int i = 0; i < borders.Length; i++)
         {
-            if(borders[i].transform.position.y == Constants.yPairUpper && borders[i].GetComponent<Border>().getOccupied() == true)
+            if (borders[i].transform.position.y == Constants.yPairUpper && borders[i].GetComponent<Border>().getOccupied() == true)
             {
                 counter++;
             }
         }
-        if(counter == gameLevel)
+        if (counter == gameLevel)
         {
             giveNextCards.gameObject.SetActive(false);
             evaluateCards.gameObject.SetActive(true);
@@ -823,7 +818,7 @@ public class GameController : MonoBehaviour
     private void loadInObjects()
     {
         GameObject[] temp1 = GameObject.FindGameObjectsWithTag("CardModel");
-        for(int i = 0; i < temp1.Length; i++)
+        for (int i = 0; i < temp1.Length; i++)
         {
             listForMain.Add(temp1[i]);
         }
@@ -851,7 +846,7 @@ public class GameController : MonoBehaviour
     {
         yield return new WaitForSeconds(n);
         float x = 2 * Constants.cardSize;
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             positionForSmoothStep(parent[i], x, parent[i].transform.position.y, (gameLevel + 1 + i) * -0.2f, true, Constants.speedOfThreeShuffles);
 
@@ -864,7 +859,7 @@ public class GameController : MonoBehaviour
     }
 
     //Egy lista tartalmát megkeveri
-    public void shuffleIndexes(ArrayList list)  
+    public void shuffleIndexes(ArrayList list)
     {
         RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
         int n = list.Count;
@@ -881,7 +876,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    
+
     // Ez volt: return -(cardNumber / 2) * (Constants.cardSize * scale) - Constants.padding / 2;
     private double calcx(double cardNumber, float scale)
     {

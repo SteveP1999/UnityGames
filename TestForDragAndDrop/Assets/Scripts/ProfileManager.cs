@@ -11,7 +11,9 @@ public class ProfileManager : MonoBehaviour
 {
     [SerializeField] private InputField[] inputFields;
 
-    public Profile[] profiles = new Profile[3];
+    public static ProfileManager profileManager;
+    public Profile[] profiles;
+    private int activePlayerIndex = 0;
     private string secretKey = "mySecretKey";
     public string addPlayerURL =
             "http://localhost/UnityGame/addplayer.php?";
@@ -19,19 +21,66 @@ public class ProfileManager : MonoBehaviour
              "http://localhost/UnityGame/connection.php";
 
 
+    void Awake()
+    {
+        if(profileManager == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            profileManager = this;
+        }
+        else if(profileManager != this)
+        {
+            Destroy(gameObject);
+        }
+
+    }
+
+    void Start()
+    {
+        profiles = new Profile[3];
+        Profile player1 = new Profile();
+        Profile player2 = new Profile();
+        Profile player3 = new Profile();
+        player1.setName("Kis Béla");
+        player2.setName("Nagy Anna");
+        player3.setName("Kovács Lacika");
+        profiles[0] = player1;
+        profiles[1] = player2;
+        profiles[2] = player3;
+    }
+
+    public void setActivePlayerIndex(int val)
+    {
+        activePlayerIndex = val;
+    }
+
+    public int getActivePlayerIndex()
+    {
+        return activePlayerIndex;
+    }
     public void activityChanged(int id)
     {
         if(profiles[id].getActive() == false)
         {
-            for(int i = 0; i < 2; i++)
+            for(int i = 0; i < 3; i++)
             {
                 profiles[i].setActive(false);
             }
+
             profiles[id].setActive(true);
+
+            for(int j = 0; j < 3; j++)
+            {
+                Debug.Log(profiles[j] + profiles[j].getName());
+            }
         }
         else
         {
             profiles[id].setActive(false);
+            for (int j = 0; j < 3; j++)
+            {
+                Debug.Log(profiles[id] + profiles[j].getName());
+            }
         }
     }
 
@@ -43,6 +92,7 @@ public class ProfileManager : MonoBehaviour
     public void usernameValue(int id)
     {
         profiles[id].setName(inputFields[id].text);
+        Debug.Log(profiles[id].getName());
     }
 
 
