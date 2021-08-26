@@ -206,7 +206,18 @@ MonoBehaviour:
   m_Group: {fileID: 398142326}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1415774368}
+        m_MethodName: dataChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!114 &32760528
 MonoBehaviour:
@@ -429,8 +440,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1415774368}
-        m_MethodName: usernameValue
-        m_Mode: 3
+        m_MethodName: dataChanged
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -622,7 +633,18 @@ MonoBehaviour:
   m_Group: {fileID: 398142326}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1415774368}
+        m_MethodName: dataChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!114 &131661221
 MonoBehaviour:
@@ -1311,7 +1333,18 @@ MonoBehaviour:
   m_Group: {fileID: 678313743}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1415774368}
+        m_MethodName: dataChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &354861392
 GameObject:
@@ -1700,7 +1733,7 @@ MonoBehaviour:
   inputField3: {fileID: 1477899840}
   toggle1Kicsi: {fileID: 1285038117}
   toggle1Nagy: {fileID: 315660713}
-  toggle2Kicsi: {fileID: 0}
+  toggle2Kicsi: {fileID: 1562293615}
   toggle2Nagy: {fileID: 972175968}
   toggle3Kicsi: {fileID: 32760527}
   toggle3Nagy: {fileID: 131661220}
@@ -2429,6 +2462,8 @@ MonoBehaviour:
   toggle2: {fileID: 131661220}
   inputField: {fileID: 1477899840}
   activePlayer: {fileID: 1873752660}
+  profileManager: {fileID: 1415774368}
+  dbManager: {fileID: 269849217}
 --- !u!1 &802792853
 GameObject:
   m_ObjectHideFlags: 0
@@ -2636,8 +2671,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1415774368}
-        m_MethodName: activityChanged
-        m_Mode: 3
+        m_MethodName: dataChanged
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3017,7 +3052,18 @@ MonoBehaviour:
   m_Group: {fileID: 1339971092}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1415774368}
+        m_MethodName: dataChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!114 &972175969
 MonoBehaviour:
@@ -3756,7 +3802,18 @@ MonoBehaviour:
   m_Group: {fileID: 678313743}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1415774368}
+        m_MethodName: dataChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &1302148408
 GameObject:
@@ -4555,8 +4612,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1415774368}
-        m_MethodName: usernameValue
-        m_Mode: 3
+        m_MethodName: dataChanged
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5006,6 +5063,8 @@ MonoBehaviour:
   toggle2: {fileID: 972175968}
   inputField: {fileID: 1756498930}
   activePlayer: {fileID: 1566988157}
+  profileManager: {fileID: 1415774368}
+  dbManager: {fileID: 269849217}
 --- !u!1 &1558119127
 GameObject:
   m_ObjectHideFlags: 0
@@ -5166,7 +5225,18 @@ MonoBehaviour:
   m_Group: {fileID: 1339971092}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1415774368}
+        m_MethodName: dataChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!114 &1562293616
 MonoBehaviour:
@@ -5267,8 +5337,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1415774368}
-        m_MethodName: activityChanged
-        m_Mode: 3
+        m_MethodName: dataChanged
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6021,6 +6091,8 @@ MonoBehaviour:
   toggle2: {fileID: 315660713}
   inputField: {fileID: 109109927}
   activePlayer: {fileID: 857612828}
+  profileManager: {fileID: 1415774368}
+  dbManager: {fileID: 269849217}
 --- !u!1 &1748972569
 GameObject:
   m_ObjectHideFlags: 0
@@ -6227,8 +6299,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1415774368}
-        m_MethodName: usernameValue
-        m_Mode: 3
+        m_MethodName: dataChanged
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6623,8 +6695,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1415774368}
-        m_MethodName: activityChanged
-        m_Mode: 3
+        m_MethodName: dataChanged
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

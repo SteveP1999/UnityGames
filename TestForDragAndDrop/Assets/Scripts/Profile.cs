@@ -68,6 +68,11 @@ public class Profile
         return age;
     }
 
+    public void setAge(string age)
+    {
+        this.age = age;
+    }
+
     public string getPlayer()
     {
         return player;
@@ -76,6 +81,11 @@ public class Profile
     public int getLevel()
     {
         return level;
+    }
+
+    public void setLevel(int level)
+    {
+        this.level = level;
     }
 
     public void loadFromJson(string json)

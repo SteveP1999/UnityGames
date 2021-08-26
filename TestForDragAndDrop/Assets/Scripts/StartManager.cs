@@ -29,8 +29,20 @@ public class StartManager : MonoBehaviour
         inputField3.text = profileManager.profiles[2].getName();
 
         if (profileManager.profiles[0].getAge() == "old")
+        {
             toggle1Kicsi.isOn = false;
             toggle1Nagy.isOn = true;
+        }
+        else if(profileManager.profiles[0].getAge() == "young")
+        {
+            toggle1Kicsi.isOn = true;
+            toggle1Nagy.isOn = false;
+        }
+        else
+        {
+            toggle1Kicsi.isOn = false;
+            toggle1Nagy.isOn = false;
+        }
 
         if (profileManager.profiles[1].getAge() == "old")
             toggle2Kicsi.isOn = false;
