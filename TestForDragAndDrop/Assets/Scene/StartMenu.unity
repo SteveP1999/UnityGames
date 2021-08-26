@@ -733,6 +733,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 162725139}
   m_CullTransparentMesh: 0
+--- !u!1 &171082478
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 171082480}
+  - component: {fileID: 171082479}
+  m_Layer: 0
+  m_Name: CardCollectionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &171082479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171082478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e589850ad7a9b244967a31f321f1e90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cards: []
+--- !u!4 &171082480
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171082478}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 504.64514, y: 242.13531, z: 56.173428}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &172720950
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,6 +1266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   profileManager: {fileID: 1415774368}
   startManager: {fileID: 517573699}
+  cardManager: {fileID: 171082479}
 --- !u!4 &269849218
 Transform:
   m_ObjectHideFlags: 0
@@ -7453,6 +7498,66 @@ PrefabInstance:
       propertyPath: dbManager
       value: 
       objectReference: {fileID: 269849217}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: inputField1
+      value: 
+      objectReference: {fileID: 109109927}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: inputField2
+      value: 
+      objectReference: {fileID: 1756498930}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: inputField3
+      value: 
+      objectReference: {fileID: 1477899840}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: toggle1Nagy
+      value: 
+      objectReference: {fileID: 315660713}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: toggle2Nagy
+      value: 
+      objectReference: {fileID: 972175968}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: toggle3Nagy
+      value: 
+      objectReference: {fileID: 131661220}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: toggle1Kicsi
+      value: 
+      objectReference: {fileID: 1285038117}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: toggle2Kicsi
+      value: 
+      objectReference: {fileID: 1562293615}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: toggle3Kicsi
+      value: 
+      objectReference: {fileID: 32760527}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: toggle1Active
+      value: 
+      objectReference: {fileID: 857612828}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: toggle2Active
+      value: 
+      objectReference: {fileID: 1566988157}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: toggle3Active
+      value: 
+      objectReference: {fileID: 1873752660}
     - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
         type: 3}
       propertyPath: inputFields.Array.data[0]

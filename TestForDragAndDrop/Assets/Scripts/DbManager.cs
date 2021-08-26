@@ -4,12 +4,17 @@ using UnityEngine.Networking;
 
 public class DbManager : MonoBehaviour
 {
-    private string getURL = "http://localhost/unity/getUsers.php";
-    private string postURL = "http://localhost/unity/updateuser.php";
     [SerializeField] private ProfileManager profileManager;
+    [SerializeField] StartManager startManager;
+    [SerializeField] CardManager cardManager;
+
+    private string getusersURL = "http://localhost/unity/getUsers.php";
+    private string getcardsURL = "http://localhost/unity/getCards.php";
+    private string getassetsURL = "http://localhost/unity/getUsers.php";
+    private string postURL = "http://localhost/unity/updateuser.php";
     string trimmedjsonArray;
     public static DbManager dbManager;
-    [SerializeField] StartManager startManager;
+    
     void Awake()
     {
         if (dbManager == null)
@@ -25,11 +30,13 @@ public class DbManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(getUsers(getURL));
+        StartCoroutine(getUsers(getusersURL));
+        StartCoroutine(getCards(getcardsURL));
+        //StartCoroutine(getAssets(getassetsURL));
     }
+
     IEnumerator getUsers(string URL)
     {
-        WWWForm form = new WWWForm();
         using (UnityWebRequest www = UnityWebRequest.Get(URL))
         {
             yield return www.SendWebRequest();
@@ -90,6 +97,88 @@ public class DbManager : MonoBehaviour
                 Debug.Log(www.downloadHandler.text);
             }
         }
+    }
 
+    public IEnumerator getCards(string URL)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Get(URL))
+        {
+            yield return www.SendWebRequest();
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log("There was a mistake");
+            }
+            else
+            {
+                string jsonArray = www.downloadHandler.text;
+                string trimjsonArray = jsonArray.Replace("[", "");
+                trimmedjsonArray = trimjsonArray.Replace("]", "");
+            }
+        }
+
+        int i = 0;
+
+        //for(int j = 0; j < 72; j++)
+        while (trimmedjsonArray.Split('}')[i] != "")
+        {
+            string cardString = trimmedjsonArray.Split('}')[i];
+            if(cardString != "")
+            {
+                if (i == 0)
+                {
+                    cardString += "}";
+                }
+                else
+                {
+                    cardString = cardString.Substring(1);
+                    cardString += "}";
+                }
+                Card card = new Card();
+                card.loadFromJson(cardString);
+                cardManager.addCard(card);
+                i++;
+            }
+        }
+
+        for(int j = 0; j < cardManager.cards.Count; j++)
+        {
+            Debug.Log("Kártya: " + cardManager.cards[j].getCardName());
+        }
+    }
+
+    public IEnumerator getAssets(string URL)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Get(URL))
+        {
+            yield return www.SendWebRequest();
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log("There was a mistake");
+            }
+            else
+            {
+                //Debug.Log(www.downloadHandler.text);
+                string jsonArray = www.downloadHandler.text;
+                string trimjsonArray = jsonArray.Replace("[", "");
+                trimmedjsonArray = trimjsonArray.Replace("]", "");
+            }
+        }
+
+        for (int i = 0; i < profileManager.profiles.Length; i++)
+        {
+            string player1 = trimmedjsonArray.Split('}')[i];
+            if (i == 0)
+            {
+                player1 += "}";
+            }
+            else
+            {
+                player1 = player1.Substring(1);
+                player1 += "}";
+            }
+            Profile profile1 = new Profile();
+            profile1.loadFromJson(player1);
+            profileManager.profiles[i] = profile1;
+        }
     }
 }
