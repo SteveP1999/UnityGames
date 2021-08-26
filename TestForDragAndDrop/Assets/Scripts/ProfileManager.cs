@@ -6,10 +6,12 @@ using UnityEngine.UI;
 public class ProfileManager : MonoBehaviour
 {
     [SerializeField] private InputField[] inputFields;
+    [SerializeField] private DbManager dbManager;
 
     public static ProfileManager profileManager;
     public Profile[] profiles = new Profile[3];
     private int activePlayerIndex = 0;
+
 
     void Awake()
     {
@@ -62,6 +64,8 @@ public class ProfileManager : MonoBehaviour
         {
             profiles[id].setActive(false);
         }
+        Debug.Log("Activity changed");
+        dbManager.saveUser(profiles[id].getName(), profiles[id].getAge(), profiles[id].getLevel(), profiles[id].getPlayer(), profiles[id].getActive());
     }
 
     public void dataChange(int id)
@@ -72,5 +76,7 @@ public class ProfileManager : MonoBehaviour
     public void usernameValue(int id)
     {
         profiles[id].setName(inputFields[id].text);
+        Debug.Log("Username changed");
+        StartCoroutine(dbManager.saveUser(profiles[id].getName(), profiles[id].getAge(), profiles[id].getLevel(), profiles[id].getPlayer(), profiles[id].getActive()));
     }
 }

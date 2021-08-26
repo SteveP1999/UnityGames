@@ -7,6 +7,7 @@ public class ResetButton : MonoBehaviour
     [SerializeField] private Toggle toggle2;
     [SerializeField] private InputField inputField;
     [SerializeField] private Toggle activePlayer;
+
     public void reset()
     {
         toggle1.isOn = false;

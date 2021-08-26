@@ -4,7 +4,8 @@ using UnityEngine.Networking;
 
 public class DbManager : MonoBehaviour
 {
-    private string URL = "http://localhost/unity/getUsers.php";
+    private string getURL = "http://localhost/unity/getUsers.php";
+    private string postURL = "http://localhost/unity/updateuser.php";
     [SerializeField] private ProfileManager profileManager;
     string trimmedjsonArray;
     public static DbManager dbManager;
@@ -24,7 +25,7 @@ public class DbManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(getUsers(URL));
+        StartCoroutine(getUsers(getURL));
     }
     IEnumerator getUsers(string URL)
     {
@@ -62,5 +63,33 @@ public class DbManager : MonoBehaviour
             profileManager.profiles[i] = profile1;
         }
         startManager.setUpMenu();
+    }
+
+    public IEnumerator saveUser(string name, string age, int level, string player, bool active)
+    {
+        int valueActive = 0;
+        if (active == true)
+            valueActive = 1;
+            
+        WWWForm form = new WWWForm();
+        form.AddField("saveName", name);
+        form.AddField("saveAge", age);
+        form.AddField("saveLevel", level);
+        form.AddField("savePlayer", player);
+        form.AddField("saveActive", valueActive);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(postURL, form))
+        {
+            yield return www.SendWebRequest();
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log("There was a mistake");
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+            }
+        }
+
     }
 }

@@ -1199,6 +1199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   profileManager: {fileID: 1415774368}
+  startManager: {fileID: 517573699}
 --- !u!4 &269849218
 Transform:
   m_ObjectHideFlags: 0
@@ -1211,7 +1212,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &315660710
 GameObject:
@@ -1719,7 +1720,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &534523686
 GameObject:
@@ -7377,6 +7378,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
         type: 3}
+      propertyPath: dbManager
+      value: 
+      objectReference: {fileID: 269849217}
+    - target: {fileID: 5676231700382690580, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
       propertyPath: inputFields.Array.data[0]
       value: 
       objectReference: {fileID: 109109927}
@@ -7393,7 +7399,7 @@ PrefabInstance:
     - target: {fileID: 5676231700382690581, guid: 2558896a06f7d6243ac1b35f255f278a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5676231700382690581, guid: 2558896a06f7d6243ac1b35f255f278a,
         type: 3}
