@@ -24,8 +24,7 @@ public class ProfileManager : MonoBehaviour
 
     public static ProfileManager profileManager;
     public Profile[] profiles = new Profile[3];
-    private int activePlayerIndex = 0;
-
+    private int activePlayerIndex = -1;
 
     void Awake()
     {

@@ -200,6 +200,21 @@ public class LoadAsset : MonoBehaviour
         Debug.Log(myLoadedAssetBundle == null ? "Valami hiba történt, a hibás path: " + path + " volt." : " Sikeres betöltés");
     }
 
+
+    public void loadAsset(string assetName, AssetBundle myLoadedAssetBundle, Object[] assetList)
+    {
+        string path = @"C:\Users\SteveP1\Desktop\AssetBundles\" + assetName;
+        myLoadedAssetBundle = AssetBundle.LoadFromFile(path);
+        assetList = myLoadedAssetBundle.LoadAllAssets<Texture2D>();
+        Debug.Log(myLoadedAssetBundle == null ? "Valami hiba történt, a hibás path: " + path + " volt." : " Sikeres betöltés");
+    }
+
+    public void loadTexture()
+    {
+
+    }
+
+
     public void loadTextures()
     {
         int i = 0;

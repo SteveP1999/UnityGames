@@ -15,24 +15,19 @@ public class Card
         return cardName;
     }
 
-    public void setUniqueId(int number)
+    public int getUniqueId()
     {
-        uniqueId = number;
+        return uniqueId;
     }
 
-    public void setCardName(string name)
+    public int getCardId()
     {
-        cardName = name;
+        return cardId;
     }
 
-    public void setCardId(int id)
+    public string getCardSet()
     {
-        cardId = id;
-    }
-
-    public void setCardSet(string set)
-    {
-        cardSet = set;
+        return cardSet;
     }
 
     public void loadFromJson(string json)

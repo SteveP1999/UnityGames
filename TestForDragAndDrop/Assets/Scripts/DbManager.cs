@@ -122,22 +122,19 @@ public class DbManager : MonoBehaviour
         while (trimmedjsonArray.Split('}')[i] != "")
         {
             string cardString = trimmedjsonArray.Split('}')[i];
-            if(cardString != "")
+            if (i == 0)
             {
-                if (i == 0)
-                {
-                    cardString += "}";
-                }
-                else
-                {
-                    cardString = cardString.Substring(1);
-                    cardString += "}";
-                }
-                Card card = new Card();
-                card.loadFromJson(cardString);
-                cardManager.addCard(card);
-                i++;
+                cardString += "}";
             }
+            else
+            {
+                cardString = cardString.Substring(1);
+                cardString += "}";
+            }
+            Card card = new Card();
+            card.loadFromJson(cardString);
+            cardManager.addCard(card);
+            i++;
         }
     }
 
