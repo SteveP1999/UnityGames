@@ -2,41 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Age
-{
-    young,
-    old,
-    none
-}
-
-public enum Player
-{
-    player1,
-    player2,
-    player3,
-    none
-}
 
 [System.Serializable]
 public class Profile
 {
-    private string name;
+    [SerializeField] private string name;
 
-    private Age age;
+    [SerializeField] private string age;
 
-    private int level;
+    [SerializeField] private int level;
 
-    private Player player;
+    [SerializeField] private string player;
 
-    private bool active;
+    [SerializeField] private int active;   //0 - hamis 1 - igaz
 
     private bool dataChanged;
 
     private int gameLevelOrder;
 
     private int gameLevelPair;
-    
+
     private int gameLevelNewArrival;
+
+    public void setProfileInfo(string name, string age, int level, string player, int active)
+    {
+        this.name = name;
+        this.age = age;
+        this.level = level;
+        this.player = player;
+        this.active = active;
+    }
 
     public void setDataChanged(bool val)
     {
@@ -48,12 +43,12 @@ public class Profile
         return dataChanged;
     }
 
-    public void setActive(bool val)
+    public void setActive(int val)
     {
         active = val;
     }
 
-    public bool getActive()
+    public int getActive()
     {
         return active;
     }
@@ -65,38 +60,27 @@ public class Profile
 
     public string getName()
     {
-        return name; ;
+        return name;
     }
 
-    public Age Age
+    public string getAge()
     {
-        get => Age;
-
-        set
-        {
-            Age = value;
-        }
+        return age;
     }
 
-    public int Level
+    public string getPlayer()
     {
-        get => level;
-
-        set
-        {
-            level = value;
-        }
+        return player;
     }
 
-    public Player Player
+    public int getLevel()
     {
-        get => player;
-
-        set
-        {
-            player = value;
-        }
+        return level;
     }
 
+    public void loadFromJson(string json)
+    {
+        JsonUtility.FromJsonOverwrite(json, this);
+    }
 }
 
