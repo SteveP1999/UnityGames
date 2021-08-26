@@ -7,10 +7,11 @@ public class DbManager : MonoBehaviour
     [SerializeField] private ProfileManager profileManager;
     [SerializeField] StartManager startManager;
     [SerializeField] CardManager cardManager;
+    [SerializeField] CardSetManager cardSetManager;
 
     private string getusersURL = "http://localhost/unity/getUsers.php";
     private string getcardsURL = "http://localhost/unity/getCards.php";
-    private string getassetsURL = "http://localhost/unity/getUsers.php";
+    private string getassetsURL = "http://localhost/unity/getCardSets.php";
     private string postURL = "http://localhost/unity/updateuser.php";
     string trimmedjsonArray;
     public static DbManager dbManager;
@@ -32,7 +33,7 @@ public class DbManager : MonoBehaviour
     {
         StartCoroutine(getUsers(getusersURL));
         StartCoroutine(getCards(getcardsURL));
-        //StartCoroutine(getAssets(getassetsURL));
+        StartCoroutine(getAssets(getassetsURL));
     }
 
     IEnumerator getUsers(string URL)
@@ -118,7 +119,6 @@ public class DbManager : MonoBehaviour
 
         int i = 0;
 
-        //for(int j = 0; j < 72; j++)
         while (trimmedjsonArray.Split('}')[i] != "")
         {
             string cardString = trimmedjsonArray.Split('}')[i];
@@ -139,11 +139,6 @@ public class DbManager : MonoBehaviour
                 i++;
             }
         }
-
-        for(int j = 0; j < cardManager.cards.Count; j++)
-        {
-            Debug.Log("Kártya: " + cardManager.cards[j].getCardName());
-        }
     }
 
     public IEnumerator getAssets(string URL)
@@ -157,28 +152,30 @@ public class DbManager : MonoBehaviour
             }
             else
             {
-                //Debug.Log(www.downloadHandler.text);
                 string jsonArray = www.downloadHandler.text;
                 string trimjsonArray = jsonArray.Replace("[", "");
                 trimmedjsonArray = trimjsonArray.Replace("]", "");
             }
         }
 
-        for (int i = 0; i < profileManager.profiles.Length; i++)
+        int i = 0;
+
+        while (trimmedjsonArray.Split('}')[i] != "")
         {
-            string player1 = trimmedjsonArray.Split('}')[i];
+            string json = trimmedjsonArray.Split('}')[i];
             if (i == 0)
             {
-                player1 += "}";
+                json += "}";
             }
             else
             {
-                player1 = player1.Substring(1);
-                player1 += "}";
+                json = json.Substring(1);
+                json += "}";
             }
-            Profile profile1 = new Profile();
-            profile1.loadFromJson(player1);
-            profileManager.profiles[i] = profile1;
+            CardSet cardSet = new CardSet();
+            cardSet.loadFromJson(json);
+            cardSetManager.addCardSet(cardSet);
+            i++;
         }
     }
 }
