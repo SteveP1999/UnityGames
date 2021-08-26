@@ -7,6 +7,20 @@ public class DbManager : MonoBehaviour
     private string URL = "http://localhost/unity/getUsers.php";
     [SerializeField] private ProfileManager profileManager;
     string trimmedjsonArray;
+    public static DbManager dbManager;
+    [SerializeField] StartManager startManager;
+    void Awake()
+    {
+        if (dbManager == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            dbManager = this;
+        }
+        else if (dbManager != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -28,13 +42,6 @@ public class DbManager : MonoBehaviour
                 string jsonArray = www.downloadHandler.text;
                 string trimjsonArray = jsonArray.Replace("[", "");
                 trimmedjsonArray = trimjsonArray.Replace("]", "");
-                //string player1 = trimmedjsonArray.Split('}')[0];
-                //string player2 = trimmedjsonArray.Split('}')[1];
-                //string player3 = trimmedjsonArray.Split('}')[2];
-                //player2 = player2.Substring(1);
-                //Debug.Log(player1);
-                //Debug.Log(player2);
-                //Debug.Log(player3);
             }
         }
 
@@ -50,19 +57,10 @@ public class DbManager : MonoBehaviour
                 player1 = player1.Substring(1);
                 player1 += "}";
             }
-
             Profile profile1 = new Profile();
             profile1.loadFromJson(player1);
             profileManager.profiles[i] = profile1;
         }
-
-        for(int i = 0; i < profileManager.profiles.Length; i++)
-        {
-            Debug.Log(profileManager.profiles[i].getName());
-            Debug.Log(profileManager.profiles[i].getAge());
-            Debug.Log(profileManager.profiles[i].getActive());
-            Debug.Log(profileManager.profiles[i].getLevel());
-            Debug.Log(profileManager.profiles[i].getPlayer());
-        }
+        startManager.setUpMenu();
     }
 }

@@ -14,7 +14,7 @@ public class Profile
 
     [SerializeField] private string player;
 
-    [SerializeField] private int active;   //0 - hamis 1 - igaz
+    [SerializeField] private bool active;   //0 - hamis 1 - igaz
 
     private bool dataChanged;
 
@@ -24,7 +24,7 @@ public class Profile
 
     private int gameLevelNewArrival;
 
-    public void setProfileInfo(string name, string age, int level, string player, int active)
+    public void setProfileInfo(string name, string age, int level, string player, bool active)
     {
         this.name = name;
         this.age = age;
@@ -43,12 +43,12 @@ public class Profile
         return dataChanged;
     }
 
-    public void setActive(int val)
+    public void setActive(bool val)
     {
         active = val;
     }
 
-    public int getActive()
+    public bool getActive()
     {
         return active;
     }

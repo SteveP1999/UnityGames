@@ -14,42 +14,42 @@ public class PlaySceneManager : MonoBehaviour
 
     void Start()
     {
-        //GameObject go = GameObject.Find("ProfileManager");
+        GameObject go = GameObject.Find("ProfileManager");
 
-        //switch (go.GetComponent<ProfileManager>().getActivePlayerIndex())
-        //{
-        //    case 0:
-        //        playerImage.sprite = playerImage1;
-        //        nameText.text = go.GetComponent<ProfileManager>().profiles[0].getName();
-        //        break;
-        //    case 1:
-        //        playerImage.sprite = playerImage2;
-        //        nameText.text = go.GetComponent<ProfileManager>().profiles[1].getName();
-        //        break;
-        //    case 2:
-        //        playerImage.sprite = playerImage3;
-        //        nameText.text = go.GetComponent<ProfileManager>().profiles[2].getName();
-        //        break;
-        //    default:
-        //        Debug.Log("No such case as given");
-        //        break;
-        //}
+        switch (go.GetComponent<ProfileManager>().getActivePlayerIndex())
+        {
+            case 0:
+                playerImage.sprite = playerImage1;
+                nameText.text = go.GetComponent<ProfileManager>().profiles[0].getName();
+                break;
+            case 1:
+                playerImage.sprite = playerImage2;
+                nameText.text = go.GetComponent<ProfileManager>().profiles[1].getName();
+                break;
+            case 2:
+                playerImage.sprite = playerImage3;
+                nameText.text = go.GetComponent<ProfileManager>().profiles[2].getName();
+                break;
+            default:
+                Debug.Log("No such case as given");
+                break;
+        }
 
-        //int caseSwitch = 2;
-        //switch (caseSwitch)
-        //{
-        //    case 1:
-        //        mainText.text = "Ki az új felszálló?";
-        //        break;
-        //    case 2:
-        //        mainText.text = "Állítsd párba a lapokat!";
-        //        break;
-        //    case 3:
-        //        mainText.text = "Rakd sorba a lapokat";
-        //        break;
-        //    default:
-        //        Debug.Log("No such case as given");
-        //        break;
-        //}
+        int caseSwitch = 2;
+        switch (caseSwitch)
+        {
+            case 1:
+                mainText.text = "Ki az új felszálló?";
+                break;
+            case 2:
+                mainText.text = "Állítsd párba a lapokat!";
+                break;
+            case 3:
+                mainText.text = "Rakd sorba a lapokat";
+                break;
+            default:
+                Debug.Log("No such case as given");
+                break;
+        }
     }
 }

@@ -19,18 +19,18 @@ public class StartButton : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             if(Toggle1.isOn)
             {
-            //    profileManager.profiles[0].setActive(true);
-            //    profileManager.setActivePlayerIndex(0);
-            //}
-            //else if(Toggle2.isOn)
-            //{
-            //    profileManager.profiles[1].setActive(true);
-            //    profileManager.setActivePlayerIndex(1);
-            //}
-            //else
-            //{
-            //    profileManager.profiles[2].setActive(true);
-            //    profileManager.setActivePlayerIndex(2);
+                profileManager.profiles[0].setActive(true);
+                profileManager.setActivePlayerIndex(0);
+            }
+            else if (Toggle2.isOn)
+            {
+                profileManager.profiles[1].setActive(true);
+                profileManager.setActivePlayerIndex(1);
+            }
+            else
+            {
+                profileManager.profiles[2].setActive(true);
+                profileManager.setActivePlayerIndex(2);
             }
         }
         else if(SceneManager.GetActiveScene().buildIndex == 1)

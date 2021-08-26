@@ -49,27 +49,18 @@ public class ProfileManager : MonoBehaviour
     }
     public void activityChanged(int id)
     {
-        if (profiles[id].getActive() == 0)
+        if (profiles[id].getActive() == false)
         {
             for (int i = 0; i < 3; i++)
             {
-                profiles[i].setActive(0);
+                profiles[i].setActive(true);
             }
 
-            profiles[id].setActive(1);
-
-            for (int j = 0; j < 3; j++)
-            {
-                Debug.Log(profiles[j] + profiles[j].getName());
-            }
+            profiles[id].setActive(true);
         }
         else
         {
-            profiles[id].setActive(0);
-            for (int j = 0; j < 3; j++)
-            {
-                Debug.Log(profiles[id] + profiles[j].getName());
-            }
+            profiles[id].setActive(false);
         }
     }
 
@@ -81,6 +72,5 @@ public class ProfileManager : MonoBehaviour
     public void usernameValue(int id)
     {
         profiles[id].setName(inputFields[id].text);
-        Debug.Log(profiles[id].getName());
     }
 }
