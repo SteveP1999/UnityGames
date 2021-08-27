@@ -2177,8 +2177,10 @@ MonoBehaviour:
   evaluateCards: {fileID: 1228071314}
   gameLevel: 10
   canBeSelected: 0
-  profileManager: {fileID: 0}
-  textures: []
+  assetName1: 
+  assetName2: 
+  textures1: []
+  textures2: []
   loadAsset: {fileID: 71233038}
 --- !u!1 &1159790397
 GameObject:

@@ -16,6 +16,9 @@ TagManager:
   - pair1Border
   - pair2Border
   - Dummy
+  - profileManager
+  - cardCollectionManager
+  - cardSetCollectionManager
   layers:
   - Default
   - TransparentFX

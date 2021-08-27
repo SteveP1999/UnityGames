@@ -5,8 +5,23 @@ using UnityEngine;
 [System.Serializable]
 public class CardSetManager : MonoBehaviour
 {
-    [SerializeField] private List<CardSet> cardSets;
+    [SerializeField] public List<CardSet> cardSets;
     [SerializeField] private ProfileManager profileManager;
+    public static CardSetManager cardSetManager;
+
+    void Awake()
+    {
+        if (cardSetManager == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            cardSetManager = this;
+        }
+        else if (cardSetManager != this)
+        {
+            Destroy(gameObject);
+        }
+
+    }
 
     public void addCardSet(CardSet cardset)
     {
@@ -18,7 +33,7 @@ public class CardSetManager : MonoBehaviour
         List<CardSet> possibleSets = new List<CardSet>();
         for(int i = 0; i < cardSets.Count; i++)
         {
-            if (cardSets[i].getAge() == profileManager.profiles[profileManager.getActivePlayerIndex()].getAge() || cardSets[i].getAge() == "KN")
+            if (cardSets[i].getAge() == profileManager.profiles[profileManager.getActivePlayerIndex()].getAge() || cardSets[i].getAge() == "KN" || cardSets[i].getAge() == "N" || cardSets[i].getAge() == "K")
             {
                 possibleSets.Add(cardSets[i]);
             }

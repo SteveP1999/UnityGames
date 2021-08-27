@@ -5,282 +5,79 @@ using UnityEngine;
 public class LoadAsset : MonoBehaviour
 {
     public GameController gc;
-    AssetBundle myLoadedAssetBundle1;
-    AssetBundle myLoadedAssetBundle2;
+    private AssetBundle myLoadedAssetBundle1;
+    private AssetBundle myLoadedAssetBundle2;
     private string path;
     [System.NonSerialized]
     public Texture2D texture;
     private string switchCase = "Francia";
-    [SerializeField]
-    private ArrayList ids = new ArrayList();
-    private Object[] assetList;
-    private Object[] assetListForPairs;
+    private GameObject cardSetCollectionManager;
+    private GameObject cardCollectionManager;
+    private CardSetManager cardSetManager;
+    private CardManager cardManager;
 
-    public ArrayList getIds()
+
+    public AssetBundle getAssetBundle1()
     {
-        return ids;
+        return myLoadedAssetBundle1;
     }
 
-    void Start()
+    public AssetBundle getAssetBundle2()
     {
-        switch (switchCase)
-        {
-            case "AbcL_EN":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\abcl_en";
-                //loadAssetBundle(path);
-                //generateNewIds(gc.gameLevel, ids, 26);
-                //loadTextures();
-                break;
-            case "AbcL_HU":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\abcl_hu";
-                //loadAssetBundle(path);
-                //generateNewIds(gc.gameLevel, ids, 44);
-                //loadTextures();
-                break;
-            case "AbcU_EN":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\abcu_en";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 26);
-                //loadTextures();
-                break;
-            case "AbcU_HU":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\abcu_hu";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 44);
-                //loadTextures();
-                break;
-            case "Domino01":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino01";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino02":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino02";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino03":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino03";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino04":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino04";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino05":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domnio05";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino06":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino06";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino07":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino07";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino08":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domnio08";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino09":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domini09";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino10":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino10";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino11":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino11";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino12":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino12";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino13":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino13";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino14":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino14";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino15":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino15";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino16":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino16";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "Domino17":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\domino17";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 9);
-                //loadTextures();
-                break;
-            case "DuplaDomino":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\dupladomino";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 100);
-                //loadTextures();
-                break;
-            case "Francia":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\francia";
-                loadAssetBundle(path, myLoadedAssetBundle1);
-                generateNewIds(gc.getGameLevel(), ids);
-                loadTextures();
-                break;
-            case "Num20":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\num20";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 20);
-                //loadTextures();
-                break;
-            case "Num100":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\num100";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 100);
-                //loadTextures();
-                break;
-            case "OraSzamlap":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\oraszamlap";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 12);
-                //loadTextures();
-                break;
-            case "RomaiGyufa":
-                path = @"C:\Users\SteveP1\Desktop\AssetBundles\romaigyufa";
-                //loadAssetBundle(path);
-                // generateNewIds(gc.gameLevel, ids, 15);
-                //loadTextures();
-                break;
-            default:
-                Debug.Log("Nem megfelelő mappanév!");
-                break;
-        }
+        return myLoadedAssetBundle2;
     }
 
-    void loadAssetBundle(string buildUrl, AssetBundle myLoadedAssetBundle)
+    void Awake()
     {
-        myLoadedAssetBundle = AssetBundle.LoadFromFile(buildUrl);
-        assetList = myLoadedAssetBundle.LoadAllAssets<Texture2D>();
-        Debug.Log(myLoadedAssetBundle == null ? "Valami hiba történt, a hibás path: " + path + " volt." : " Sikeres betöltés");
+        cardSetCollectionManager = GameObject.FindGameObjectWithTag("cardSetCollectionManager");
+        cardCollectionManager = GameObject.FindGameObjectWithTag("cardCollectionManager");
+        cardManager = cardCollectionManager.GetComponent<CardManager>();
+        cardSetManager = cardSetCollectionManager.GetComponent<CardSetManager>();
     }
 
-
-    public void loadAsset(string assetName, AssetBundle myLoadedAssetBundle, Object[] assetList)
+    public void loadAsset(string assetName, bool gameMode)
     {
         string path = @"C:\Users\SteveP1\Desktop\AssetBundles\" + assetName;
-        myLoadedAssetBundle = AssetBundle.LoadFromFile(path);
-        assetList = myLoadedAssetBundle.LoadAllAssets<Texture2D>();
-        Debug.Log(myLoadedAssetBundle == null ? "Valami hiba történt, a hibás path: " + path + " volt." : " Sikeres betöltés");
-    }
-
-    public void loadTexture()
-    {
-
-    }
-
-
-    public void loadTextures()
-    {
-        int i = 0;
-        foreach (Object o in assetList)
+        if(gameMode == false)   //Többi game
         {
-            if (o.GetType() == typeof(Texture2D))
-            {
-                if (ids.Contains(i))
-                {
-                    texture = o as Texture2D;
-                    gc.textures.Add(texture);
-                }
-                i++;
-            }
+            myLoadedAssetBundle1 = AssetBundle.LoadFromFile(path);
         }
-    }
-
-    public void generateNewIds(int numOfNumbers, ArrayList ids)
-    {
-        var rand = new System.Random();
-        for (int j = 0; j < numOfNumbers; j++)
+        else  //Pair game
         {
-            bool canBePlaced = true;
-            while (canBePlaced != false)
-            {
-                int number = rand.Next(assetList.Length);
-                if (!ids.Contains(number))
-                {
-                    ids.Add(number);
-                    canBePlaced = false;
-                }
-            }
+            myLoadedAssetBundle2 = AssetBundle.LoadFromFile(path);
         }
-        ids.Sort();
+        Debug.Log(myLoadedAssetBundle1 == null && myLoadedAssetBundle2 == null ? "Valami hiba történt, a hibás path: " + path + " volt." : " Sikeres betöltés");
     }
 
-    public void addNewArrival()
+    public void loadNewArrival()
     {
-        bool canBePlaced = true;
-        var rand = new System.Random();
-        while (canBePlaced != false)
+        cardManager.drawDifferentCard("Francia");   //gc.assetName1 volt
+        Texture2D newTexture = myLoadedAssetBundle1.LoadAsset(cardManager.cardList1[cardManager.cardList1.Count - 1]) as Texture2D;
+        gc.textures1.Add(newTexture);
+        gc.setIdOfNewArrival(cardManager.cardList1Ids[cardManager.cardList1Ids.Count - 1]);
+        Debug.Log("Id of new arrival: " + cardManager.cardList1Ids[cardManager.cardList1Ids.Count - 1]);
+    }
+
+    public void loadAllCards(bool gameMode)
+    {
+        //Put the textures from the first bundle to a list
+        cardManager.drawDifferentCards(gc.getGameLevel(), gc.assetName1, true);
+        for (int i = 0; i < cardManager.cardList1.Count; i++)
         {
-            int number = rand.Next(assetList.Length);
-            if (!ids.Contains(number))
-            {
-                ids.Add(number);
-                gc.setIdOfNewArrival(number) ;
-                canBePlaced = false;
-            }
+            Texture2D loadedAsset = myLoadedAssetBundle1.LoadAsset(cardManager.cardList1[i]) as Texture2D;
+            gc.textures1.Add(loadedAsset);
         }
-        loadOneTexture();
-    }
 
-    public void loadOneTexture()
-    {
-        int i = 0;
-        foreach (Object o in assetList)
+        //Put the textures from the second bundle to a list if needed
+        if (gameMode == false)    //false == pair game
         {
-            if (o.GetType() == typeof(Texture2D))
+            cardManager.drawDifferentCards(gc.getGameLevel(), gc.assetName2, false);
             {
-                if (i == gc.getIdOfNewArrival())
+                for (int i = 0; i < cardManager.cardList2.Count; i++)
                 {
-                    texture = o as Texture2D;
-                    gc.textures.Add(texture);
+                    Texture2D loadedAsset = myLoadedAssetBundle1.LoadAsset(cardManager.cardList2[i]) as Texture2D;
+                    gc.textures2.Add(loadedAsset);
                 }
-                i++;
             }
         }
     }

@@ -745,7 +745,7 @@ GameObject:
   - component: {fileID: 171082479}
   m_Layer: 0
   m_Name: CardCollectionManager
-  m_TagString: Untagged
+  m_TagString: cardCollectionManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1294,7 +1294,7 @@ GameObject:
   - component: {fileID: 279398495}
   m_Layer: 0
   m_Name: CardSetCollectionManager
-  m_TagString: Untagged
+  m_TagString: cardSetCollectionManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1312,6 +1312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardSets: []
+  profileManager: {fileID: 1415774368}
 --- !u!4 &279398496
 Transform:
   m_ObjectHideFlags: 0
@@ -7677,6 +7678,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ProfileManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5676231700382690603, guid: 2558896a06f7d6243ac1b35f255f278a,
+        type: 3}
+      propertyPath: m_TagString
+      value: profileManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2558896a06f7d6243ac1b35f255f278a, type: 3}
