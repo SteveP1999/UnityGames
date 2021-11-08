@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
+
+//This class manages all the things that connect to the database
 public class DbManager : MonoBehaviour
 {
     [SerializeField] private ProfileManager profileManager;
@@ -9,13 +11,18 @@ public class DbManager : MonoBehaviour
     [SerializeField] CardManager cardManager;
     [SerializeField] CardSetManager cardSetManager;
 
+
+    //References for the PHP scripts:
     private string getusersURL = "http://localhost/unity/getUsers.php";
     private string getcardsURL = "http://localhost/unity/getCards.php";
     private string getassetsURL = "http://localhost/unity/getCardSets.php";
     private string postURL = "http://localhost/unity/updateuser.php";
+
     string trimmedjsonArray;
+ 
     public static DbManager dbManager;
-    
+
+    //This function guarantees that only one CardManager exists and that it can't be destroyed when switching sceenes
     void Awake()
     {
         if (dbManager == null)
@@ -35,7 +42,8 @@ public class DbManager : MonoBehaviour
         StartCoroutine(getCards(getcardsURL));
         StartCoroutine(getAssets(getassetsURL));
     }
-
+    
+    //Load all the users(3) to the profile manager
     IEnumerator getUsers(string URL)
     {
         using (UnityWebRequest www = UnityWebRequest.Get(URL))
@@ -47,7 +55,6 @@ public class DbManager : MonoBehaviour
             }
             else
             {
-                //Debug.Log(www.downloadHandler.text);
                 string jsonArray = www.downloadHandler.text;
                 string trimjsonArray = jsonArray.Replace("[", "");
                 trimmedjsonArray = trimjsonArray.Replace("]", "");
@@ -73,6 +80,7 @@ public class DbManager : MonoBehaviour
         startManager.setUpMenu();
     }
 
+    //Save a users data
     public IEnumerator saveUser(string name, string age, int level, string player, bool active)
     {
         int valueActive = 0;
@@ -100,6 +108,7 @@ public class DbManager : MonoBehaviour
         }
     }
 
+    //Load all the cards that the database cointains to the cardManager
     public IEnumerator getCards(string URL)
     {
         using (UnityWebRequest www = UnityWebRequest.Get(URL))
@@ -138,6 +147,8 @@ public class DbManager : MonoBehaviour
         }
     }
 
+
+    //Load in all the assets that the database contains to the cardSetManager
     public IEnumerator getAssets(string URL)
     {
         using (UnityWebRequest www = UnityWebRequest.Get(URL))

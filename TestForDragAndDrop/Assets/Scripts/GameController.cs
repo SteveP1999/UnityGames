@@ -62,6 +62,8 @@ public class GameController : MonoBehaviour
     private GameObject cardSetCollectionManager;
     private CardManager cardManager;
     private CardSetManager cardSetManager;
+    public ArrayList normalIds = new ArrayList();
+    ArrayList orderedIds = new ArrayList();
     public ArrayList ids1 = new ArrayList();
     public ArrayList ids2 = new ArrayList();
     public string assetName1;
@@ -96,7 +98,7 @@ public class GameController : MonoBehaviour
         camera = GameObject.Find("CardCamera");
         if(gameMode == true)
         {
-            //assetName1 = cardSetManager.drawAsset();   Később kell majd most explicit frania kártya és num20 van
+            assetName1 = cardSetManager.drawAsset();
             int k = 0;
             while(k != 1)
             {
@@ -106,16 +108,14 @@ public class GameController : MonoBehaviour
                     k++;
                 }
             }
-            //loadAsset.loadAsset(assetName1, loadAsset.getAssetBundle1());
-            //loadAsset.loadAsset(assetName2, loadAsset.getAssetBundle2());
-            //loadAsset.loadAllCards(false);  //Pair game
+            loadAsset.loadAsset(assetName1, loadAsset.getAssetBundle1());
+            loadAsset.loadAsset(assetName2, loadAsset.getAssetBundle2());
+            loadAsset.loadAllCards(false);  //Pair game
         }
         else
         {
-            //assetName1 = cardSetManager.drawAsset();  Később kell majd most explicit frania kártya és num20 van
-            assetName1 = "Francia";
-            loadAsset.loadAsset(assetName1, false);
             assetName1 = cardSetManager.drawAsset();
+            loadAsset.loadAsset(assetName1, false);
             loadAsset.loadAllCards(true); //Other games
         }
     }
@@ -123,131 +123,144 @@ public class GameController : MonoBehaviour
 
     //----------------------------------------------------------------------------------------------------------------------------------
     //Game no. 1:
-    //public void putThemInOrder()
-    //{
-    //    ArrayList orderedIds = new ArrayList();
 
-    //    orderGame.gameObject.SetActive(true);
+    public void putThemInOrder()
+    {
+        //here i load the ids from the cardManager class to this class (ids1)
+        for (int i = 0; i < cardManager.cardList1Ids.Count; i++)
+        {
+            ids1.Add(cardManager.cardList1Ids[i]);
+        }
 
-    //    camera.transform.localPosition = new Vector3(0, 0, cameraZPosOrder[gameLevel - 1]);
+        for (int i = 0; i < cardManager.normalIds.Count; i++)
+        {
+            orderedIds.Add(cardManager.normalIds[i]);
+        }
 
-    //    GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
-    //    GameObject[] border = GameObject.FindGameObjectsWithTag("instantiateBorder");
+        orderGame.gameObject.SetActive(true);
 
-    //    //Felrakom a kártyákat
-    //    for (int i = 0; i < gameLevel; i++)
-    //    {
-    //        var card = Instantiate(parent[0], new Vector3(0, 0, 0), Quaternion.identity);
-    //        var bord = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
-    //        var starterBord = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
+        camera.transform.localPosition = new Vector3(0, 0, cameraZPosOrder[gameLevel - 1]);
 
-    //        card.tag = "Parent";
-    //        card.GetComponentInChildren<CardModel>().tag = "CardModel";
-    //        card.GetComponentInChildren<CardModel>().setBorder(starterBord.GetComponent<Border>());
+        GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
+        GameObject[] border = GameObject.FindGameObjectsWithTag("instantiateBorder");
 
-    //        //card.transform.Rotate(0, 180, 0);
+        //Felrakom a kártyákat
+        for (int i = 0; i < gameLevel; i++)
+        {
+            var card = Instantiate(parent[0], new Vector3(0, 0, 0), Quaternion.identity);
+            var bord = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
+            var starterBord = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
 
-    //        bord.tag = "Border";
-    //        bord.GetComponent<Border>().setIsAvailable(true);
+            card.tag = "Parent";
+            card.GetComponentInChildren<CardModel>().tag = "CardModel";
+            card.GetComponentInChildren<CardModel>().setBorder(starterBord.GetComponent<Border>());
+
+            //card.transform.Rotate(0, 180, 0);
+
+            bord.tag = "Border";
+            bord.GetComponent<Border>().setIsAvailable(true);
 
 
-    //        starterBord.tag = "starterBorder";
-    //        starterBord.GetComponent<Border>().setIsStarter(true);
-    //        starterBord.GetComponent<Border>().setIsAvailable(true);
-    //        starterBord.GetComponent<Border>().setOccupied(true);
-    //        starterBord.GetComponent<Border>().setCard(card.GetComponentInChildren<CardModel>());
-    //    }
+            starterBord.tag = "starterBorder";
+            starterBord.GetComponent<Border>().setIsStarter(true);
+            starterBord.GetComponent<Border>().setIsAvailable(true);
+            starterBord.GetComponent<Border>().setOccupied(true);
+            starterBord.GetComponent<Border>().setCard(card.GetComponentInChildren<CardModel>());
+        }
 
-    //    loadInObjects();
+        loadInObjects();
 
-    //    for (int i = 0; i < listForMain.Count; i++)
-    //    {
-    //        ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures[i];
-    //        ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId((int)loadAsset.getIds()[i]);
-    //    }
+        for (int i = 0; i < listForMain.Count; i++)
+        {
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setNormalCardId((int)orderedIds[i]);  //normal
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.cardList1Ids[i]);  //unique
+        }
 
-    //    parent = GameObject.FindGameObjectsWithTag("Parent");
+        orderedIds.Sort();
 
-    //    border = GameObject.FindGameObjectsWithTag("Border");
+        parent = GameObject.FindGameObjectsWithTag("Parent");
 
-    //    GameObject[] starterBorder = GameObject.FindGameObjectsWithTag("starterBorder");
+        border = GameObject.FindGameObjectsWithTag("Border");
 
-    //    shuffleIndexes(loadAsset.getIds());
+        GameObject[] starterBorder = GameObject.FindGameObjectsWithTag("starterBorder");
 
-    //    startPositioning(parent, 0.2f, 0.2f, 0.1f);
+        shuffleIndexes(ids1);
 
-    //    posCardsForOrder(parent, Constants.yOrder);
-    //    posCardsForOrder(starterBorder, Constants.yOrder);
+        startPositioning(parent, 0.2f, 0.2f, 0.1f);
 
-    //    for (int i = 0; i < starterBorder.Length; i++)
-    //    {
-    //        starterBorder[i].tag = "Border";
-    //    }
+        posCardsForOrder(parent, Constants.yOrder);
+        posCardsForOrder(starterBorder, Constants.yOrder);
 
-    //    posCardsForOrder(border, Constants.yOrderBorder);
+        for (int i = 0; i < starterBorder.Length; i++)
+        {
+            starterBorder[i].tag = "Border";
+        }
 
-    //    //Felfordítjuk a kártyákat egyesével
-    //    StartCoroutine(revealCards(parent));
-    //}
+        posCardsForOrder(border, Constants.yOrderBorder);
+
+        //Felfordítjuk a kártyákat egyesével
+        StartCoroutine(revealCards(parent));
+    }
 
     //----------------------------------------------------------------------------------------------------------------------------------
 
     //Game no. 2:
-    //public void pairThem()
-    //{
-    //    camera.transform.localPosition = new Vector3(0, 0, cameraZPosPair1);
+    public void pairThem()
+    {
+        camera.transform.localPosition = new Vector3(0, 0, cameraZPosPair1);
 
-    //    pairGame.gameObject.SetActive(true);
+        pairGame.gameObject.SetActive(true);
 
-    //    GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
+        GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
 
-    //    float x = -5;
-    //    float y = 10;
-    //    float z = 0;
+        float x = -5;
+        float y = 10;
+        float z = 0;
 
-    //    //Felrakom a kártyákat
-    //    for (int i = 0; i < 2 * gameLevel; i++)
-    //    {
-    //        var card = Instantiate(parent[0], new Vector3(x, y, z), Quaternion.identity);
-    //        card.tag = "Parent";
-    //        card.GetComponentInChildren<CardModel>().tag = "CardModel";
-    //        card.transform.Rotate(0, 180, 0);
+        //Felrakom a kártyákat
+        for (int i = 0; i < 2 * gameLevel; i++)
+        {
+            var card = Instantiate(parent[0], new Vector3(x, y, z), Quaternion.identity);
+            card.tag = "Parent";
+            card.GetComponentInChildren<CardModel>().tag = "CardModel";
+            card.transform.Rotate(0, 180, 0);
 
-    //        if (i == gameLevel - 1)
-    //        {
-    //            x = 5;
-    //        }
-    //    }
+            if (i == gameLevel - 1)
+            {
+                x = 5;
+            }
+        }
 
-    //    loadInObjects();
+        loadInObjects();
 
-    //    for (int i = 0; i < listForMain.Count / 2; i++)
-    //    {
-    //        ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures[i];
-    //        ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId((int)loadAsset.getIds()[i]);
-    //    }
+        for (int i = 0; i < listForMain.Count / 2; i++)
+        {
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
+            //((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId((int)loadAsset.getIds()[i]);
+        }
 
-    //    for (int j = 0; j < gameLevel; j++)
-    //    {
-    //        GameObject[] border = GameObject.FindGameObjectsWithTag("instantiateBorder");
+        for (int j = 0; j < gameLevel; j++)
+        {
+            GameObject[] border = GameObject.FindGameObjectsWithTag("instantiateBorder");
 
-    //        var bordStarter = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
-    //        var bordPair1 = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
-    //        var bordPair2 = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
+            var bordStarter = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
+            var bordPair1 = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
+            var bordPair2 = Instantiate(border[0], new Vector3(0, 10, 0), Quaternion.identity);
 
-    //        bordStarter.tag = "starterBorder";
-    //        bordStarter.GetComponent<Border>().setIsAvailable(true);
-    //        bordStarter.GetComponent<Border>().setIsStarter(true);
+            bordStarter.tag = "starterBorder";
+            bordStarter.GetComponent<Border>().setIsAvailable(true);
+            bordStarter.GetComponent<Border>().setIsStarter(true);
 
-    //        bordPair1.tag = "pair1Border";
-    //        bordPair1.GetComponent<Border>().setIsAvailable(false);
+            bordPair1.tag = "pair1Border";
+            bordPair1.GetComponent<Border>().setIsAvailable(false);
 
-    //        bordPair2.tag = "pair2Border";
-    //        bordPair2.GetComponent<Border>().setIsAvailable(true);
-    //    }
+            bordPair2.tag = "pair2Border";
+            bordPair2.GetComponent<Border>().setIsAvailable(true);
+        }
 
-    //    StartCoroutine(showPair());
-    //}
+        StartCoroutine(showPair());
+    }
 
     //----------------------------------------------------------------------------------------------------------------------------------
 
@@ -312,7 +325,6 @@ public class GameController : MonoBehaviour
         //Kirakjuk az új felszállót és becsúsztatjuk a 0,0-ba
         StartCoroutine(WaitaBitAndAddNewArrival(delay + Constants.shuffleDelay + 1.0f));
 
-        /*
         //Ide jön a shuffle:
         StartCoroutine(shuffle(parent, delay + Constants.shuffleDelay + 2.0f));
 
@@ -321,7 +333,6 @@ public class GameController : MonoBehaviour
 
         //Felfordítjuk egyesével a kártyákat és várunk a tippre
         StartCoroutine(tippingPosition(delay + Constants.shuffleDelay + 5.0f));
-        */
     }
 
     //----------------------------------------------------------------------------------------------------------------------------------
@@ -338,38 +349,38 @@ public class GameController : MonoBehaviour
         }
     }
 
-    //IEnumerator revealCards(GameObject[] parent)
-    //{
-    //    for (int j = 0; j < listForMain.Count; j++)
-    //    {
-    //        for (int i = 0; i < loadAsset.getIds().Count; i++)
-    //        {
-    //            if (parent[i].GetComponentInChildren<CardModel>().getCardId() == (int)loadAsset.getIds()[j])
-    //            {
-    //                GameObject go = parent[i];
-    //                ParentScript ps = go.GetComponent<ParentScript>();
+    IEnumerator revealCards(GameObject[] parent)
+    {
+        for (int j = 0; j < listForMain.Count; j++)
+        {
+            for (int i = 0; i < ids1.Count; i++)
+            {
+                if (parent[i].GetComponentInChildren<CardModel>().getCardId() == (int)ids1[j])
+                {
+                    GameObject go = parent[i];
+                    ParentScript ps = go.GetComponent<ParentScript>();
 
-    //                if (ps != null)
-    //                {
-    //                    ps.revealAndHide();
-    //                    yield return new WaitForSeconds(2);
-    //                }
-    //            }
-    //        }
-    //    }
+                    if (ps != null)
+                    {
+                        ps.revealAndHide();
+                        yield return new WaitForSeconds(2);
+                    }
+                }
+            }
+        }
 
-    //    for (int i = 0; i < listForMain.Count; i++)
-    //    {
-    //        parent[i].GetComponentInChildren<DragAndDrop>().setDrag(true);
-    //    }
-    //}
+        for (int i = 0; i < listForMain.Count; i++)
+        {
+            parent[i].GetComponentInChildren<DragAndDrop>().setDrag(true);
+        }
+    }
 
-    public void evaluateOrder(ArrayList ids)
+    public void evaluateOrder()
     {
         GameObject[] borders = GameObject.FindGameObjectsWithTag("Border");
         int i = 0;
         int counter = 0;
-        while (i < borders.Length)
+        while (i < borders.Length + 1)
         {
             if (borders[i].GetComponent<Border>().getOccupied() == true)
             {
@@ -380,12 +391,11 @@ public class GameController : MonoBehaviour
                 break;
             }
         }
-        if (i == borders.Length)
+        if (i == borders.Length / 2)
         {
-            Debug.Log("oké megvagyunk");
-            for (int j = 0; j < borders.Length; j++)
+            for (int j = 0; j < borders.Length / 2; j++)
             {
-                if (borders[j].GetComponent<Border>().getId() == (int)ids[j])
+                if (borders[j].GetComponent<Border>().getId() <= (int)orderedIds[j])
                 {
                     counter++;
                 }
@@ -393,8 +403,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            Debug.Log("i: " + i);
-            Debug.Log("borders.length: " + borders.Length);
+            Debug.Log("There are missing cards");
         }
 
         if (counter == gameLevel)
@@ -406,7 +415,7 @@ public class GameController : MonoBehaviour
             Debug.Log("Elvesztetted");
         }
 
-        //resetOrderGame();
+        resetOrderGame();
     }
 
     private void resetOrderGame()
@@ -422,8 +431,6 @@ public class GameController : MonoBehaviour
 
 
     //Functions for game no. 2 (Pair game):
-
-
     IEnumerator showPair()
     {
         GameObject[] parent = GameObject.FindGameObjectsWithTag("Parent");
@@ -762,7 +769,6 @@ public class GameController : MonoBehaviour
                 if (objs[j].GetComponentInChildren<CardModel>().getCardId() == (int)ids1[i])
                 {
                     Vector3 b = new Vector3((float)xUpper, (float)yUpper, 0);
-                    Debug.Log(b);
                     positionForSmoothStep(objs[j], b.x, b.y, b.z, true, Constants.speedOfFirstPositioning);
 
                     xUpper += Constants.padding + Constants.cardSize;
@@ -853,7 +859,6 @@ public class GameController : MonoBehaviour
 
     public void resetGame()
     {
-        //Törli az összes kártyát kivéve egyet
         GameObject[] temp = GameObject.FindGameObjectsWithTag("Parent");
         for (int i = 0; i < temp.Length; i++)
         {
@@ -960,10 +965,7 @@ public class GameController : MonoBehaviour
 
     }
 
-
-
     //Getters and setters for variables:
-
     public bool getCanBeSelected()
     {
         return canBeSelected;

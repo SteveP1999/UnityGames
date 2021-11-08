@@ -763,6 +763,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cards: []
+  normalIds: 
+  cardList1: []
+  cardList1Ids: 
+  cardList2: []
+  cardList2Ids: 
 --- !u!4 &171082480
 Transform:
   m_ObjectHideFlags: 0

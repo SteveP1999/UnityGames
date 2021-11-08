@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+//This class contains a player's data
 [System.Serializable]
 public class Profile
 {
+
     [SerializeField] private string name;
 
     [SerializeField] private string age;
@@ -14,9 +16,7 @@ public class Profile
 
     [SerializeField] private string player;
 
-    [SerializeField] private bool active;   //0 - hamis 1 - igaz
-
-    private bool dataChanged;
+    [SerializeField] private bool active;   //0 - false 1 - true
 
     private int gameLevelOrder;
 
@@ -24,6 +24,18 @@ public class Profile
 
     private int gameLevelNewArrival;
 
+
+
+
+    //This functions loads in the data from a json file into the variables
+    public void loadFromJson(string json)
+    {
+        JsonUtility.FromJsonOverwrite(json, this);
+    }
+
+
+
+    //Setters and getters for the variables
     public void setProfileInfo(string name, string age, int level, string player, bool active)
     {
         this.name = name;
@@ -31,16 +43,6 @@ public class Profile
         this.level = level;
         this.player = player;
         this.active = active;
-    }
-
-    public void setDataChanged(bool val)
-    {
-        dataChanged = val;
-    }
-
-    public bool getDataChanged()
-    {
-        return dataChanged;
     }
 
     public void setActive(bool val)
@@ -86,11 +88,6 @@ public class Profile
     public void setLevel(int level)
     {
         this.level = level;
-    }
-
-    public void loadFromJson(string json)
-    {
-        JsonUtility.FromJsonOverwrite(json, this);
     }
 }
 

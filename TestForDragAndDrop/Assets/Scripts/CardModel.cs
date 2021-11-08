@@ -1,18 +1,30 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+//This class contains the card objects data
 public class CardModel : MonoBehaviour
 {
     public GameController gc;
     public Renderer rend;
     [SerializeField] private int cardId;
+    [SerializeField] private int normalcardId;
     private GameObject pair;
     [SerializeField] private Border border;
     [SerializeField] private StartButton startButton;
     [SerializeField] private Text winOrLost;
 
+
+    public void setNormalCardId(int number)
+    {
+        normalcardId = number;
+    }
+
+    public int getNormalCardId()
+    {
+        return normalcardId;
+    }
 
     public void setBorder(Border val)
     {
@@ -34,20 +46,20 @@ public class CardModel : MonoBehaviour
         return pair;
     }
 
-    void Start()
+    public int getCardId()
     {
-        rend = GetComponent<Renderer>();
-        rend.enabled = true;
-    }
+        return cardId;
+    }   
 
     public void setCardId(int id)
     {
         cardId = id;
     }
 
-    public int getCardId()
+    void Start()
     {
-        return cardId;
+        rend = GetComponent<Renderer>();
+        rend.enabled = true;
     }
 
     public void OnMouseDown()
@@ -83,11 +95,13 @@ public class CardModel : MonoBehaviour
         {
             winOrLost.text = "Gratulálok, ügyes vagy nyertél!";
             winOrLost.gameObject.SetActive(true);
+            gc.guessedRight(true);
         }
         else
         {
             winOrLost.text = "Sajnos ez most nem sikerült, próbáld újra";
             winOrLost.gameObject.SetActive(true);
+            gc.guessedRight(false);
         }
     }
 }

@@ -10,7 +10,6 @@ public class LoadAsset : MonoBehaviour
     private string path;
     [System.NonSerialized]
     public Texture2D texture;
-    private string switchCase = "Francia";
     private GameObject cardSetCollectionManager;
     private GameObject cardCollectionManager;
     private CardSetManager cardSetManager;
@@ -35,6 +34,14 @@ public class LoadAsset : MonoBehaviour
         cardSetManager = cardSetCollectionManager.GetComponent<CardSetManager>();
     }
 
+
+    public void unloadAsset()
+    {
+        myLoadedAssetBundle1.Unload(false);
+        myLoadedAssetBundle2.Unload(false);
+    }
+
+
     public void loadAsset(string assetName, bool gameMode)
     {
         string path = @"C:\Users\SteveP1\Desktop\AssetBundles\" + assetName;
@@ -51,7 +58,7 @@ public class LoadAsset : MonoBehaviour
 
     public void loadNewArrival()
     {
-        cardManager.drawDifferentCard("Francia");   //gc.assetName1 volt
+        cardManager.drawDifferentCard(gc.assetName1);   //gc.assetName1 volt
         Texture2D newTexture = myLoadedAssetBundle1.LoadAsset(cardManager.cardList1[cardManager.cardList1.Count - 1]) as Texture2D;
         gc.textures1.Add(newTexture);
         gc.setIdOfNewArrival(cardManager.cardList1Ids[cardManager.cardList1Ids.Count - 1]);

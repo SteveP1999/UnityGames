@@ -162,6 +162,7 @@ MonoBehaviour:
   gc: {fileID: 1140588759}
   rend: {fileID: 0}
   cardId: 0
+  normalcardId: 0
   border: {fileID: 0}
   startButton: {fileID: 1731409988}
   winOrLost: {fileID: 915807580}
@@ -364,7 +365,7 @@ Transform:
   m_Children:
   - {fileID: 1450437492}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -7, y: 0, z: 0}
 --- !u!1 &62051377
 GameObject:
@@ -718,17 +719,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 0ccc092da86311d4d845b57e7c95fa08,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0ccc092da86311d4d845b57e7c95fa08,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0ccc092da86311d4d845b57e7c95fa08,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0ccc092da86311d4d845b57e7c95fa08,
         type: 3}
@@ -754,7 +755,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 7f56b6d9b625d5141bed5b56134b359e, type: 2}
+      objectReference: {fileID: 2100000, guid: dbd2cc7fc36475a4ba04b0148e9b88ad, type: 2}
     - target: {fileID: -7511558181221131132, guid: 0ccc092da86311d4d845b57e7c95fa08,
         type: 3}
       propertyPath: m_Materials.Array.data[1]
@@ -764,7 +765,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[2]
       value: 
-      objectReference: {fileID: 2100000, guid: 7f56b6d9b625d5141bed5b56134b359e, type: 2}
+      objectReference: {fileID: 1075064913565049188, guid: 5e01a867aeebf09418acc85e1cfb6fe3,
+        type: 3}
     - target: {fileID: 919132149155446097, guid: 0ccc092da86311d4d845b57e7c95fa08,
         type: 3}
       propertyPath: m_Name
@@ -797,7 +799,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e598b34ecab8a47438c5b551a1be4697,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e598b34ecab8a47438c5b551a1be4697,
         type: 3}
@@ -897,8 +899,8 @@ MonoBehaviour:
   isOccupied: 0
   isAvailable: 0
   isStarter: 0
-  id: 0
   card: {fileID: 0}
+  id: 0
 --- !u!1 &360704360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1659,7 +1661,7 @@ Transform:
   m_LocalScale: {x: 100, y: 100.00002, z: 100.00002}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: -60, y: 0, z: 0}
 --- !u!64 &640785709
 MeshCollider:
@@ -1954,7 +1956,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &915807578
 GameObject:
@@ -2175,112 +2177,13 @@ MonoBehaviour:
   pairGame: {fileID: 604165589}
   giveNextCards: {fileID: 1825972983}
   evaluateCards: {fileID: 1228071314}
-  gameLevel: 10
+  gameLevel: 7
   canBeSelected: 0
   assetName1: 
   assetName2: 
   textures1: []
   textures2: []
   loadAsset: {fileID: 71233038}
---- !u!1 &1159790397
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1159790400}
-  - component: {fileID: 1159790399}
-  - component: {fileID: 1159790398}
-  m_Layer: 10
-  m_Name: border
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1159790398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159790397}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcecb4a7316db90419465d9f1dd81e6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isOccupied: 0
-  isAvailable: 0
-  isStarter: 0
-  id: 0
-  card: {fileID: 0}
---- !u!212 &1159790399
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159790397}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c930d10acb005ba4d80fbd10e7655d14, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1.84, y: 2.75}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!4 &1159790400
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159790397}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -28.16, y: -3.26, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1172559721
 GameObject:
   m_ObjectHideFlags: 0
@@ -2842,7 +2745,7 @@ PrefabInstance:
     - target: {fileID: 5676231700382690581, guid: 2558896a06f7d6243ac1b35f255f278a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5676231700382690581, guid: 2558896a06f7d6243ac1b35f255f278a,
         type: 3}
@@ -2914,7 +2817,7 @@ GameObject:
   - component: {fileID: 1696625173}
   - component: {fileID: 1696625176}
   m_Layer: 0
-  m_Name: pause button
+  m_Name: PauseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3551,7 +3454,7 @@ Transform:
   m_Children:
   - {fileID: 15876262}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2110381000
 Animator:

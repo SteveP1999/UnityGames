@@ -19,7 +19,7 @@ public class ProfileManager : MonoBehaviour
     [SerializeField] private Toggle toggle1Active;
     [SerializeField] private Toggle toggle2Active;
     [SerializeField] private Toggle toggle3Active;
-
+        
     [SerializeField] private DbManager dbManager;
 
     public static ProfileManager profileManager;

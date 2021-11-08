@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//This class contains the data of a cardSet
 [System.Serializable]
 public class CardSet
 {

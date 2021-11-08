@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+
+//This class contains the function for the active player buttons in the configuration settings, this allows only one player to be active at a time
 public class ActivePlayerScript : MonoBehaviour
 {
     [SerializeField] private Toggle toggle1;

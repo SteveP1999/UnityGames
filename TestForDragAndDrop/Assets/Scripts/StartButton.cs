@@ -35,17 +35,17 @@ public class StartButton : MonoBehaviour
         }
         else if(SceneManager.GetActiveScene().buildIndex == 1)
         {
-            caseSwitch = 1;
+            caseSwitch = 2;
             switch (caseSwitch)
             {
                 case 1:
                     gc.newArrival();
                     break;
                 case 2:
-                    //gc.pairThem();
+                    gc.pairThem();
                     break;
                 case 3:
-                    //gc.putThemInOrder();
+                    gc.putThemInOrder();
                     break;
                 default:
                     Debug.Log("No such case as given");
