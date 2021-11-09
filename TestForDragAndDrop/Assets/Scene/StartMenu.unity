@@ -2496,7 +2496,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 794426302}
         m_MethodName: reset
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5097,7 +5097,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1551260549}
         m_MethodName: reset
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6125,7 +6125,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1728649290}
         m_MethodName: reset
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
