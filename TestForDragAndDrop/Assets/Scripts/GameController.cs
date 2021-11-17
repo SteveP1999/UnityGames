@@ -351,21 +351,16 @@ public class GameController : MonoBehaviour
 
     IEnumerator revealCards(GameObject[] parent)
     {
-        for (int j = 0; j < listForMain.Count; j++)
+        //if (parent[i].GetComponentInChildren<CardModel>().getCardId() == (int)ids1[j])
+        for (int i = 0; i < ids1.Count; i++)
         {
-            for (int i = 0; i < ids1.Count; i++)
-            {
-                if (parent[i].GetComponentInChildren<CardModel>().getCardId() == (int)ids1[j])
-                {
-                    GameObject go = parent[i];
-                    ParentScript ps = go.GetComponent<ParentScript>();
+            GameObject go = parent[i];
+            ParentScript ps = go.GetComponent<ParentScript>();
 
-                    if (ps != null)
-                    {
-                        ps.revealAndHide();
-                        yield return new WaitForSeconds(2);
-                    }
-                }
+            if (ps != null)
+            {
+                ps.revealAndHide();
+                yield return new WaitForSeconds(2);
             }
         }
 

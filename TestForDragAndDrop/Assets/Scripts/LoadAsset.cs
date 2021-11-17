@@ -53,7 +53,7 @@ public class LoadAsset : MonoBehaviour
         {
             myLoadedAssetBundle2 = AssetBundle.LoadFromFile(path);
         }
-        Debug.Log(myLoadedAssetBundle1 == null && myLoadedAssetBundle2 == null ? "Valami hiba történt, a hibás path: " + path + " volt." : " Sikeres betöltés");
+        Debug.Log(myLoadedAssetBundle1 == null && myLoadedAssetBundle2 == null ? "Valami hiba történt, a hibás path: " + path + " volt." : " Sikeres betöltés, a " + assetName + " betöltődött.");
     }
 
     public void loadNewArrival()
