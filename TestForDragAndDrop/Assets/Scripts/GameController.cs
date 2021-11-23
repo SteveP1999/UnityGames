@@ -68,7 +68,7 @@ public class GameController : MonoBehaviour
     public ArrayList ids2 = new ArrayList();
     public string assetName1;
     public string assetName2;
-
+    public DrawNewAssetButton newAssetDrawer;
 
     //Timing:
     private float waitTimeForRevealReference = 2;
@@ -126,6 +126,8 @@ public class GameController : MonoBehaviour
 
     public void putThemInOrder()
     {
+        newBundle();
+
         //here i load the ids from the cardManager class to this class (ids1)
         for (int i = 0; i < cardManager.cardList1Ids.Count; i++)
         {
@@ -208,6 +210,8 @@ public class GameController : MonoBehaviour
     //Game no. 2:
     public void pairThem()
     {
+        newBundle();
+
         camera.transform.localPosition = new Vector3(0, 0, cameraZPosPair1);
 
         pairGame.gameObject.SetActive(true);
@@ -269,7 +273,7 @@ public class GameController : MonoBehaviour
     public void newArrival()
     {
         //here i load the ids from the cardManager class to this class (ids1)
-        for(int i = 0; i < cardManager.cardList1Ids.Count; i++)
+        for (int i = 0; i < cardManager.cardList1Ids.Count; i++)
         {
             ids1.Add(cardManager.cardList1Ids[i]);
         }
@@ -779,6 +783,8 @@ public class GameController : MonoBehaviour
 
     public void guessedRight(bool right)
     {
+        newBundle();
+
         if (right)
         {
             rightGuesses += 1;
@@ -880,6 +886,9 @@ public class GameController : MonoBehaviour
         cardManager.cardList2.Clear();
         cardManager.cardList2Ids.Clear();
 
+        //DrawNewAsset value értékét visszaállítjuk
+        newAssetDrawer.setDrawNewAssetValue(false);
+
         //Újra kisorsolunk textúrákat
         loadAsset.loadAllCards(true);
     }
@@ -930,6 +939,22 @@ public class GameController : MonoBehaviour
         }
     }
 
+
+    //Reload bundles if we have clicked on the newAssetBundle button
+    public void newBundle()
+    {
+        if(newAssetDrawer.getDrawNewAssetValue())
+        {
+            newAssetDrawer.DrawNewAsset();
+        }
+        else
+        {
+            Debug.Log("Most nem cseréltünk kártya setet");
+        }
+    }
+
+
+
     //Egy lista tartalmát megkeveri
     public void shuffleIndexes(ArrayList list)
     {
@@ -955,10 +980,7 @@ public class GameController : MonoBehaviour
         return -(((cardNumber / 2) - 0.5f) * ((Constants.cardSize * scale) + Constants.padding));
     }
 
-    private void setCameraZPos()
-    {
-
-    }
+    
 
     //Getters and setters for variables:
     public bool getCanBeSelected()

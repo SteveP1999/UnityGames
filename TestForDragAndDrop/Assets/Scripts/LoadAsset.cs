@@ -37,8 +37,14 @@ public class LoadAsset : MonoBehaviour
 
     public void unloadAsset()
     {
-        myLoadedAssetBundle1.Unload(false);
-        myLoadedAssetBundle2.Unload(false);
+        if(myLoadedAssetBundle1 != null)
+        {
+            myLoadedAssetBundle1.Unload(false);
+        }
+        if(myLoadedAssetBundle2 != null)
+        {
+            myLoadedAssetBundle2.Unload(false);
+        }
     }
 
 

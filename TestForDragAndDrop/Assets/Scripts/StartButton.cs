@@ -35,7 +35,7 @@ public class StartButton : MonoBehaviour
         }
         else if(SceneManager.GetActiveScene().buildIndex == 1)
         {
-            caseSwitch = 3;
+            caseSwitch = 1;
             switch (caseSwitch)
             {
                 case 1:
