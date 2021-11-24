@@ -24,19 +24,19 @@ public class SoundButtonScript : MonoBehaviour
                     s.source.Stop();
                 }
             }
-            spriteRenderer.sprite = sprites[0];
+            spriteRenderer.sprite = sprites[2];
             soundOn = 1;
         }
         else if(soundOn == 1)
         {
             FindObjectOfType<AudioManager>().Play("BackGroundMusic");
             soundOn = 2;
-            spriteRenderer.sprite = sprites[1];
+            spriteRenderer.sprite = sprites[0];
         }
         else
         {
             soundOn = 0;
-            spriteRenderer.sprite = sprites[2];
+            spriteRenderer.sprite = sprites[1];
         }
     }
 }

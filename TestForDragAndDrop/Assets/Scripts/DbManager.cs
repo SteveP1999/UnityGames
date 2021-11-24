@@ -38,11 +38,12 @@ public class DbManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(getUsers(getusersURL));
-        StartCoroutine(getCards(getcardsURL));
-        StartCoroutine(getAssets(getassetsURL));
+        //StartCoroutine(getUsers(getusersURL));
+        //StartCoroutine(getCards(getcardsURL));
+        //StartCoroutine(getAssets(getassetsURL));
     }
     
+
     //Load all the users(3) to the profile manager
     IEnumerator getUsers(string URL)
     {

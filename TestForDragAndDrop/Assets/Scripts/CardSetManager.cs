@@ -40,7 +40,7 @@ public class CardSetManager : MonoBehaviour
         }
         for(int i = 0; i < cardSets.Count; i++)
         {
-            if ((cardSets[i].getAge() == age || cardSets[i].getAge() == "KN") && cardSets[i].getCardSetName() != "Kids" && cardSets[i].getCardSetName() != "Fruit" && cardSets[i].getCardSetName() != "Animal" && cardSets[i].getCardSetName() != "Island" && cardSets[i].getCardSetName() != "Hut")
+            if (cardSets[i].getAge() == age || cardSets[i].getAge() == "KN")
             {
                 possibleSets.Add(cardSets[i]);
                 Debug.Log("Egy lehetséges set: " + cardSets[i].getCardSetName());

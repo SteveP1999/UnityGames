@@ -88,7 +88,7 @@ public class LoadAsset : MonoBehaviour
             {
                 for (int i = 0; i < cardManager.cardList2.Count; i++)
                 {
-                    Texture2D loadedAsset = myLoadedAssetBundle1.LoadAsset(cardManager.cardList2[i]) as Texture2D;
+                    Texture2D loadedAsset = myLoadedAssetBundle2.LoadAsset(cardManager.cardList2[i]) as Texture2D;
                     gc.textures2.Add(loadedAsset);
                 }
             }

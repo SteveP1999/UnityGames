@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class DragAndDrop : MonoBehaviour, /*IPointerDownHandler,*/ IBeginDragHandler, IEndDragHandler, IDragHandler
+public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
 
     private Vector3 _dragOffset;
     private Camera _cam;
-    private bool canDrag = false;
+    [SerializeField] private bool canDrag = false;
     private int borderNumber = 0;
     private Vector3 startingPos;
     [SerializeField] private GameController gc;
@@ -75,10 +75,10 @@ public class DragAndDrop : MonoBehaviour, /*IPointerDownHandler,*/ IBeginDragHan
 
             if (calculateDistance() < 1.0f)
             {
-                for (int i = 0; i < test.Length; i++)
-                {
-                    cards[i].GetComponentInChildren<DragAndDrop>().setDrag(false);
-                }
+                //for (int i = 0; i < test.Length; i++)
+                //{
+                //    cards[i].GetComponentInChildren<DragAndDrop>().setDrag(false);
+                //}
 
                 if (borders[borderNumber].GetComponent<Border>().getCard() == null && borders[borderNumber].GetComponent<Border>().getIsAvailable())
                 {
@@ -189,7 +189,7 @@ public class DragAndDrop : MonoBehaviour, /*IPointerDownHandler,*/ IBeginDragHan
                 this.GetComponentInParent<ParentScript>().transform.position = startingPos;
             }
 
-            StartCoroutine(unlockDrag());
+            //StartCoroutine(unlockDrag());
         }
     }
 

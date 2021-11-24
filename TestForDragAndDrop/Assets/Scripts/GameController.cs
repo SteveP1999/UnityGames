@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour
     private int wrongGuesses = 0; //Counter a rossz tippekhez
     private int counterForPairGame = 0;
     private GameObject profileManager;
-    bool gameMode = false;
+    bool gameMode = true;
     private GameObject cardCollectionManager;
     private GameObject cardSetCollectionManager;
     private CardManager cardManager;
@@ -108,8 +108,8 @@ public class GameController : MonoBehaviour
                     k++;
                 }
             }
-            loadAsset.loadAsset(assetName1, loadAsset.getAssetBundle1());
-            loadAsset.loadAsset(assetName2, loadAsset.getAssetBundle2());
+            loadAsset.loadAsset(assetName1, false);
+            loadAsset.loadAsset(assetName2, true);
             loadAsset.loadAllCards(false);  //Pair game
         }
         else
@@ -126,8 +126,6 @@ public class GameController : MonoBehaviour
 
     public void putThemInOrder()
     {
-        newBundle();
-
         //here i load the ids from the cardManager class to this class (ids1)
         for (int i = 0; i < cardManager.cardList1Ids.Count; i++)
         {
@@ -156,8 +154,6 @@ public class GameController : MonoBehaviour
             card.tag = "Parent";
             card.GetComponentInChildren<CardModel>().tag = "CardModel";
             card.GetComponentInChildren<CardModel>().setBorder(starterBord.GetComponent<Border>());
-
-            //card.transform.Rotate(0, 180, 0);
 
             bord.tag = "Border";
             bord.GetComponent<Border>().setIsAvailable(true);
@@ -210,8 +206,6 @@ public class GameController : MonoBehaviour
     //Game no. 2:
     public void pairThem()
     {
-        newBundle();
-
         camera.transform.localPosition = new Vector3(0, 0, cameraZPosPair1);
 
         pairGame.gameObject.SetActive(true);
@@ -241,7 +235,13 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < listForMain.Count / 2; i++)
         {
             ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
-            //((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId((int)loadAsset.getIds()[i]);
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.cardList1Ids[i]);
+        }
+
+        for(int j = listForMain.Count/2; j < listForMain.Count; j++)
+        {
+            ((GameObject)listForMain[j]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures2[listForMain.Count-j-1];
+            ((GameObject)listForMain[j]).GetComponent<CardModel>().setCardId(cardManager.cardList2Ids[listForMain.Count-j-1]);
         }
 
         for (int j = 0; j < gameLevel; j++)
@@ -355,7 +355,6 @@ public class GameController : MonoBehaviour
 
     IEnumerator revealCards(GameObject[] parent)
     {
-        //if (parent[i].GetComponentInChildren<CardModel>().getCardId() == (int)ids1[j])
         for (int i = 0; i < ids1.Count; i++)
         {
             GameObject go = parent[i];
@@ -414,19 +413,47 @@ public class GameController : MonoBehaviour
             Debug.Log("Elvesztetted");
         }
 
-        resetOrderGame();
+        GameObject[] cards = GameObject.FindGameObjectsWithTag("Parent");
+        for(int j = 0; j<cards.Length; j++)
+        {
+            cards[j].GetComponent<ParentScript>().reveal();
+        }
+
+        StartCoroutine(resetOrderGame());
     }
 
-    private void resetOrderGame()
+    IEnumerator resetOrderGame()
     {
+        yield return new WaitForSeconds(4);
         GameObject[] temp = GameObject.FindGameObjectsWithTag("Parent");
         GameObject[] borderTemp = GameObject.FindGameObjectsWithTag("Border");
         for (int i = 0; i < temp.Length; i++)
         {
             DestroyImmediate(temp[i]);
-            DestroyImmediate(borderTemp[i]);
         }
+        for(int j = 0; j < borderTemp.Length;j++)
+        {
+            DestroyImmediate(borderTemp[j]);
+        }
+
+        newBundle();
+
+        listForMain.Clear();
+        orderedIds.Clear();
+        ids1.Clear();
+        textures1.Clear();
+        cardManager.cardList1.Clear();
+        cardManager.cardList1Ids.Clear();
+        cardManager.cardList2.Clear();
+        cardManager.cardList2Ids.Clear();
+
+        newAssetDrawer.setDrawNewAssetValue(false);
+        loadAsset.loadAllCards(true);
+
+        putThemInOrder();
+
     }
+
 
 
     //Functions for game no. 2 (Pair game):
@@ -458,12 +485,12 @@ public class GameController : MonoBehaviour
         }
 
         counterForPairGame += 1;
-        if(counterForPairGame < 3)
+        if(counterForPairGame < 1)
         {
             StartCoroutine(showPair());
         }
 
-        if(counterForPairGame == 3)
+        if(counterForPairGame == 1)
         {
             camera.transform.localPosition = new Vector3(0, 0, cameraZPosPair[gameLevel - 1]);
 
@@ -499,6 +526,7 @@ public class GameController : MonoBehaviour
 
     public void giveNextCard()
     {
+
         GameObject[] borders = GameObject.FindGameObjectsWithTag("Border");
         int counter = 0;
         for (int i = 0; i < borders.Length; i++)
@@ -508,8 +536,10 @@ public class GameController : MonoBehaviour
                 counter++;
             }
         }
+
         if (counter == gameLevel)
         {
+            camera.transform.localPosition = new Vector3(0, 0, -15);
             giveNextCards.gameObject.SetActive(false);
             evaluateCards.gameObject.SetActive(true);
 
@@ -551,7 +581,13 @@ public class GameController : MonoBehaviour
                 pair1Border[j - gameLevel].GetComponent<Border>().setIsAvailable(true);
 
                 x += Constants.padding + Constants.cardSize;
+            }
 
+            GameObject[] pair2Border = GameObject.FindGameObjectsWithTag("pair2Border");
+
+            for (int j = 0; j < pair2Border.Length; j++)
+            {
+                pair2Border[j].GetComponent<Border>().getCard().GetComponentInParent<DragAndDrop>().setDrag(false);
             }
         }
     }
@@ -599,18 +635,43 @@ public class GameController : MonoBehaviour
         }
 
 
-        //resetPairGame();
+        resetPairGame();
+
+        pairThem();
     }
 
     public void resetPairGame()
     {
         GameObject[] temp = GameObject.FindGameObjectsWithTag("Parent");
         GameObject[] borderTemp = GameObject.FindGameObjectsWithTag("Border");
+        GameObject[] borderTemp2 = GameObject.FindGameObjectsWithTag("pair2Border");
         for (int i = 0; i < temp.Length; i++)
         {
             DestroyImmediate(temp[i]);
             DestroyImmediate(borderTemp[i]);
         }
+
+        for(int j = 0; j < borderTemp2.Length; j++)
+        {
+            DestroyImmediate(borderTemp2[j]);
+        }
+
+        listForMain.Clear();
+        orderedIds.Clear();
+        ids1.Clear();
+        ids2.Clear();
+        textures1.Clear();
+        textures2.Clear();
+        cardManager.cardList1.Clear();
+        cardManager.cardList1Ids.Clear();
+        cardManager.cardList2.Clear();
+        cardManager.cardList2Ids.Clear();
+
+
+        newAssetDrawer.setDrawNewAssetValue(false);
+        loadAsset.loadAllCards(false);
+
+        pairThem();
     }
 
     //Functions for game no. 3 (New Arrival):
