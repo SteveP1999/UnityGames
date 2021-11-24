@@ -634,10 +634,7 @@ public class GameController : MonoBehaviour
             Debug.Log("Elvesztetted");
         }
 
-
         resetPairGame();
-
-        pairThem();
     }
 
     public void resetPairGame()
@@ -666,7 +663,10 @@ public class GameController : MonoBehaviour
         cardManager.cardList1Ids.Clear();
         cardManager.cardList2.Clear();
         cardManager.cardList2Ids.Clear();
+        counterForPairGame = 0;
+        evaluateCards.gameObject.SetActive(false);
 
+        newBundle();
 
         newAssetDrawer.setDrawNewAssetValue(false);
         loadAsset.loadAllCards(false);

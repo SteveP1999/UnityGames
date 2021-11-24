@@ -31,6 +31,10 @@ public class DrawNewAssetButton : MonoBehaviour
         {
             newAsset1 = cardSetManager.drawAsset();
             newAsset2 = cardSetManager.drawAsset();
+            while(newAsset2 == newAsset1)
+            {
+                newAsset2 = cardSetManager.drawAsset();
+            }
             gc.assetName1 = newAsset1;
             gc.assetName2 = newAsset2;
             loadAsset.unloadAsset();
