@@ -35,17 +35,16 @@ public class PlaySceneManager : MonoBehaviour
                 break;
         }
 
-        int caseSwitch = 2;
-        switch (caseSwitch)
+        switch (GameData.instance.getGameID())
         {
             case 1:
-                mainText.text = "Ki az új felszálló?";
+                mainText.text = "Ki az új felszálló";
                 break;
             case 2:
-                mainText.text = "Állítsd párba a lapokat!";
+                mainText.text = "Rendezd párba és sorrendbe a lapokat";
                 break;
             case 3:
-                mainText.text = "Rakd sorba a lapokat";
+                mainText.text = "Állítsd párba a lapokat";
                 break;
             default:
                 Debug.Log("No such case as given");

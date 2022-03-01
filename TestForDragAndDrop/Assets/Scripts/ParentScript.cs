@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ParentScript : MonoBehaviour
 {
+    #region Variables
     public float startTime = 0.0f;
     public float duration = 0.01f;
 
@@ -16,7 +17,8 @@ public class ParentScript : MonoBehaviour
     public bool canStart = false;
     public float t = 0;
     private Animator anim;
-    
+    #endregion
+
     void Update()
     {
         if(canStart == true && t <= 1.0f)

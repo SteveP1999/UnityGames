@@ -4,12 +4,13 @@ using UnityEngine.UI;
 
 public class StartButton : MonoBehaviour
 {
-    [SerializeField] private GameController gc;
+    #region Variables
     [SerializeField] private Toggle Toggle1;
     [SerializeField] private Toggle Toggle2;
     [SerializeField] private Toggle Toggle3;
     [SerializeField] private ProfileManager profileManager;
     private bool gameOn = false;
+    #endregion
 
     public void OnMouseDown()
     {
@@ -38,13 +39,13 @@ public class StartButton : MonoBehaviour
             switch (GameData.instance.getGameID())
             {
                 case 1:
-                    gc.newArrival();
+                    GameController.instance.newArrival();
                     break;
                 case 2:
-                    gc.pairThem();
+                    GameController.instance.pairThem();
                     break;
                 case 3:
-                    gc.putThemInOrder();
+                    GameController.instance.putThemInOrder();
                     break;
                 default:
                     Debug.Log("No such case as given");

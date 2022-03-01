@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ProfileManager : MonoBehaviour
 {
+    #region Variables
     [SerializeField] private InputField inputField1;
     [SerializeField] private InputField inputField2;
     [SerializeField] private InputField inputField3;
@@ -25,6 +26,7 @@ public class ProfileManager : MonoBehaviour
     public static ProfileManager profileManager;
     public Profile[] profiles = new Profile[3];
     private int activePlayerIndex = -1;
+    #endregion
 
     void Awake()
     {
@@ -150,42 +152,4 @@ public class ProfileManager : MonoBehaviour
             profiles[2].setActive(false);
         }
     }
-
-
-    //public void activityChanged(int id)
-    //{
-    //    if (profiles[id].getActive() == false)
-    //    {
-    //        for (int i = 0; i < 3; i++)
-    //        {
-    //            profiles[i].setActive(true);
-    //        }
-
-    //        profiles[id].setActive(true);
-    //    }
-    //    else
-    //    {
-    //        profiles[id].setActive(false);
-    //    }
-    //    StartCoroutine(dbManager.saveUser(profiles[id].getName(), profiles[id].getAge(), profiles[id].getLevel(), profiles[id].getPlayer(), profiles[id].getActive()));
-    //}
-
-    //public void ageChanged(int id)
-    //{
-    //    if(profiles[id].getAge() == "young")
-    //    {
-    //        profiles[id].setAge("old");
-    //    }
-    //    else
-    //    {
-    //        profiles[id].setAge("young");
-    //    }
-    //    StartCoroutine(dbManager.saveUser(profiles[id].getName(), profiles[id].getAge(), profiles[id].getLevel(), profiles[id].getPlayer(), profiles[id].getActive()));
-    //}
-
-    //public void usernameValue(int id)
-    //{
-    //    profiles[id].setName(inputFields[id].text);
-    //    StartCoroutine(dbManager.saveUser(profiles[id].getName(), profiles[id].getAge(), profiles[id].getLevel(), profiles[id].getPlayer(), profiles[id].getActive()));
-    //}
 }

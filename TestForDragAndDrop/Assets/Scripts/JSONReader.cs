@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class JSONReader : MonoBehaviour
 {
+    #region Variables
     public testFORJSON jsonContainer = new testFORJSON();
     public CardManager cardManager;
     public CardSetManager cardSetManager;
     [SerializeField] private string cardsPath1 = @"C:\Users\SteveP1\Desktop\egyetem\unity\KártyákJSON\CardsJSON.json";
     [SerializeField] private string cardsPath2 = @"C:\Users\SteveP1\Desktop\egyetem\unity\KártyákJSON\CardSetJSON.json";
-
-
+    #endregion
 
     public void Start()
     {

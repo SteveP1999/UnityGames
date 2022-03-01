@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Sound
 {
+    #region Variables
     public AudioClip clip;
     
     public string name;
@@ -19,4 +20,5 @@ public class Sound
     public AudioSource source;
 
     public bool loop;
+    #endregion
 }

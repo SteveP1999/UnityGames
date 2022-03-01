@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LoadAsset : MonoBehaviour
 {
+    #region Variables
     private AssetBundle myLoadedAssetBundle1;
     private AssetBundle myLoadedAssetBundle2;
     private string path;
@@ -13,7 +14,7 @@ public class LoadAsset : MonoBehaviour
     private GameObject cardCollectionManager;
     private CardSetManager cardSetManager;
     private CardManager cardManager;
-
+    #endregion
 
     public AssetBundle getAssetBundle1()
     {
@@ -49,7 +50,7 @@ public class LoadAsset : MonoBehaviour
 
     public void loadAsset(string assetName)
     {
-        string path = @"C:\Users\SteveP1\Desktop\AssetBundles\" + assetName;
+        path = @"C:\Users\SteveP1\Desktop\AssetBundles\" + assetName;
         if(GameData.instance.getGameID() != 2)
         {
             myLoadedAssetBundle1 = AssetBundle.LoadFromFile(path);

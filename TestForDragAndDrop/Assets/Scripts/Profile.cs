@@ -7,7 +7,7 @@ using UnityEngine;
 [System.Serializable]
 public class Profile
 {
-
+    #region Variables
     [SerializeField] private string name;
 
     [SerializeField] private string age;
@@ -23,19 +23,9 @@ public class Profile
     private int gameLevelPair;
 
     private int gameLevelNewArrival;
+    #endregion
 
-
-
-
-    //This functions loads in the data from a json file into the variables
-    public void loadFromJson(string json)
-    {
-        JsonUtility.FromJsonOverwrite(json, this);
-    }
-
-
-
-    //Setters and getters for the variables
+    #region Getters / Setters
     public void setProfileInfo(string name, string age, int level, string player, bool active)
     {
         this.name = name;
@@ -88,6 +78,14 @@ public class Profile
     public void setLevel(int level)
     {
         this.level = level;
+    }
+    #endregion
+
+
+    //This functions loads in the data from a json file into the variables
+    public void loadFromJson(string json)
+    {
+        JsonUtility.FromJsonOverwrite(json, this);
     }
 }
 

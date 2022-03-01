@@ -13,22 +13,16 @@ public class MainMenu : MonoBehaviour
     public void setGameIDNewArrival()
     {
         GameData.instance.setGameID(1);
-        Debug.Log("New Arrival is in play: ");
-        Debug.Log(GameData.instance.getGameID());
     }
 
     public void setGameIDPair()
     {
         GameData.instance.setGameID(2);
-        Debug.Log("New Arrival is in play: ");
-        Debug.Log(GameData.instance.getGameID());
     }
 
     public void setGameIDOrder()
     {
         GameData.instance.setGameID(3);
-        Debug.Log("New Arrival is in play: ");
-        Debug.Log(GameData.instance.getGameID());
     }
 
     public void QuiGamet()
