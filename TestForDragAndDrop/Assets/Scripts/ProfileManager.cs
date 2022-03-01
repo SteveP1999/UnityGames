@@ -152,13 +152,6 @@ public class ProfileManager : MonoBehaviour
     }
 
 
-
-
-
-
-
-
-
     //public void activityChanged(int id)
     //{
     //    if (profiles[id].getActive() == false)

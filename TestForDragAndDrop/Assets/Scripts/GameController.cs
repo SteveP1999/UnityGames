@@ -12,8 +12,8 @@ static class Constants
     public const float speedOfZeroing = 0.3f;
     public const float speedOfArrivalZeroing = 0.5f;
     public const float speedOfThreeShuffles = 0.1f;
-    public const float waitTimeInPairGame = 3.5f;  //3,5 volt
-    public const float speedOfPairGame = 2.0f; //2.0f volt
+    public const float waitTimeInPairGame = 3.5f;
+    public const float speedOfPairGame = 2.0f;
     public const float shuffleDelay = 1.0f;
     public const float cardChangeSpeed = 0.2f;
     public const float speedOfChoosenCard = 1.0f;
@@ -56,7 +56,6 @@ public class GameController : MonoBehaviour
     private int rightGuesses = 0; //Counter a jó tippekhez
     private int wrongGuesses = 0; //Counter a rossz tippekhez
     private int counterForPairGame = 0;
-    private GameObject profileManager;
     bool gameMode = true;
     private GameObject cardCollectionManager;
     private GameObject cardSetCollectionManager;

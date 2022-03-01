@@ -27,7 +27,7 @@ public class DrawNewAssetButton : MonoBehaviour
         string newAsset1;
         string newAsset2;
 
-        if (startButton.caseSwitch == 2)
+        if (GameData.instance.getGameID() == 2)
         {
             newAsset1 = cardSetManager.drawAsset();
             newAsset2 = cardSetManager.drawAsset();

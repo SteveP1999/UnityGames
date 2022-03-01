@@ -9,8 +9,9 @@ public class StartButton : MonoBehaviour
     [SerializeField] private Toggle Toggle2;
     [SerializeField] private Toggle Toggle3;
     [SerializeField] private ProfileManager profileManager;
+    private bool gameOn = false;
+    [SerializeField] private Text mainText;
 
-    public int caseSwitch = 1;
 
     public void OnMouseDown()
     {
@@ -33,18 +34,21 @@ public class StartButton : MonoBehaviour
                 profileManager.setActivePlayerIndex(2);
             }
         }
-        else if(SceneManager.GetActiveScene().buildIndex == 1)
+        else if(SceneManager.GetActiveScene().buildIndex == 1 && gameOn == false)
         {
-            caseSwitch = 2;
-            switch (caseSwitch)
+            gameOn = true;
+            switch (GameData.instance.getGameID())
             {
                 case 1:
+                    mainText.text = "Ki az új felszálló";
                     gc.newArrival();
                     break;
                 case 2:
+                    mainText.text = "Állítsd párba a lapokat";
                     gc.pairThem();
                     break;
                 case 3:
+                    mainText.text = "Rendezd párba és sorrendbe a lapokat";
                     gc.putThemInOrder();
                     break;
                 default:

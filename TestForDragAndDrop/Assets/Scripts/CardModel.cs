@@ -65,7 +65,7 @@ public class CardModel : MonoBehaviour
     public void OnMouseDown()
     {
 
-        if (startButton.caseSwitch == 1 && gc.getCanBeSelected())
+        if (GameData.instance.getGameID() == 1 && gc.getCanBeSelected())
         {
             GameObject[] parent = GameObject.FindGameObjectsWithTag("Parent");
 
@@ -89,18 +89,34 @@ public class CardModel : MonoBehaviour
 
     IEnumerator wonOrLostMessage(bool won)
     {
-        yield return new WaitForSeconds(2.0f);
-
-        if(won)
+        yield return new WaitForSeconds(1.0f);
+        ParticleSystem[] particleSystems = FindObjectsOfType<ParticleSystem>();
+        if (won)
         {
+            foreach (ParticleSystem PE in particleSystems)
+            {
+                PE.Play();
+            }
             winOrLost.text = "Gratulálok, ügyes vagy nyertél!";
             winOrLost.gameObject.SetActive(true);
+
+            yield return new WaitForSeconds(3.0f);
+            foreach (ParticleSystem PE in particleSystems)
+            {
+                PE.Stop();
+            }
+            winOrLost.gameObject.SetActive(false);
+            yield return new WaitForSeconds(2.0f);
             gc.guessedRight(true);
         }
         else
         {
             winOrLost.text = "Sajnos ez most nem sikerült, próbáld újra";
             winOrLost.gameObject.SetActive(true);
+
+            yield return new WaitForSeconds(3.0f);
+
+            winOrLost.gameObject.SetActive(false);
             gc.guessedRight(false);
         }
     }
