@@ -44,11 +44,11 @@ public class StartButton : MonoBehaviour
                     gc.newArrival();
                     break;
                 case 2:
-                    mainText.text = "Állítsd párba a lapokat";
+                    mainText.text = "Rendezd párba és sorrendbe a lapokat";
                     gc.pairThem();
                     break;
                 case 3:
-                    mainText.text = "Rendezd párba és sorrendbe a lapokat";
+                    mainText.text = "Állítsd párba a lapokat";
                     gc.putThemInOrder();
                     break;
                 default:

@@ -88,8 +88,15 @@ public class GameController : MonoBehaviour
     private readonly float[] cameraZPosPair = { -7.0f, -7.0f, -7.0f, -8.5f, -8.5f, -8.5f, -9.6f, -11.2f, -13.0f, -13.0f, -10.0f, -12.0f, -12.0f, -12.0f };
     private float cameraZPosPair1 = -5.3f;
 
+
+    #region instance
+    public static GameController instance;
+    #endregion
+
+
     void Awake()
     {
+        instance = this;
         cardSetCollectionManager = GameObject.FindGameObjectWithTag("cardSetCollectionManager");
         cardCollectionManager = GameObject.FindGameObjectWithTag("cardCollectionManager");
         cardManager = cardCollectionManager.GetComponent<CardManager>();
@@ -1034,14 +1041,25 @@ public class GameController : MonoBehaviour
     }
 
 
-    // Ez volt: return -(cardNumber / 2) * (Constants.cardSize * scale) - Constants.padding / 2;
     private double calcx(double cardNumber, float scale)
     {
         return -(((cardNumber / 2) - 0.5f) * ((Constants.cardSize * scale) + Constants.padding));
     }
 
-    
+    public GameObject findParentObjectByID(int id)
+    {
+        GameObject[] parents = GameObject.FindGameObjectsWithTag("Parent");
+        foreach(GameObject GO in parents)
+        {
+            if(GO.GetComponentInChildren<CardModel>().getCardId() == id)
+            {
+                return GO;
+            }
+        }
+        return null;
+    }
 
+    #region Getters / Setters
     //Getters and setters for variables:
     public bool getCanBeSelected()
     {
@@ -1059,4 +1077,6 @@ public class GameController : MonoBehaviour
     {
         return idOfNewArrival;
     }
+
+    #endregion
 }

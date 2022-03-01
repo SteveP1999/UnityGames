@@ -6,7 +6,6 @@ using UnityEngine.UI;
 //This class contains the card objects data
 public class CardModel : MonoBehaviour
 {
-    public GameController gc;
     public Renderer rend;
     [SerializeField] private int cardId;
     [SerializeField] private int normalcardId;
@@ -65,7 +64,7 @@ public class CardModel : MonoBehaviour
     public void OnMouseDown()
     {
 
-        if (GameData.instance.getGameID() == 1 && gc.getCanBeSelected())
+        if (GameData.instance.getGameID() == 1 && GameController.instance.getCanBeSelected())
         {
             GameObject[] parent = GameObject.FindGameObjectsWithTag("Parent");
 
@@ -73,10 +72,10 @@ public class CardModel : MonoBehaviour
             {
                 if (parent[i].GetComponentInChildren<CardModel>().getCardId() == cardId)
                 {
-                    gc.positionForSmoothStep(parent[i], 0, 0, -2f, true, 2f);
+                    GameController.instance.positionForSmoothStep(parent[i], 0, 0, -2f, true, 2f);
                 }
             }
-            if (cardId == gc.getIdOfNewArrival())
+            if (cardId == GameController.instance.getIdOfNewArrival())
             {
                 StartCoroutine(wonOrLostMessage(true));
             }
@@ -107,17 +106,23 @@ public class CardModel : MonoBehaviour
             }
             winOrLost.gameObject.SetActive(false);
             yield return new WaitForSeconds(2.0f);
-            gc.guessedRight(true);
+            GameController.instance.guessedRight(true);
         }
         else
         {
             winOrLost.text = "Sajnos ez most nem sikerült, próbáld újra";
             winOrLost.gameObject.SetActive(true);
 
+            GameObject chosenCard = GameController.instance.findParentObjectByID(cardId);
+            GameController.instance.positionForSmoothStep(chosenCard, 0, 0, -15f, true, 0.5f);
+
+            GameObject newArrival = GameController.instance.findParentObjectByID(GameController.instance.getIdOfNewArrival());
+            GameController.instance.positionForSmoothStep(newArrival, 0, 0, -2f, true, 2f);
+
             yield return new WaitForSeconds(3.0f);
 
             winOrLost.gameObject.SetActive(false);
-            gc.guessedRight(false);
+            GameController.instance.guessedRight(false);
         }
     }
 }

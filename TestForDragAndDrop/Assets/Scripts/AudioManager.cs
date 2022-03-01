@@ -23,7 +23,7 @@ public class AudioManager : MonoBehaviour
         }
     }
     
-    //Plays a sound, name required
+    //Plays a sound by its name
     public void Play(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
@@ -33,7 +33,7 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    //Plays the backgroundmusic when the games starts
+    //Starts the background music when the games starts
     void Start()
     {
         Play("BackGroundMusic");

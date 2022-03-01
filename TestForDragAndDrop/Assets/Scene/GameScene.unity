@@ -159,7 +159,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 877a3a191802d084fa798aeddd08324c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gc: {fileID: 1140588759}
   rend: {fileID: 0}
   cardId: 0
   normalcardId: 0
@@ -474,7 +473,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40cbc9e0825a5164e913ae23884487af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gc: {fileID: 1140588759}
 --- !u!4 &71233039
 Transform:
   m_ObjectHideFlags: 0
@@ -17124,7 +17122,7 @@ GameObject:
   - component: {fileID: 1450437490}
   m_Layer: 0
   m_Name: CardCamera
-  m_TagString: Untagged
+  m_TagString: CardCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18064,7 +18062,6 @@ MonoBehaviour:
   zEnd: 0
   canStart: 0
   t: 0
-  gc: {fileID: 1140588759}
 --- !u!61 &2110381002
 BoxCollider2D:
   m_ObjectHideFlags: 0

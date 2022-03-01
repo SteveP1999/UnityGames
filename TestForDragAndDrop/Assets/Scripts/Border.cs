@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//This class contains all the data for a border in the game (object where u can drag the card)
+//This class contains all the data for a border in the game (object where you can drag the cards)
 public class Border : MonoBehaviour
 {
+
+    #region Variables
     //bool for indicate if the border is occupied
     [SerializeField] private bool isOccupied = false;
 
-    //bool for turn on and off a border
+    //bool to turn on or off a border, if its off the player can't drag items there
     [SerializeField] private bool isAvailable = false;
     
-    //bool for indicate if the border will contain card when the game starts
+    //bool to indicate if the border contains a card when the game starts
     [SerializeField] private bool isStarter = false;
 
     //Reference to the border's card
@@ -20,10 +22,10 @@ public class Border : MonoBehaviour
 
     //The card's id
     [SerializeField] private int id;
+    #endregion
 
-
+    #region Getters / Setters
     //Getters and setters for the variables:
-
     public void setIsStarter(bool val)
     {
         isStarter = val;
@@ -73,4 +75,5 @@ public class Border : MonoBehaviour
     {
         isOccupied = val;
     }
+    #endregion
 }

@@ -69,7 +69,7 @@ public class ProfileManager : MonoBehaviour
 
         for (int i = 0; i < profiles.Length; i++)
         {
-            StartCoroutine(dbManager.saveUser(profiles[i].getName(), profiles[i].getAge(), profiles[i].getLevel(), profiles[i].getPlayer(), profiles[i].getActive()));
+            //StartCoroutine(dbManager.saveUser(profiles[i].getName(), profiles[i].getAge(), profiles[i].getLevel(), profiles[i].getPlayer(), profiles[i].getActive()));
         }
     }
 

@@ -7,15 +7,20 @@ using UnityEngine;
 [System.Serializable]
 public class Card
 {
+    #region Variables
+
+    //The id of the card but not in its own set but all the cards
     [SerializeField] private int uniqueId;
 
+    //Name of the card
     [SerializeField] private string cardName;
 
     //The value of the card in its set
     [SerializeField] private int cardId;
 
+    //Name of the cardset of the card
     [SerializeField] private string cardSet;
-
+    #endregion
 
 
     //Loads in data form a json file
