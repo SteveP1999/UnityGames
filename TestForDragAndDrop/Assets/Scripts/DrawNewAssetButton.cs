@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class DrawNewAssetButton : MonoBehaviour
 {
+    #region Variables
     private CardSetManager cardSetManager;
-    [SerializeField] private GameController gc;
+    private bool hasNewLoaded = false;
     [SerializeField] private StartButton startButton;
     [SerializeField] private LoadAsset loadAsset;
-    private bool hasNewLoaded = false;
+    #endregion
 
     public void Awake()
     {
@@ -17,13 +18,11 @@ public class DrawNewAssetButton : MonoBehaviour
 
     public void drawAssetClicked()
     {
-        Debug.Log("Value changed");
         hasNewLoaded = true;
     }
 
     public void DrawNewAsset()
     {
-        Debug.Log("Beértünk a new asset sorsolásába.");
         string newAsset1;
         string newAsset2;
 
@@ -31,22 +30,25 @@ public class DrawNewAssetButton : MonoBehaviour
         {
             newAsset1 = cardSetManager.drawAsset();
             newAsset2 = cardSetManager.drawAsset();
+
             while(newAsset2 == newAsset1)
             {
                 newAsset2 = cardSetManager.drawAsset();
             }
-            gc.assetName1 = newAsset1;
-            gc.assetName2 = newAsset2;
+
+            GameController.instance.assetName1 = newAsset1;
+            GameController.instance.assetName2 = newAsset2;
+
             loadAsset.unloadAsset();
-            loadAsset.loadAsset(newAsset1, false);
-            loadAsset.loadAsset(newAsset2, true);
+            loadAsset.loadAsset(newAsset1);
+            loadAsset.loadAsset(newAsset2);
         }
         else
         {
             newAsset1 = cardSetManager.drawAsset();
-            gc.assetName1 = newAsset1;
+            GameController.instance.assetName1 = newAsset1;
             loadAsset.unloadAsset();
-            loadAsset.loadAsset(newAsset1, false);
+            loadAsset.loadAsset(newAsset1);
 
         }
     }

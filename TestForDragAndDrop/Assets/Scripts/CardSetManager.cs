@@ -7,9 +7,11 @@ using UnityEngine;
 [System.Serializable]
 public class CardSetManager : MonoBehaviour
 {
+    #region Variables
     [SerializeField] public List<CardSet> cardSets;
     [SerializeField] private ProfileManager profileManager;
     public static CardSetManager cardSetManager;
+    #endregion
 
     void Awake()
     {
@@ -33,23 +35,21 @@ public class CardSetManager : MonoBehaviour
     public string drawAsset()
     {
         List<CardSet> possibleSets = new List<CardSet>();
-        string age = "K";
+        string age = "K";  //The starting age is kicsi
         if (profileManager.profiles[profileManager.getActivePlayerIndex()].getAge() == "old")
         {
-            age = "N";
+            age = "N";  //If not Kicsi then Nagy
         }
         for(int i = 0; i < cardSets.Count; i++)
         {
             if (cardSets[i].getAge() == age || cardSets[i].getAge() == "KN")
             {
                 possibleSets.Add(cardSets[i]);
-                Debug.Log("Egy lehetséges set: " + cardSets[i].getCardSetName());
             }
         }
 
         var rand = new System.Random();
         int number = rand.Next(possibleSets.Count);
-        Debug.Log(possibleSets[number].getCardSetName());
         return possibleSets[number].getCardSetName();
     }
 }

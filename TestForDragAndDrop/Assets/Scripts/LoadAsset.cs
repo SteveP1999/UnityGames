@@ -47,14 +47,14 @@ public class LoadAsset : MonoBehaviour
     }
 
 
-    public void loadAsset(string assetName, bool gameMode)
+    public void loadAsset(string assetName)
     {
         string path = @"C:\Users\SteveP1\Desktop\AssetBundles\" + assetName;
-        if(gameMode == false)   //Többi game
+        if(GameData.instance.getGameID() != 2)
         {
             myLoadedAssetBundle1 = AssetBundle.LoadFromFile(path);
         }
-        else  //Pair game
+        else
         {
             myLoadedAssetBundle2 = AssetBundle.LoadFromFile(path);
         }
@@ -70,7 +70,7 @@ public class LoadAsset : MonoBehaviour
         Debug.Log("Id of new arrival: " + cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getCardId());
     }
 
-    public void loadAllCards(bool gameMode)
+    public void loadAllCards()
     {
         //Put the textures from the first bundle to a list
         cardManager.drawDifferentCards(GameController.instance.getGameLevel(), GameController.instance.assetName1, true);
@@ -81,7 +81,7 @@ public class LoadAsset : MonoBehaviour
         }
 
         //Put the textures from the second bundle to a list if needed
-        if (gameMode == false)    //false == pair game
+        if (GameData.instance.getGameID() == 2)
         {
             cardManager.drawDifferentCards(GameController.instance.getGameLevel(), GameController.instance.assetName2, false);
             {

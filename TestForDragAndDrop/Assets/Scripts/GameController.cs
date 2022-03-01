@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 static class Constants
 {
+    #region Constant variables
     //Timing:
     public const float speedOfFirstPositioning = 0.5f;
     public const float speedOfZeroing = 0.3f;
@@ -38,10 +39,17 @@ static class Constants
     //Game settings:
     public const int maxLevel = 14; //Maximum level
     public const int minLevel = 4; //Minimum level
+    #endregion
 }
 
 public class GameController : MonoBehaviour
 {
+    //Info for myself:
+    // New Arrival : 1
+    // Pair Game : 2
+    // Order Game : 3
+
+    #region Variables
     [SerializeField] private Button orderGame;
     [SerializeField] private Button pairGame;
     [SerializeField] private Button giveNextCards;
@@ -88,7 +96,7 @@ public class GameController : MonoBehaviour
     private readonly float[] cameraZPosOrder = { -7.0f, -7.0f, -7.0f, -8.0f, -7.0f, -7.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -12.0f, -12.0f, -12.0f };
     private readonly float[] cameraZPosPair = { -7.0f, -7.0f, -7.0f, -8.5f, -8.5f, -8.5f, -9.6f, -11.2f, -13.0f, -13.0f, -10.0f, -12.0f, -12.0f, -12.0f };
     private float cameraZPosPair1 = -5.3f;
-
+    #endregion
 
     #region instance
     public static GameController instance;
@@ -103,7 +111,8 @@ public class GameController : MonoBehaviour
         cardManager = cardCollectionManager.GetComponent<CardManager>();
         cardSetManager = cardSetCollectionManager.GetComponent<CardSetManager>();
         camera = GameObject.Find("CardCamera");
-        if(gameMode == true)
+
+        if(GameData.instance.getGameID() == 2)
         {
             assetName1 = cardSetManager.drawAsset();
             int k = 0;
@@ -115,15 +124,15 @@ public class GameController : MonoBehaviour
                     k++;
                 }
             }
-            loadAsset.loadAsset(assetName1, false);
-            loadAsset.loadAsset(assetName2, true);
-            loadAsset.loadAllCards(false);  //Pair game
+            loadAsset.loadAsset(assetName1);
+            loadAsset.loadAsset(assetName2);
+            loadAsset.loadAllCards();
         }
         else
         {
             assetName1 = cardSetManager.drawAsset();
-            loadAsset.loadAsset(assetName1, false);
-            loadAsset.loadAllCards(true); //Other games
+            loadAsset.loadAsset(assetName1);
+            loadAsset.loadAllCards();
         }
 
         switch (GameData.instance.getGameID())
@@ -143,13 +152,9 @@ public class GameController : MonoBehaviour
         }
     }
 
-
-    //----------------------------------------------------------------------------------------------------------------------------------
-    //Game no. 1:
-
+    #region OrderGameCode
     public void putThemInOrder()
     {
-        //here i load the ids from the cardManager class to this class (ids1)
         for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
         {
             ids1.Add(cardManager.containerOfCards1[i].getCardId());
@@ -167,7 +172,6 @@ public class GameController : MonoBehaviour
         GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
         GameObject[] border = GameObject.FindGameObjectsWithTag("instantiateBorder");
 
-        //Felrakom a kártyákat
         for (int i = 0; i < gameLevel; i++)
         {
             var card = Instantiate(parent[0], new Vector3(0, 0, 0), Quaternion.identity);
@@ -211,6 +215,7 @@ public class GameController : MonoBehaviour
         startPositioning(parent, 0.2f, 0.2f, 0.1f);
 
         posCardsForOrder(parent, Constants.yOrder);
+
         posCardsForOrder(starterBorder, Constants.yOrder);
 
         for (int i = 0; i < starterBorder.Length; i++)
@@ -223,10 +228,11 @@ public class GameController : MonoBehaviour
         //Felfordítjuk a kártyákat egyesével
         StartCoroutine(revealCards(parent));
     }
-
+    #endregion
+    
     //----------------------------------------------------------------------------------------------------------------------------------
-
-    //Game no. 2:
+    
+    #region PairGame
     public void pairThem()
     {
         camera.transform.localPosition = new Vector3(0, 0, cameraZPosPair1);
@@ -239,7 +245,6 @@ public class GameController : MonoBehaviour
         float y = 10;
         float z = 0;
 
-        //Felrakom a kártyákat
         for (int i = 0; i < 2 * gameLevel; i++)
         {
             var card = Instantiate(parent[0], new Vector3(x, y, z), Quaternion.identity);
@@ -288,14 +293,13 @@ public class GameController : MonoBehaviour
 
         StartCoroutine(showPair());
     }
-
-    //----------------------------------------------------------------------------------------------------------------------------------
-
-    //Game no. 3:
-
+    #endregion
+    
+    //---------------------------------------------------------------------------------------------------------------------------------
+    
+    #region NewArrivalGame
     public void newArrival()
     {
-        //here i load the ids from the cardManager class to this class (ids1)
         for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
         {
             ids1.Add(cardManager.containerOfCards1[i].getCardId());
@@ -362,11 +366,12 @@ public class GameController : MonoBehaviour
         //Felfordítjuk egyesével a kártyákat és várunk a tippre
         StartCoroutine(tippingPosition(delay + Constants.shuffleDelay + 5.0f));
     }
+    #endregion
 
     //----------------------------------------------------------------------------------------------------------------------------------
-
+    
+    #region OrderGameFunctions
     //Functions for game no 1. (Order game):
-
     private void posCardsForOrder(GameObject[] parent, float y)
     {
         double x = calcx(parent.Length, 1.0f);
@@ -470,14 +475,16 @@ public class GameController : MonoBehaviour
         cardManager.containerOfCards2.Clear();
 
         newAssetDrawer.setDrawNewAssetValue(false);
-        loadAsset.loadAllCards(true);
+        loadAsset.loadAllCards();
 
         putThemInOrder();
 
     }
+    #endregion
 
+    //----------------------------------------------------------------------------------------------------------------------------------
 
-
+    #region PairGameFunctions
     //Functions for game no. 2 (Pair game):
     IEnumerator showPair()
     {
@@ -690,11 +697,15 @@ public class GameController : MonoBehaviour
         newBundle();
 
         newAssetDrawer.setDrawNewAssetValue(false);
-        loadAsset.loadAllCards(false);
+        loadAsset.loadAllCards();
 
         pairThem();
     }
+    #endregion
 
+    //----------------------------------------------------------------------------------------------------------------------------------
+
+    #region NewArrivalGameFunctions
     //Functions for game no. 3 (New Arrival):
 
     //A játék legvégére az előkészítés, ennek lefutása után tudunk tippelni, hogy melyik az új felszálló
@@ -969,12 +980,14 @@ public class GameController : MonoBehaviour
         newAssetDrawer.setDrawNewAssetValue(false);
 
         //Újra kisorsolunk textúrákat
-        loadAsset.loadAllCards(true);
+        loadAsset.loadAllCards();
     }
+    #endregion
 
+    //----------------------------------------------------------------------------------------------------------------------------------
 
+    #region BasicFunctions
     //Basic funtions that all games use:
-
     private void loadInObjects()
     {
         GameObject[] temp1 = GameObject.FindGameObjectsWithTag("CardModel");
@@ -1070,6 +1083,9 @@ public class GameController : MonoBehaviour
         }
         return null;
     }
+    #endregion
+
+    //----------------------------------------------------------------------------------------------------------------------------------
 
     #region Getters / Setters
     //Getters and setters for variables:

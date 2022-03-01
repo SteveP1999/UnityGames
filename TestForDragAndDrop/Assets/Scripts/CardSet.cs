@@ -7,10 +7,13 @@ using UnityEngine;
 [System.Serializable]
 public class CardSet
 {
+    #region Variables
     [SerializeField] private string cardSetName;
     [SerializeField] private bool sortable;
     [SerializeField] private string age;
+    #endregion
 
+    #region Getters / Setters
     public string getCardSetName()
     {
         return cardSetName;
@@ -25,6 +28,7 @@ public class CardSet
     {
         return age;
     }
+    #endregion
 
     public void loadFromJson(string json)
     {

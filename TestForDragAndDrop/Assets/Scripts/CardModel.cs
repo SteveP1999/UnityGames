@@ -73,8 +73,6 @@ public class CardModel : MonoBehaviour
         rend.enabled = true;
     }
 
-
-
     public void OnMouseDown()
     {
 
