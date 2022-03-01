@@ -64,19 +64,19 @@ public class LoadAsset : MonoBehaviour
     public void loadNewArrival()
     {
         cardManager.drawDifferentCard(GameController.instance.assetName1);
-        Texture2D newTexture = myLoadedAssetBundle1.LoadAsset(cardManager.cardList1[cardManager.cardList1.Count - 1]) as Texture2D;
+        Texture2D newTexture = myLoadedAssetBundle1.LoadAsset(cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getCardName()) as Texture2D;
         GameController.instance.textures1.Add(newTexture);
-        GameController.instance.setIdOfNewArrival(cardManager.cardList1Ids[cardManager.cardList1Ids.Count - 1]);
-        Debug.Log("Id of new arrival: " + cardManager.cardList1Ids[cardManager.cardList1Ids.Count - 1]);
+        GameController.instance.setIdOfNewArrival(cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getCardId());
+        Debug.Log("Id of new arrival: " + cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getCardId());
     }
 
     public void loadAllCards(bool gameMode)
     {
         //Put the textures from the first bundle to a list
         cardManager.drawDifferentCards(GameController.instance.getGameLevel(), GameController.instance.assetName1, true);
-        for (int i = 0; i < cardManager.cardList1.Count; i++)
+        for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
         {
-            Texture2D loadedAsset = myLoadedAssetBundle1.LoadAsset(cardManager.cardList1[i]) as Texture2D;
+            Texture2D loadedAsset = myLoadedAssetBundle1.LoadAsset(cardManager.containerOfCards1[i].getCardName()) as Texture2D;
             GameController.instance.textures1.Add(loadedAsset);
         }
 
@@ -85,9 +85,9 @@ public class LoadAsset : MonoBehaviour
         {
             cardManager.drawDifferentCards(GameController.instance.getGameLevel(), GameController.instance.assetName2, false);
             {
-                for (int i = 0; i < cardManager.cardList2.Count; i++)
+                for (int i = 0; i < cardManager.containerOfCards2.Count; i++)
                 {
-                    Texture2D loadedAsset = myLoadedAssetBundle2.LoadAsset(cardManager.cardList2[i]) as Texture2D;
+                    Texture2D loadedAsset = myLoadedAssetBundle2.LoadAsset(cardManager.containerOfCards2[i].getCardName()) as Texture2D;
                     GameController.instance.textures2.Add(loadedAsset);
                 }
             }

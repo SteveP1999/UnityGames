@@ -14,16 +14,6 @@ public class CardManager : MonoBehaviour
 
     public List<Card> containerOfCards2 = new List<Card>();
 
-    public List<int> normalIds = new List<int>();
-
-    public List<string> cardList1 = new List<string>();
-
-    public List<int> cardList1Ids = new List<int>();
-
-    public List<string> cardList2 = new List<string>();
-
-    public List<int> cardList2Ids = new List<int>();
-
     public static CardManager cardManager;
     #endregion
 
@@ -66,12 +56,10 @@ public class CardManager : MonoBehaviour
         {
             var rand = new System.Random();
             int number = rand.Next(possibleCards.Count);
-            if(!cardList1.Contains(possibleCards[number].getCardName()))
+            if(!containerOfCards1.Contains(possibleCards[number]))
             {
                 containerOfCards1.Add(possibleCards[number]);
 
-                cardList1.Add(possibleCards[number].getCardName());
-                cardList1Ids.Add(possibleCards[number].getUniqueId());
                 k++;
             }
         }
@@ -103,18 +91,10 @@ public class CardManager : MonoBehaviour
                 if(whichList == true)
                 {
                     containerOfCards1.Add(possibleCards[number]);
-
-                    cardList1.Add(possibleCards[number].getCardName());
-                    cardList1Ids.Add(possibleCards[number].getUniqueId());
-                    normalIds.Add(possibleCards[number].getCardId());
                 }
                 else
                 {
                     containerOfCards2.Add(possibleCards[number]);
-
-                    cardList2.Add(possibleCards[number].getCardName());
-                    cardList2Ids.Add(possibleCards[number].getUniqueId());
-                    normalIds.Add(possibleCards[number].getCardId());
                 }
                 j++;
             }

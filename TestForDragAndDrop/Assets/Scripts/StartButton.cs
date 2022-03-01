@@ -10,8 +10,6 @@ public class StartButton : MonoBehaviour
     [SerializeField] private Toggle Toggle3;
     [SerializeField] private ProfileManager profileManager;
     private bool gameOn = false;
-    [SerializeField] private Text mainText;
-
 
     public void OnMouseDown()
     {
@@ -40,15 +38,12 @@ public class StartButton : MonoBehaviour
             switch (GameData.instance.getGameID())
             {
                 case 1:
-                    mainText.text = "Ki az új felszálló";
                     gc.newArrival();
                     break;
                 case 2:
-                    mainText.text = "Rendezd párba és sorrendbe a lapokat";
                     gc.pairThem();
                     break;
                 case 3:
-                    mainText.text = "Állítsd párba a lapokat";
                     gc.putThemInOrder();
                     break;
                 default:

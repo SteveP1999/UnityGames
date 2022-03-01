@@ -8,18 +8,15 @@ using UnityEngine;
 public class Card
 {
     #region Variables
+    [SerializeField] private string cardSet;
+
+    [SerializeField] private string cardName;
 
     //The id of the card but not in its own set but all the cards
     [SerializeField] private int uniqueId;
 
-    //Name of the card
-    [SerializeField] private string cardName;
-
     //The value of the card in its set
     [SerializeField] private int cardId;
-
-    //Name of the cardset of the card
-    [SerializeField] private string cardSet;
     #endregion
 
 
@@ -30,7 +27,7 @@ public class Card
     }
 
 
-
+    #region Getters / Setters
     //Getters and setters for the variables
     public string getCardName()
     {
@@ -51,4 +48,5 @@ public class Card
     {
         return cardSet;
     }
+    #endregion
 }

@@ -95,7 +95,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
                     //New border settings:
                     borders[borderNumber].GetComponent<Border>().setCard(this.GetComponentInChildren<CardModel>());
-                    borders[borderNumber].GetComponent<Border>().setId(this.GetComponentInChildren<CardModel>().getNormalCardId());
+                    borders[borderNumber].GetComponent<Border>().setId(this.GetComponentInChildren<CardModel>().getUniqueCardId());
                     borders[borderNumber].GetComponent<Border>().setOccupied(true);
                 }
                 else
@@ -105,7 +105,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
                         Debug.Log("Case 2");
                         //Old border:
                         this.GetComponentInChildren<CardModel>().getBorder().setCard(borders[borderNumber].GetComponent<Border>().getCard());
-                        this.GetComponentInChildren<CardModel>().getBorder().setId(borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getNormalCardId());
+                        this.GetComponentInChildren<CardModel>().getBorder().setId(borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getUniqueCardId());
 
                         //Old card:
                         borders[borderNumber].GetComponent<Border>().getCard().setBorder(this.GetComponentInChildren<CardModel>().getBorder());
@@ -120,7 +120,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
                         //New border:
                         borders[borderNumber].GetComponent<Border>().setCard(this.GetComponentInChildren<CardModel>());
-                        borders[borderNumber].GetComponent<Border>().setId(this.GetComponentInChildren<CardModel>().getNormalCardId());
+                        borders[borderNumber].GetComponent<Border>().setId(this.GetComponentInChildren<CardModel>().getUniqueCardId());
 
                         //New card:
                         this.GetComponentInChildren<CardModel>().setBorder(borders[borderNumber].GetComponent<Border>());
@@ -143,7 +143,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
                             //Settings for the border  where the card went:
                             newBorder.GetComponent<Border>().setCard(borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>());
                             newBorder.GetComponent<Border>().setOccupied(true);
-                            newBorder.GetComponent<Border>().setId(borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getNormalCardId());
+                            newBorder.GetComponent<Border>().setId(borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getUniqueCardId());
 
                             //Old cards settings:
                             borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().setBorder(newBorder);
@@ -179,7 +179,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
                         this.GetComponentInChildren<CardModel>().setBorder(borders[borderNumber].GetComponent<Border>());
 
                         borders[borderNumber].GetComponent<Border>().setOccupied(true);
-                        borders[borderNumber].GetComponent<Border>().setId(this.GetComponentInChildren<CardModel>().getNormalCardId());
+                        borders[borderNumber].GetComponent<Border>().setId(this.GetComponentInChildren<CardModel>().getUniqueCardId());
                         borders[borderNumber].GetComponent<Border>().setCard(this.GetComponentInChildren<CardModel>());
                     }
                 }

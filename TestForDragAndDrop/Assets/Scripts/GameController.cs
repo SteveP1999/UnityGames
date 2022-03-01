@@ -68,6 +68,7 @@ public class GameController : MonoBehaviour
     public string assetName1;
     public string assetName2;
     public DrawNewAssetButton newAssetDrawer;
+    [SerializeField] private Text mainText;
 
     //Timing:
     private float waitTimeForRevealReference = 2;
@@ -124,6 +125,22 @@ public class GameController : MonoBehaviour
             loadAsset.loadAsset(assetName1, false);
             loadAsset.loadAllCards(true); //Other games
         }
+
+        switch (GameData.instance.getGameID())
+        {
+            case 1:
+                mainText.text = "Ki az új felszálló";
+                break;
+            case 2:
+                mainText.text = "Rendezd párba és sorrendbe a lapokat";
+                break;
+            case 3:
+                mainText.text = "Állítsd párba a lapokat";
+                break;
+            default:
+                Debug.Log("No such case as given");
+                break;
+        }
     }
 
 
@@ -133,14 +150,14 @@ public class GameController : MonoBehaviour
     public void putThemInOrder()
     {
         //here i load the ids from the cardManager class to this class (ids1)
-        for (int i = 0; i < cardManager.cardList1Ids.Count; i++)
+        for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
         {
-            ids1.Add(cardManager.cardList1Ids[i]);
+            ids1.Add(cardManager.containerOfCards1[i].getCardId());
         }
 
-        for (int i = 0; i < cardManager.normalIds.Count; i++)
+        for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
         {
-            orderedIds.Add(cardManager.normalIds[i]);
+            orderedIds.Add(cardManager.containerOfCards1[i].getUniqueId());
         }
 
         orderGame.gameObject.SetActive(true);
@@ -177,8 +194,8 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < listForMain.Count; i++)
         {
             ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().setNormalCardId((int)orderedIds[i]);  //normal
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.cardList1Ids[i]);  //unique
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setUniqueCardId((int)orderedIds[i]);  //normal
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards1[i].getUniqueId());  //unique
         }
 
         orderedIds.Sort();
@@ -241,13 +258,13 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < listForMain.Count / 2; i++)
         {
             ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.cardList1Ids[i]);
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards1[i].getCardId());
         }
 
         for(int j = listForMain.Count/2; j < listForMain.Count; j++)
         {
             ((GameObject)listForMain[j]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures2[listForMain.Count-j-1];
-            ((GameObject)listForMain[j]).GetComponent<CardModel>().setCardId(cardManager.cardList2Ids[listForMain.Count-j-1]);
+            ((GameObject)listForMain[j]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards2[listForMain.Count-j-1].getCardId());
         }
 
         for (int j = 0; j < gameLevel; j++)
@@ -279,21 +296,21 @@ public class GameController : MonoBehaviour
     public void newArrival()
     {
         //here i load the ids from the cardManager class to this class (ids1)
-        for (int i = 0; i < cardManager.cardList1Ids.Count; i++)
+        for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
         {
-            ids1.Add(cardManager.cardList1Ids[i]);
+            ids1.Add(cardManager.containerOfCards1[i].getCardId());
         }
 
         camera.transform.localPosition = new Vector3(0, 0, cameraZPosNewArrival[gameLevel - 1]);
 
         float delay = gameLevel * waitBetweenCardsFlipping + waitTimeForReveal + waitBetweenCardsAndNewArrival - 2;
 
-        GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
+        GameObject parentInstantiate = GameObject.FindGameObjectWithTag("instantiateParent");
 
         //Felrakom a kártyákat
         for (int i = 0; i < gameLevel; i++)
         {
-            var card = Instantiate(parent[0], new Vector3(0, 0, 0), Quaternion.identity);
+            var card = Instantiate(parentInstantiate, new Vector3(0, 0, 0), Quaternion.identity);
             card.tag = "Parent";
             card.GetComponentInChildren<CardModel>().tag = "CardModel";
         }
@@ -303,11 +320,12 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < listForMain.Count; i++)
         {
             ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.cardList1Ids[i]);
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards1[i].getCardId());
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setUniqueCardId(cardManager.containerOfCards1[i].getUniqueId());
         }
 
         //Megkeressük az összes kártyát és megfelelően pozícionáljuk őket
-        parent = GameObject.FindGameObjectsWithTag("Parent");
+        GameObject[] parent = GameObject.FindGameObjectsWithTag("Parent");
 
         shuffleIndexes(ids1);
 
@@ -448,10 +466,8 @@ public class GameController : MonoBehaviour
         orderedIds.Clear();
         ids1.Clear();
         textures1.Clear();
-        cardManager.cardList1.Clear();
-        cardManager.cardList1Ids.Clear();
-        cardManager.cardList2.Clear();
-        cardManager.cardList2Ids.Clear();
+        cardManager.containerOfCards1.Clear();
+        cardManager.containerOfCards2.Clear();
 
         newAssetDrawer.setDrawNewAssetValue(false);
         loadAsset.loadAllCards(true);
@@ -665,10 +681,9 @@ public class GameController : MonoBehaviour
         ids2.Clear();
         textures1.Clear();
         textures2.Clear();
-        cardManager.cardList1.Clear();
-        cardManager.cardList1Ids.Clear();
-        cardManager.cardList2.Clear();
-        cardManager.cardList2Ids.Clear();
+        cardManager.containerOfCards1.Clear();
+        cardManager.containerOfCards2.Clear();
+
         counterForPairGame = 0;
         evaluateCards.gameObject.SetActive(false);
 
@@ -937,6 +952,10 @@ public class GameController : MonoBehaviour
         waitTimeForReveal = waitTimeForRevealReference;
         canBeSelected = false;
 
+
+        cardManager.containerOfCards1.Clear();
+        cardManager.containerOfCards2.Clear();
+
         //Kiürítjuk a listánkat
         listForMain.Clear();
 
@@ -945,13 +964,6 @@ public class GameController : MonoBehaviour
 
         //Üríti a textúrák listáját
         textures1.Clear();
-
-
-        //Ürítjuk az id-k és név listákat
-        cardManager.cardList1.Clear();
-        cardManager.cardList1Ids.Clear();
-        cardManager.cardList2.Clear();
-        cardManager.cardList2Ids.Clear();
 
         //DrawNewAsset value értékét visszaállítjuk
         newAssetDrawer.setDrawNewAssetValue(false);

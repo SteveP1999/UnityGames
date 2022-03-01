@@ -11835,6 +11835,7 @@ MonoBehaviour:
   assetName1: 
   assetName2: 
   newAssetDrawer: {fileID: 1894773878}
+  mainText: {fileID: 2043649868}
   textures1: []
   textures2: []
   loadAsset: {fileID: 71233038}
@@ -17496,7 +17497,6 @@ MonoBehaviour:
   Toggle2: {fileID: 0}
   Toggle3: {fileID: 0}
   profileManager: {fileID: 0}
-  mainText: {fileID: 2043649868}
 --- !u!61 &1731409989
 BoxCollider2D:
   m_ObjectHideFlags: 0

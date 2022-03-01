@@ -6,23 +6,34 @@ using UnityEngine.UI;
 //This class contains the card objects data
 public class CardModel : MonoBehaviour
 {
+    #region Variables
     public Renderer rend;
+
+    //The id of the card in its set
     [SerializeField] private int cardId;
-    [SerializeField] private int normalcardId;
+
+    //Unique id of the card
+    [SerializeField] private int uniqueCardId;
+
     private GameObject pair;
+
     [SerializeField] private Border border;
+
     [SerializeField] private StartButton startButton;
+
     [SerializeField] private Text winOrLost;
+    #endregion
 
+    #region Getters / Setters
 
-    public void setNormalCardId(int number)
+    public void setUniqueCardId(int number)
     {
-        normalcardId = number;
+        uniqueCardId = number;
     }
 
-    public int getNormalCardId()
+    public int getUniqueCardId()
     {
-        return normalcardId;
+        return uniqueCardId;
     }
 
     public void setBorder(Border val)
@@ -48,18 +59,21 @@ public class CardModel : MonoBehaviour
     public int getCardId()
     {
         return cardId;
-    }   
+    }
 
     public void setCardId(int id)
     {
         cardId = id;
     }
+    #endregion
 
     void Start()
     {
         rend = GetComponent<Renderer>();
         rend.enabled = true;
     }
+
+
 
     public void OnMouseDown()
     {
@@ -88,7 +102,7 @@ public class CardModel : MonoBehaviour
 
     IEnumerator wonOrLostMessage(bool won)
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(1.5f);
         ParticleSystem[] particleSystems = FindObjectsOfType<ParticleSystem>();
         if (won)
         {
@@ -115,6 +129,8 @@ public class CardModel : MonoBehaviour
 
             GameObject chosenCard = GameController.instance.findParentObjectByID(cardId);
             GameController.instance.positionForSmoothStep(chosenCard, 0, 0, -15f, true, 0.5f);
+
+            yield return new WaitForSeconds(0.5f);
 
             GameObject newArrival = GameController.instance.findParentObjectByID(GameController.instance.getIdOfNewArrival());
             GameController.instance.positionForSmoothStep(newArrival, 0, 0, -2f, true, 2f);
