@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class LoadAsset : MonoBehaviour
 {
@@ -47,11 +47,34 @@ public class LoadAsset : MonoBehaviour
         }
     }
 
+    IEnumerator loadBundleFromWeb(string path, bool pairGame)
+    {
+        UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(path);
+        yield return www.SendWebRequest();
 
-    public void loadAsset(string assetName)
+        AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(www);
+        if (bundle == null)
+        {
+            Debug.Log("Error while loading the assetbundle, the following path is not right: " + path);
+        }
+        else
+        {
+            Debug.Log("Flawless work");
+            if (pairGame == false)
+            {
+                myLoadedAssetBundle1 = AssetBundle.LoadFromFile(path);
+            }
+            else
+            {
+                myLoadedAssetBundle2 = AssetBundle.LoadFromFile(path);
+            }
+        }
+    }
+
+    public void loadAsset(string assetName, bool pairGame)
     {
         path = @"C:\Users\SteveP1\Desktop\AssetBundles\" + assetName;
-        if(GameData.instance.getGameID() != 2)
+        if(pairGame == false)
         {
             myLoadedAssetBundle1 = AssetBundle.LoadFromFile(path);
         }

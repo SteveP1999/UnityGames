@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameData : MonoBehaviour
 {
-    private int gameID;
+    [SerializeField] private int gameID;
 
     #region instance
     public static GameData instance;

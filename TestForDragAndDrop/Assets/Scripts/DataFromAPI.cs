@@ -5,6 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class DataFromAPI
 {
+    public int gameID;
+    public int userID;
+    public string token;
     public Assets[] assets;
     public int chosenGameMode;
 }

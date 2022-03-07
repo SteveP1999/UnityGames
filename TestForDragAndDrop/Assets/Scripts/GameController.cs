@@ -124,14 +124,14 @@ public class GameController : MonoBehaviour
                     k++;
                 }
             }
-            loadAsset.loadAsset(assetName1);
-            loadAsset.loadAsset(assetName2);
+            loadAsset.loadAsset(assetName1, false);
+            loadAsset.loadAsset(assetName2, true);
             loadAsset.loadAllCards();
         }
         else
         {
             assetName1 = cardSetManager.drawAsset();
-            loadAsset.loadAsset(assetName1);
+            loadAsset.loadAsset(assetName1, false);
             loadAsset.loadAllCards();
         }
 

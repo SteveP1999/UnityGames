@@ -24,7 +24,6 @@ public class CardSetManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
     }
 
     public void addCardSet(CardSet cardset)

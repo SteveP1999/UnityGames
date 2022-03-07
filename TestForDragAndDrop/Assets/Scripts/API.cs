@@ -8,7 +8,7 @@ public static class API
 {
     public static DataFromAPI getData()
     {
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://laravel.etalonapps.hu/api/games/config/9");
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://laravel.etalonapps.hu/api/games/config/11");
         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
         StreamReader reader = new StreamReader(response.GetResponseStream());
         string json = reader.ReadToEnd();
