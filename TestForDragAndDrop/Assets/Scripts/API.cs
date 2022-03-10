@@ -6,9 +6,9 @@ using System.IO;
 
 public static class API
 {
-    public static DataFromAPI getData()
+    public static DataFromAPI getData(string path)
     {
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://laravel.etalonapps.hu/api/games/config/11");
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://laravel.etalonapps.hu/api/games/config/13");
         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
         StreamReader reader = new StreamReader(response.GetResponseStream());
         string json = reader.ReadToEnd();

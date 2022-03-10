@@ -8,6 +8,7 @@ public class DataFromAPI
     public int gameID;
     public int userID;
     public string token;
+    public string config;
     public Assets[] assets;
     public int chosenGameMode;
 }
