@@ -19,6 +19,7 @@ TagManager:
   - profileManager
   - cardCollectionManager
   - cardSetCollectionManager
+  - JSON
   layers:
   - Default
   - TransparentFX

@@ -8,10 +8,9 @@ public class JSONReader : MonoBehaviour
     #region Variables
     public testFORJSON jsonContainer = new testFORJSON();
     public CardManager cardManager;
+    public API api;
     public CardSetManager cardSetManager;
     [SerializeField] private DataFromAPI data;
-    [SerializeField] private string cardsPath1 = @"C:\Users\SteveP1\Desktop\egyetem\unity\KártyákJSON\CardsJSON.json";
-    [SerializeField] private string cardsPath2 = @"C:\Users\SteveP1\Desktop\egyetem\unity\KártyákJSON\CardSetJSON.json";
     public static JSONReader jsonReader;
     int userId = 0;
     int gameId = 0;
@@ -41,6 +40,7 @@ public class JSONReader : MonoBehaviour
         int.TryParse(user.Split('&')[0], out userId);
     }
 
+    
     public void Start()
     {
         //string URL = Application.absoluteURL;
@@ -48,14 +48,16 @@ public class JSONReader : MonoBehaviour
 
         path = path + gameId;
 
-        data = API.getData(path);
 
-        jsonContainer = API.getCardsJSON(data.assets[1].path);
+        StartCoroutine(api.getData(path));
+        data = api.data;
+
+        //jsonContainer = API.getCardsJSON(data.assets[1].path);
 
         for (int i = 0; i < jsonContainer.cardSet.Length; i++)
             cardSetManager.addCardSet(jsonContainer.cardSet[i]);
 
-        jsonContainer = API.getCardSetJSON(data.assets[2].path);
+        //jsonContainer = API.getCardSetJSON(data.assets[2].path);
 
         for (int i = 0; i < jsonContainer.cards.Length; i++)
             cardManager.cards.Add(jsonContainer.cards[i]);
@@ -65,6 +67,7 @@ public class JSONReader : MonoBehaviour
         data.token = token;
         data.config = path;
     }
+    
 
     public int getGameMode()
     {

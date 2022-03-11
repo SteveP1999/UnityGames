@@ -763,11 +763,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cards: []
-  normalIds: 
-  cardList1: []
-  cardList1Ids: 
-  cardList2: []
-  cardList2Ids: 
+  containerOfCards1: []
+  containerOfCards2: []
 --- !u!4 &171082480
 Transform:
   m_ObjectHideFlags: 0
@@ -5298,6 +5295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b85cc1b41abcf4d938f5cb872b5cca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameID: 0
 --- !u!1 &1551260544
 GameObject:
   m_ObjectHideFlags: 0
@@ -6851,7 +6849,7 @@ GameObject:
   - component: {fileID: 1807438672}
   m_Layer: 0
   m_Name: JSONLoader
-  m_TagString: Untagged
+  m_TagString: JSON
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6873,6 +6871,13 @@ MonoBehaviour:
     cardSet: []
   cardManager: {fileID: 171082479}
   cardSetManager: {fileID: 279398495}
+  data:
+    gameID: 0
+    userID: 0
+    token: 
+    config: 
+    assets: []
+    chosenGameMode: 0
   cardsPath1: "C:\\Users\\SteveP1\\Desktop\\egyetem\\unity\\K\xE1rty\xE1kJSON\\CardsJSON.json"
   cardsPath2: "C:\\Users\\SteveP1\\Desktop\\egyetem\\unity\\K\xE1rty\xE1kJSON\\CardSetJSON.json"
 --- !u!4 &1807438673
@@ -8056,12 +8061,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6df81376c048dc41bad5c2349a0e07e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gc: {fileID: 0}
   Toggle1: {fileID: 857612828}
   Toggle2: {fileID: 1566988157}
   Toggle3: {fileID: 1873752660}
   profileManager: {fileID: 1415774368}
-  caseSwitch: 1
 --- !u!1 &2082732386
 GameObject:
   m_ObjectHideFlags: 0

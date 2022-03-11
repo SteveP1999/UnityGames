@@ -71,6 +71,7 @@ public class LoadAsset : MonoBehaviour
                 myLoadedAssetBundle2 = bundle;
             }
         }
+        loadAllCards();
     }
 
     public void loadAssetBundle(string assetName, bool pairGame)

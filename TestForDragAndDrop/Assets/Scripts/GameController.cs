@@ -126,13 +126,13 @@ public class GameController : MonoBehaviour
             }
             loadAsset.loadAssetBundle(assetName1, false);
             loadAsset.loadAssetBundle(assetName2, true);
-            loadAsset.loadAllCards();
+            //loadAsset.loadAllCards();
         }
         else
         {
             assetName1 = cardSetManager.drawAsset();
             loadAsset.loadAssetBundle(assetName1, false);
-            loadAsset.loadAllCards();
+            //loadAsset.loadAllCards();
         }
 
         switch (GameData.instance.getGameID())

@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Net;
 using System.IO;
+using System;
 
-public static class API
+public class API : MonoBehaviour
 {
-    public static DataFromAPI getData(string path)
+    public DataFromAPI data;
+
+    public IEnumerator getData(string path)
     {
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://laravel.etalonapps.hu/api/games/config/13");
         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
         StreamReader reader = new StreamReader(response.GetResponseStream());
         string json = reader.ReadToEnd();
-        return JsonUtility.FromJson<DataFromAPI>(json);
+        data = JsonUtility.FromJson<DataFromAPI>(json);
+        yield return JsonUtility.FromJson<DataFromAPI>(json);
     }
 
-    public static testFORJSON getCardSetJSON(string path)
+    public testFORJSON getCardSetJSON(string path)
     {
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(path);
         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -24,7 +28,7 @@ public static class API
         return JsonUtility.FromJson<testFORJSON>(json);
     }
 
-    public static testFORJSON getCardsJSON(string path)
+    public testFORJSON getCardsJSON(string path)
     {
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(path);
         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
