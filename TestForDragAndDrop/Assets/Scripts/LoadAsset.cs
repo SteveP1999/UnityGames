@@ -5,8 +5,8 @@ using UnityEngine.Networking;
 public class LoadAsset : MonoBehaviour
 {
     #region Variables
-    private AssetBundle myLoadedAssetBundle1;
-    private AssetBundle myLoadedAssetBundle2;
+    [SerializeField] private AssetBundle myLoadedAssetBundle1;
+    [SerializeField] private AssetBundle myLoadedAssetBundle2;
     private string path;
     [System.NonSerialized]
     public Texture2D texture;
@@ -14,6 +14,7 @@ public class LoadAsset : MonoBehaviour
     private GameObject cardCollectionManager;
     private CardSetManager cardSetManager;
     private CardManager cardManager;
+    private GameObject json;
     #endregion
 
     public AssetBundle getAssetBundle1()
@@ -29,6 +30,7 @@ public class LoadAsset : MonoBehaviour
     void Awake()
     {
         cardSetCollectionManager = GameObject.FindGameObjectWithTag("cardSetCollectionManager");
+        json = GameObject.FindGameObjectWithTag("JSON");
         cardCollectionManager = GameObject.FindGameObjectWithTag("cardCollectionManager");
         cardManager = cardCollectionManager.GetComponent<CardManager>();
         cardSetManager = cardSetCollectionManager.GetComponent<CardSetManager>();
@@ -59,30 +61,22 @@ public class LoadAsset : MonoBehaviour
         }
         else
         {
-            Debug.Log("Flawless work");
+            Debug.Log("Flawless loading");
             if (pairGame == false)
             {
-                myLoadedAssetBundle1 = AssetBundle.LoadFromFile(path);
+                myLoadedAssetBundle1 = bundle;
             }
             else
             {
-                myLoadedAssetBundle2 = AssetBundle.LoadFromFile(path);
+                myLoadedAssetBundle2 = bundle;
             }
         }
     }
 
-    public void loadAsset(string assetName, bool pairGame)
+    public void loadAssetBundle(string assetName, bool pairGame)
     {
-        path = @"C:\Users\SteveP1\Desktop\AssetBundles\" + assetName;
-        if(pairGame == false)
-        {
-            myLoadedAssetBundle1 = AssetBundle.LoadFromFile(path);
-        }
-        else
-        {
-            myLoadedAssetBundle2 = AssetBundle.LoadFromFile(path);
-        }
-        Debug.Log(myLoadedAssetBundle1 == null && myLoadedAssetBundle2 == null ? "Valami hiba történt, a hibás path: " + path + " volt." : " Sikeres betöltés, a " + assetName + " betöltődött.");
+        string path = json.GetComponent<JSONReader>().getData().assets[0].path + "/" + assetName.ToLower();
+        StartCoroutine(loadBundleFromWeb(path, pairGame));
     }
 
     public void loadNewArrival()
