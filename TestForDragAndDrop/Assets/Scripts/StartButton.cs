@@ -9,7 +9,7 @@ public class StartButton : MonoBehaviour
     [SerializeField] private Toggle Toggle2;
     [SerializeField] private Toggle Toggle3;
     [SerializeField] private ProfileManager profileManager;
-    private bool gameOn = false;
+    public bool gameOn = false;     //Visszaállítani ha kiléptünk a játékből a menübe !!!!!!!!!!!!!!!!!
     #endregion
 
     public void OnMouseDown()

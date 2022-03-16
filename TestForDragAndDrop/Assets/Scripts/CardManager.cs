@@ -90,6 +90,7 @@ public class CardManager : MonoBehaviour
                 numberDrawn.Add(number);
                 if(whichList == true)
                 {
+                    Debug.Log("We are in containerOfCards1 adding");
                     containerOfCards1.Add(possibleCards[number]);
                 }
                 else

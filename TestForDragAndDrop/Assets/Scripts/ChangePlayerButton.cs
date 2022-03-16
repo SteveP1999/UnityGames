@@ -5,8 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class ChangePlayerButton : MonoBehaviour
 {
+    [SerializeField] private StartButton start;
+
     private void OnMouseDown()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        start.gameOn = false;
     }
 }
