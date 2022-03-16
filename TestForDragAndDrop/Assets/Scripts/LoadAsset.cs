@@ -14,7 +14,7 @@ public class LoadAsset : MonoBehaviour
     private GameObject cardCollectionManager;
     private CardSetManager cardSetManager;
     private CardManager cardManager;
-    private GameObject json;
+    private GameObject api;
     #endregion
 
     public AssetBundle getAssetBundle1()
@@ -30,7 +30,7 @@ public class LoadAsset : MonoBehaviour
     void Awake()
     {
         cardSetCollectionManager = GameObject.FindGameObjectWithTag("cardSetCollectionManager");
-        json = GameObject.FindGameObjectWithTag("JSON");
+        api = GameObject.FindGameObjectWithTag("API");
         cardCollectionManager = GameObject.FindGameObjectWithTag("cardCollectionManager");
         cardManager = cardCollectionManager.GetComponent<CardManager>();
         cardSetManager = cardSetCollectionManager.GetComponent<CardSetManager>();
@@ -76,7 +76,7 @@ public class LoadAsset : MonoBehaviour
 
     public void loadAssetBundle(string assetName, bool pairGame)
     {
-        string path = json.GetComponent<JSONReader>().getData().assets[0].path + "/" + assetName.ToLower();
+        string path = api.GetComponent<API>().data.assets[0].path + "/" + assetName.ToLower();
         StartCoroutine(loadBundleFromWeb(path, pairGame));
     }
 

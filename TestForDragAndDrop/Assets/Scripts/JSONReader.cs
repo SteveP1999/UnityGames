@@ -20,24 +20,24 @@ public class JSONReader : MonoBehaviour
 
     void Awake()
     {
-        if (jsonReader == null)
-        {
-            DontDestroyOnLoad(gameObject);
-            jsonReader = this;
-        }
-        else if (jsonReader != this)
-        {
-            Destroy(gameObject);
-        }
+        //if (jsonReader == null)
+        //{
+        //    DontDestroyOnLoad(gameObject);
+        //    jsonReader = this;
+        //}
+        //else if (jsonReader != this)
+        //{
+        //    Destroy(gameObject);
+        //}
 
-        string httpsLink = "https://laravel.etalonapps.hu/games/default/?user_id=973&game_id=1&token=0&config_url=https://laravel.etalonapps.hu/api/games/config/";
-        string p = httpsLink.Split('?')[1];
-        string user = p.Split('=')[1];
-        string game = p.Split('=')[2];
-        token = p.Split('=')[3].Split('&')[0];
-        path = p.Split('=')[4];
-        int.TryParse(game.Split('&')[0], out gameId);
-        int.TryParse(user.Split('&')[0], out userId);
+        //string httpsLink = "https://laravel.etalonapps.hu/games/default/?user_id=973&game_id=1&token=0&config_url=https://laravel.etalonapps.hu/api/games/config/";
+        //string p = httpsLink.Split('?')[1];
+        //string user = p.Split('=')[1];
+        //string game = p.Split('=')[2];
+        //token = p.Split('=')[3].Split('&')[0];
+        //path = p.Split('=')[4];
+        //int.TryParse(game.Split('&')[0], out gameId);
+        //int.TryParse(user.Split('&')[0], out userId);
     }
 
     
@@ -46,26 +46,31 @@ public class JSONReader : MonoBehaviour
         //string URL = Application.absoluteURL;
         //Debug.Log(URL);
 
-        path = path + gameId;
+        //path = path + gameId;
 
+        //api.getData(path);
+        //StartCoroutine(api.getData(path));
+        //data = api.data;
 
-        StartCoroutine(api.getData(path));
-        data = api.data;
-
+        //StartCoroutine(api.getCardsJSON("https://laravel.etalonapps.hu/files/FMxS0QLFbHAXJHT1.json"));
         //jsonContainer = API.getCardsJSON(data.assets[1].path);
+        //jsonContainer = api.testFORJSON;
 
-        for (int i = 0; i < jsonContainer.cardSet.Length; i++)
-            cardSetManager.addCardSet(jsonContainer.cardSet[i]);
+        //for (int i = 0; i < jsonContainer.cardSet.Length; i++)
+        //    cardSetManager.addCardSet(jsonContainer.cardSet[i]);
 
+        //StartCoroutine(api.getCardSetJSON(api.data.assets[2].path));
         //jsonContainer = API.getCardSetJSON(data.assets[2].path);
+        //jsonContainer = api.testFORJSON;
 
-        for (int i = 0; i < jsonContainer.cards.Length; i++)
-            cardManager.cards.Add(jsonContainer.cards[i]);
 
-        data.gameID = gameId;
-        data.userID = userId;
-        data.token = token;
-        data.config = path;
+        //for (int i = 0; i < jsonContainer.cards.Length; i++)
+        //    cardManager.cards.Add(jsonContainer.cards[i]);
+
+        //data.gameID = gameId;
+        //data.userID = userId;
+        //data.token = token;
+        //data.config = path;
     }
     
 
