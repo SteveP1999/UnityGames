@@ -18,13 +18,13 @@ public class PauseButton : MonoBehaviour
         if(isPlaying)
         {
             isPlaying = false;
-            spriteRenderer.sprite = sprites[0];
+            spriteRenderer.sprite = sprites[1];
             Time.timeScale = 0f;
         }
         else
         {
             isPlaying = true;
-            spriteRenderer.sprite = sprites[1];
+            spriteRenderer.sprite = sprites[0];
             Time.timeScale = 1f;
         }
     }

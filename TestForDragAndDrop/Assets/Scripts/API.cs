@@ -39,18 +39,23 @@ public class API : MonoBehaviour
         path = p.Split('=')[4];
         int.TryParse(game.Split('&')[0], out gameId);
         int.TryParse(user.Split('&')[0], out userId);
+        data.gameID = gameId;
+        data.userID = userId;
+        data.token = token;
+        data.config = path;
     }
 
     public void Start()
     {
-        string path = data.config + data.gameID;
         jsonTEST = new testFORJSON();
-        StartCoroutine(getData("asd"));
+        string pathToFiles = data.config + data.gameID;
+        Debug.Log("Az útvonal amin el akarjuk érni a dolgot: " + pathToFiles);
+        StartCoroutine(getData(pathToFiles));
     }
 
     public IEnumerator getData(string _path)
     {
-        using (UnityWebRequest unityWebRequest = UnityWebRequest.Get("https://laravel.etalonapps.hu/api/games/config/13"))
+        using (UnityWebRequest unityWebRequest = UnityWebRequest.Get("https://laravel.etalonapps.hu/api/games/config/13")) //"https://laravel.etalonapps.hu/api/games/config/13"
         {
             yield return unityWebRequest.SendWebRequest();
             if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
@@ -114,15 +119,28 @@ public class API : MonoBehaviour
         }
     }
 
-    public void loadRemainingData()
+    public IEnumerator getUsers()
     {
-
+        using (UnityWebRequest unityWebRequest = UnityWebRequest.Get(path))
+        {
+            yield return unityWebRequest.SendWebRequest();
+            if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
+            {
+                Debug.Log("Error: " + unityWebRequest.error);
+            }
+            else
+            {
+                string json = unityWebRequest.downloadHandler.text;
+                json = json.Remove(0, 1);
+                jsonTEST = JsonUtility.FromJson<testFORJSON>(json);
+            }
+        }
     }
 
-
-
-
-
+    public IEnumerator sendData()
+    {
+        yield return new WaitForEndOfFrame();
+    }
 
     public testFORJSON getCards(string path)
     {
@@ -130,7 +148,6 @@ public class API : MonoBehaviour
         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
         StreamReader reader = new StreamReader(response.GetResponseStream());
         string json = reader.ReadToEnd();
-        Debug.Log("Json in getCards: " + json);
         return JsonUtility.FromJson<testFORJSON>(json);
     }
 }

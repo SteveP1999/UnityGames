@@ -33,9 +33,8 @@ public class StartButton : MonoBehaviour
                 profileManager.setActivePlayerIndex(2);
             }
         }
-        else if(SceneManager.GetActiveScene().buildIndex == 1 && gameOn == false)
+        else if(SceneManager.GetActiveScene().buildIndex == 1 && GameController.instance.firstRun == false && GameController.instance.textures1.Count > 0 )
         {
-            gameOn = true;
             switch (GameData.instance.getGameID())
             {
                 case 1:

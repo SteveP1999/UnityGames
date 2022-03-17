@@ -2066,7 +2066,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.0437, y: -184}
+  m_AnchoredPosition: {x: -1.0437, y: -157}
   m_SizeDelta: {x: 165.13226, y: 82.828186}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &534523688
@@ -3245,6 +3245,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e250ebeb54f30874cb26deef7f4110e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &952002601
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 952002603}
+  - component: {fileID: 952002602}
+  m_Layer: 0
+  m_Name: UserManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &952002602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952002601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 273983680af8dc94e9432453d7245e07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  users:
+  - userName: asdasdasd
+    age: 13
+    levelInNewArrival: 0
+    bestScoreInOrderGame: 2
+    bestSerialScoreInPairGame: 3
+    bestParallelScoreInPairGame: 4
+    active: 0
+  - userName: asfasf
+    age: asfasf
+    levelInNewArrival: 5
+    bestScoreInOrderGame: 5
+    bestSerialScoreInPairGame: 6
+    bestParallelScoreInPairGame: 7
+    active: 0
+  - userName: asfasg
+    age: asgasgas
+    levelInNewArrival: 1
+    bestScoreInOrderGame: 2
+    bestSerialScoreInPairGame: 3
+    bestParallelScoreInPairGame: 4
+    active: 0
+--- !u!4 &952002603
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952002601}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 221.71732, y: 111.93823, z: -178.76024}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &972175966
 GameObject:
   m_ObjectHideFlags: 0
@@ -3780,7 +3845,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 640, y: 480}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -4253,7 +4318,7 @@ RectTransform:
   m_GameObject: {fileID: 1302148408}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_Children:
   - {fileID: 172720951}
   - {fileID: 802792854}
@@ -8060,6 +8125,7 @@ MonoBehaviour:
   Toggle2: {fileID: 1566988157}
   Toggle3: {fileID: 1873752660}
   profileManager: {fileID: 1415774368}
+  gameOn: 0
 --- !u!1 &2082732386
 GameObject:
   m_ObjectHideFlags: 0

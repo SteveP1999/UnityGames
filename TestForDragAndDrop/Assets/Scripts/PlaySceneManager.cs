@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlaySceneManager : MonoBehaviour
 {
@@ -10,12 +11,11 @@ public class PlaySceneManager : MonoBehaviour
     [SerializeField] private Sprite playerImage2;
     [SerializeField] private Sprite playerImage3;
     [SerializeField] private Text mainText;
-    [SerializeField] private Text nameText;
+    [SerializeField] private TextMeshProUGUI nameText;
 
     void Start()
     {
         GameObject go = GameObject.Find("ProfileManager");
-
         switch (go.GetComponent<ProfileManager>().getActivePlayerIndex())
         {
             case 0:
@@ -39,6 +39,7 @@ public class PlaySceneManager : MonoBehaviour
         {
             case 1:
                 mainText.text = "Ki az új felszálló";
+                Debug.Log("megvan");
                 break;
             case 2:
                 mainText.text = "Rendezd párba és sorrendbe a lapokat";

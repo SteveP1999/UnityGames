@@ -76,7 +76,8 @@ public class LoadAsset : MonoBehaviour
 
     public void loadAssetBundle(string assetName, bool pairGame)
     {
-        string path = api.GetComponent<API>().data.assets[0].path + "/" + assetName.ToLower();
+        //string path = api.GetComponent<API>().data.assets[0].path + "/" + assetName.ToLower(); //WebGL version
+        string path = "https://laravel.etalonapps.hu/public/files/dev/" + assetName.ToLower(); //Windows version
         StartCoroutine(loadBundleFromWeb(path, pairGame));
     }
 
@@ -109,6 +110,29 @@ public class LoadAsset : MonoBehaviour
                     Texture2D loadedAsset = myLoadedAssetBundle2.LoadAsset(cardManager.containerOfCards2[i].getCardName()) as Texture2D;
                     GameController.instance.textures2.Add(loadedAsset);
                 }
+            }
+        }
+
+        if(GameController.instance.firstRun == true)
+        {
+            GameController.instance.firstRun = false;
+        }
+        else
+        {
+            switch (GameData.instance.getGameID())
+            {
+                case 1:
+                    GameController.instance.newArrival();
+                    break;
+                case 2:
+                    GameController.instance.pairThem();
+                    break;
+                case 3:
+                    GameController.instance.putThemInOrder();
+                    break;
+                default:
+                    Debug.Log("No such case as given");
+                    break;
             }
         }
     }

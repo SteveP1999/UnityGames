@@ -59,7 +59,7 @@ public class GameController : MonoBehaviour
     private int idOfNewArrival = 0; //Contains the id of the new arrival
     [SerializeField] private int gameLevel = 6; //Game level
     private GameObject[] objs; //Container for the cards
-    private ArrayList listForMain = new ArrayList(); //
+    [SerializeField] private ArrayList listForMain = new ArrayList();
     [SerializeField] private bool canBeSelected = false; //Engedélyező, hogy megtippelhessük az új felszállót
     private int rightGuesses = 0; //Counter a jó tippekhez
     private int wrongGuesses = 0; //Counter a rossz tippekhez
@@ -77,6 +77,7 @@ public class GameController : MonoBehaviour
     public string assetName2;
     public DrawNewAssetButton newAssetDrawer;
     [SerializeField] private Text mainText;
+    public bool firstRun = true;
 
     //Timing:
     private float waitTimeForRevealReference = 2;
@@ -131,22 +132,6 @@ public class GameController : MonoBehaviour
         {
             assetName1 = cardSetManager.drawAsset();
             loadAsset.loadAssetBundle(assetName1, false);
-        }
-
-        switch (GameData.instance.getGameID())
-        {
-            case 1:
-                mainText.text = "Ki az új felszálló";
-                break;
-            case 2:
-                mainText.text = "Rendezd párba és sorrendbe a lapokat";
-                break;
-            case 3:
-                mainText.text = "Állítsd párba a lapokat";
-                break;
-            default:
-                Debug.Log("No such case as given");
-                break;
         }
     }
 
@@ -319,8 +304,10 @@ public class GameController : MonoBehaviour
 
         loadInObjects();
 
+
         for (int i = 0; i < listForMain.Count; i++)
         {
+            Debug.Log("Jelenleg a textures1 mérete: " + textures1.Count);
             ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
             ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards1[i].getCardId());
             ((GameObject)listForMain[i]).GetComponent<CardModel>().setUniqueCardId(cardManager.containerOfCards1[i].getUniqueId());
@@ -946,7 +933,7 @@ public class GameController : MonoBehaviour
         resetGame();
 
         //Elindítja az új játékot
-        newArrival();
+        //newArrival();
     }
 
     public void resetGame()
@@ -974,11 +961,16 @@ public class GameController : MonoBehaviour
         //Üríti a textúrák listáját
         textures1.Clear();
 
-        //DrawNewAsset value értékét visszaállítjuk
-        newAssetDrawer.setDrawNewAssetValue(false);
-
-        //Újra kisorsolunk textúrákat
-        loadAsset.loadAllCards();
+        if(newAssetDrawer.getDrawNewAssetValue() == false)
+        {
+            //Újra kisorsolunk textúrákat
+            loadAsset.loadAllCards();
+        }
+        else
+        {
+            //DrawNewAsset value értékét visszaállítjuk
+            newAssetDrawer.setDrawNewAssetValue(false);
+        }
     }
     #endregion
 
@@ -1043,8 +1035,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-
-
     //Egy lista tartalmát megkeveri
     public void shuffleIndexes(ArrayList list)
     {
@@ -1062,7 +1052,6 @@ public class GameController : MonoBehaviour
             list[n] = value;
         }
     }
-
 
     private double calcx(double cardNumber, float scale)
     {
