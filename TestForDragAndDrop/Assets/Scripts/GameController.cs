@@ -125,13 +125,13 @@ public class GameController : MonoBehaviour
                     k++;
                 }
             }
-            loadAsset.loadAssetBundle(assetName1, false);
-            loadAsset.loadAssetBundle(assetName2, true);
+            loadAsset.loadAssetBundle(assetName1, false, true);
+            loadAsset.loadAssetBundle(assetName2, true, true);
         }
         else
         {
             assetName1 = cardSetManager.drawAsset();
-            loadAsset.loadAssetBundle(assetName1, false);
+            loadAsset.loadAssetBundle(assetName1, false, true);
         }
     }
 
@@ -460,9 +460,9 @@ public class GameController : MonoBehaviour
         cardManager.containerOfCards2.Clear();
 
         newAssetDrawer.setDrawNewAssetValue(false);
-        loadAsset.loadAllCards();
+        loadAsset.loadAllCards(false);
 
-        putThemInOrder();
+        //putThemInOrder();
 
     }
     #endregion
@@ -682,7 +682,7 @@ public class GameController : MonoBehaviour
         newBundle();
 
         newAssetDrawer.setDrawNewAssetValue(false);
-        loadAsset.loadAllCards();
+        loadAsset.loadAllCards(false);
 
         pairThem();
     }
@@ -964,7 +964,7 @@ public class GameController : MonoBehaviour
         if(newAssetDrawer.getDrawNewAssetValue() == false)
         {
             //Újra kisorsolunk textúrákat
-            loadAsset.loadAllCards();
+            loadAsset.loadAllCards(false);
         }
         else
         {

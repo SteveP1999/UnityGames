@@ -64,7 +64,6 @@ public class API : MonoBehaviour
             }
             else
             {
-                Debug.Log("Recieved: " + unityWebRequest.downloadHandler.text);
                 string json = unityWebRequest.downloadHandler.text;
                 data = JsonUtility.FromJson<DataFromAPI>(json);
                 data.gameID = gameId;
@@ -88,7 +87,6 @@ public class API : MonoBehaviour
             }
             else
             {
-                Debug.Log("Recieved in getcards: " + unityWebRequest.downloadHandler.text);
                 string json = unityWebRequest.downloadHandler.text;
                 json = json.Remove(0, 1);
                 jsonTEST = JsonUtility.FromJson<testFORJSON>(json);
@@ -109,7 +107,6 @@ public class API : MonoBehaviour
             }
             else
             {
-                Debug.Log("Recieved in card set: " + unityWebRequest.downloadHandler.text);
                 string json = unityWebRequest.downloadHandler.text;
                 json = json.Remove(0, 1);
                 jsonTEST = JsonUtility.FromJson<testFORJSON>(json);

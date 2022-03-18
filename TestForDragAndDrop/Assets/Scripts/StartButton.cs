@@ -33,7 +33,7 @@ public class StartButton : MonoBehaviour
                 profileManager.setActivePlayerIndex(2);
             }
         }
-        else if(SceneManager.GetActiveScene().buildIndex == 1 && GameController.instance.firstRun == false && GameController.instance.textures1.Count > 0 )
+        else if(SceneManager.GetActiveScene().buildIndex == 1 && GameController.instance.firstRun == true && GameController.instance.textures1.Count > 0 )
         {
             switch (GameData.instance.getGameID())
             {
@@ -50,6 +50,7 @@ public class StartButton : MonoBehaviour
                     Debug.Log("No such case as given");
                     break;
             }
+            GameController.instance.firstRun = false;
         }
     }
 }

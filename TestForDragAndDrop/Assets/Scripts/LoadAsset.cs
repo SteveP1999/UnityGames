@@ -49,7 +49,7 @@ public class LoadAsset : MonoBehaviour
         }
     }
 
-    IEnumerator loadBundleFromWeb(string path, bool pairGame)
+    IEnumerator loadBundleFromWeb(string path, bool pairGame, bool calledFromGameControllerStart)
     {
         UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(path);
         yield return www.SendWebRequest();
@@ -71,14 +71,14 @@ public class LoadAsset : MonoBehaviour
                 myLoadedAssetBundle2 = bundle;
             }
         }
-        loadAllCards();
+        loadAllCards(calledFromGameControllerStart);
     }
 
-    public void loadAssetBundle(string assetName, bool pairGame)
+    public void loadAssetBundle(string assetName, bool pairGame, bool calledFromGameControllerStart)
     {
         //string path = api.GetComponent<API>().data.assets[0].path + "/" + assetName.ToLower(); //WebGL version
         string path = "https://laravel.etalonapps.hu/public/files/dev/" + assetName.ToLower(); //Windows version
-        StartCoroutine(loadBundleFromWeb(path, pairGame));
+        StartCoroutine(loadBundleFromWeb(path, pairGame, calledFromGameControllerStart));
     }
 
     public void loadNewArrival()
@@ -90,7 +90,7 @@ public class LoadAsset : MonoBehaviour
         Debug.Log("Id of new arrival: " + cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getCardId());
     }
 
-    public void loadAllCards()
+    public void loadAllCards(bool calledFromGameControllerStart)
     {
         //Put the textures from the first bundle to a list
         cardManager.drawDifferentCards(GameController.instance.getGameLevel(), GameController.instance.assetName1, true);
@@ -113,26 +113,29 @@ public class LoadAsset : MonoBehaviour
             }
         }
 
-        if(GameController.instance.firstRun == true)
+        if(!calledFromGameControllerStart)
         {
-            GameController.instance.firstRun = false;
-        }
-        else
-        {
-            switch (GameData.instance.getGameID())
+            if (GameController.instance.firstRun == true)
             {
-                case 1:
-                    GameController.instance.newArrival();
-                    break;
-                case 2:
-                    GameController.instance.pairThem();
-                    break;
-                case 3:
-                    GameController.instance.putThemInOrder();
-                    break;
-                default:
-                    Debug.Log("No such case as given");
-                    break;
+                GameController.instance.firstRun = false;
+            }
+            else
+            {
+                switch (GameData.instance.getGameID())
+                {
+                    case 1:
+                        GameController.instance.newArrival();
+                        break;
+                    case 2:
+                        GameController.instance.pairThem();
+                        break;
+                    case 3:
+                        GameController.instance.putThemInOrder();
+                        break;
+                    default:
+                        Debug.Log("No such case as given");
+                        break;
+                }
             }
         }
     }
