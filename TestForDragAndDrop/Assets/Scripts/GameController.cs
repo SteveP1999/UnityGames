@@ -228,7 +228,7 @@ public class GameController : MonoBehaviour
         float y = 10;
         float z = 0;
 
-        for (int i = 0; i < 2 * gameLevel; i++)
+        for (int i = 0; i < 20; i++)
         {
             var card = Instantiate(parent[0], new Vector3(x, y, z), Quaternion.identity);
             card.tag = "Parent";
@@ -255,7 +255,7 @@ public class GameController : MonoBehaviour
             ((GameObject)listForMain[j]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards2[listForMain.Count-j-1].getCardId());
         }
 
-        for (int j = 0; j < gameLevel; j++)
+        for (int j = 0; j < 10; j++)
         {
             GameObject[] border = GameObject.FindGameObjectsWithTag("instantiateBorder");
 
@@ -307,7 +307,6 @@ public class GameController : MonoBehaviour
 
         for (int i = 0; i < listForMain.Count; i++)
         {
-            Debug.Log("Jelenleg a textures1 mérete: " + textures1.Count);
             ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
             ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards1[i].getCardId());
             ((GameObject)listForMain[i]).GetComponent<CardModel>().setUniqueCardId(cardManager.containerOfCards1[i].getUniqueId());

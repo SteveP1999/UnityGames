@@ -86,11 +86,9 @@ public class CardManager : MonoBehaviour
             int number = rand.Next(possibleCards.Count);
             if(!numberDrawn.Contains(number))
             {
-                //Debug.Log(possibleCards[number].getCardName());
                 numberDrawn.Add(number);
                 if(whichList == true)
                 {
-                    Debug.Log("We are in containerOfCards1 adding");
                     containerOfCards1.Add(possibleCards[number]);
                 }
                 else

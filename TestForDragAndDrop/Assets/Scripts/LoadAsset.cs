@@ -69,9 +69,14 @@ public class LoadAsset : MonoBehaviour
             else
             {
                 myLoadedAssetBundle2 = bundle;
+                loadAllCards(calledFromGameControllerStart);
             }
         }
-        loadAllCards(calledFromGameControllerStart);
+        if(!pairGame)
+        {
+            loadAllCards(calledFromGameControllerStart);
+
+        }
     }
 
     public void loadAssetBundle(string assetName, bool pairGame, bool calledFromGameControllerStart)
@@ -92,18 +97,18 @@ public class LoadAsset : MonoBehaviour
 
     public void loadAllCards(bool calledFromGameControllerStart)
     {
-        //Put the textures from the first bundle to a list
-        cardManager.drawDifferentCards(GameController.instance.getGameLevel(), GameController.instance.assetName1, true);
-        for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
+        if(GameData.instance.getGameID() == 2)
         {
-            Texture2D loadedAsset = myLoadedAssetBundle1.LoadAsset(cardManager.containerOfCards1[i].getCardName()) as Texture2D;
-            GameController.instance.textures1.Add(loadedAsset);
-        }
+            //Put the textures from the first bundle to a list
+            cardManager.drawDifferentCards(10, GameController.instance.assetName1, true);
+            for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
+            {
+                Texture2D loadedAsset = myLoadedAssetBundle1.LoadAsset(cardManager.containerOfCards1[i].getCardName()) as Texture2D;
+                GameController.instance.textures1.Add(loadedAsset);
+            }
 
-        //Put the textures from the second bundle to a list if needed
-        if (GameData.instance.getGameID() == 2)
-        {
-            cardManager.drawDifferentCards(GameController.instance.getGameLevel(), GameController.instance.assetName2, false);
+            //Put the textures from the second bundle to a list if needed
+            cardManager.drawDifferentCards(10, GameController.instance.assetName2, false);
             {
                 for (int i = 0; i < cardManager.containerOfCards2.Count; i++)
                 {
@@ -112,8 +117,18 @@ public class LoadAsset : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            //Put the textures from the first bundle to a list
+            cardManager.drawDifferentCards(GameController.instance.getGameLevel(), GameController.instance.assetName1, true);
+            for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
+            {
+                Texture2D loadedAsset = myLoadedAssetBundle1.LoadAsset(cardManager.containerOfCards1[i].getCardName()) as Texture2D;
+                GameController.instance.textures1.Add(loadedAsset);
+            }
+        }
 
-        if(!calledFromGameControllerStart)
+        if (!calledFromGameControllerStart)
         {
             if (GameController.instance.firstRun == true)
             {
@@ -138,5 +153,28 @@ public class LoadAsset : MonoBehaviour
                 }
             }
         }
+
+
+
+        ////Put the textures from the first bundle to a list
+        //cardManager.drawDifferentCards(GameController.instance.getGameLevel(), GameController.instance.assetName1, true);
+        //for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
+        //{
+        //    Texture2D loadedAsset = myLoadedAssetBundle1.LoadAsset(cardManager.containerOfCards1[i].getCardName()) as Texture2D;
+        //    GameController.instance.textures1.Add(loadedAsset);
+        //}
+
+        ////Put the textures from the second bundle to a list if needed
+        //if (GameData.instance.getGameID() == 2)
+        //{
+        //    cardManager.drawDifferentCards(GameController.instance.getGameLevel(), GameController.instance.assetName2, false);
+        //    {
+        //        for (int i = 0; i < cardManager.containerOfCards2.Count; i++)
+        //        {
+        //            Texture2D loadedAsset = myLoadedAssetBundle2.LoadAsset(cardManager.containerOfCards2[i].getCardName()) as Texture2D;
+        //            GameController.instance.textures2.Add(loadedAsset);
+        //        }
+        //    }
+        //}
     }
 }
