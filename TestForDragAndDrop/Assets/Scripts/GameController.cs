@@ -412,28 +412,29 @@ public class GameController : MonoBehaviour
                     counter++;
                 }
             }
+
+            if (counter == gameLevel)
+            {
+                Debug.Log("Nyertél");
+            }
+            else
+            {
+                Debug.Log("Elvesztetted");
+            }
+
+            GameObject[] cards = GameObject.FindGameObjectsWithTag("Parent");
+            for (int j = 0; j < cards.Length; j++)
+            {
+                cards[j].GetComponent<ParentScript>().reveal();
+            }
+
+            StartCoroutine(resetOrderGame());
+
         }
         else
         {
             Debug.Log("There are missing cards");
         }
-
-        if (counter == gameLevel)
-        {
-            Debug.Log("Nyertél");
-        }
-        else
-        {
-            Debug.Log("Elvesztetted");
-        }
-
-        GameObject[] cards = GameObject.FindGameObjectsWithTag("Parent");
-        for(int j = 0; j<cards.Length; j++)
-        {
-            cards[j].GetComponent<ParentScript>().reveal();
-        }
-
-        StartCoroutine(resetOrderGame());
     }
 
     IEnumerator resetOrderGame()
@@ -459,8 +460,12 @@ public class GameController : MonoBehaviour
         cardManager.containerOfCards1.Clear();
         cardManager.containerOfCards2.Clear();
 
+        if(newAssetDrawer.getDrawNewAssetValue() == false)
+        {
+            loadAsset.loadAllCards(false);
+        }
         newAssetDrawer.setDrawNewAssetValue(false);
-        loadAsset.loadAllCards(false);
+
 
         //putThemInOrder();
 

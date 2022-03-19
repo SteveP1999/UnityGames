@@ -550,7 +550,7 @@ RectTransform:
   m_GameObject: {fileID: 102513806}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0146, y: 0.022, z: 1}
+  m_LocalScale: {x: 0.7, y: 1, z: 1}
   m_Children:
   - {fileID: 62051378}
   m_Father: {fileID: 751187843}
@@ -558,7 +558,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -439.91, y: -255.07}
+  m_AnchoredPosition: {x: -316, y: -194}
   m_SizeDelta: {x: -640, y: -420}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &102513808
@@ -11761,6 +11761,7 @@ MonoBehaviour:
   assetName2: 
   newAssetDrawer: {fileID: 1894773878}
   mainText: {fileID: 2043649868}
+  firstRun: 1
   textures1: []
   textures2: []
   loadAsset: {fileID: 71233038}

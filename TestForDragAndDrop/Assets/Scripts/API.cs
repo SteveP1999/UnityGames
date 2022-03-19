@@ -49,7 +49,6 @@ public class API : MonoBehaviour
     {
         jsonTEST = new testFORJSON();
         string pathToFiles = data.config + data.gameID;
-        Debug.Log("Az útvonal amin el akarjuk érni a dolgot: " + pathToFiles);
         StartCoroutine(getData(pathToFiles));
     }
 
