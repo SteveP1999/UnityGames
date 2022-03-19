@@ -39,13 +39,45 @@ public class CardSetManager : MonoBehaviour
         {
             age = "N";  //If not Kicsi then Nagy
         }
-        for(int i = 0; i < cardSets.Count; i++)
+
+        switch (GameData.instance.getGameID())
         {
-            if (cardSets[i].getAge() == age || cardSets[i].getAge() == "KN")
-            {
-                possibleSets.Add(cardSets[i]);
-            }
+            case 1:
+                for (int i = 0; i < cardSets.Count; i++)
+                {
+                    if ((cardSets[i].getAge() == age && cardSets[i].getSize() >= 14) || (cardSets[i].getAge() == "KN" && cardSets[i].getSize() >= 14))  //New arrival
+                    {
+                        possibleSets.Add(cardSets[i]);
+                    }
+                }
+                break;
+            case 2:
+                for (int i = 0; i < cardSets.Count; i++)
+                {
+                    if ((cardSets[i].getAge() == age && cardSets[i].getSize() >= 10) || (cardSets[i].getAge() == "KN" && cardSets[i].getSize() >= 10))    //PairGame
+                    {
+                        possibleSets.Add(cardSets[i]);
+                    }
+                }
+                break;
+            case 3:
+                for (int i = 0; i < cardSets.Count; i++)
+                {
+                    if ((cardSets[i].getAge() == age && cardSets[i].getSortable() == true) || (cardSets[i].getAge() == "KN" && cardSets[i].getSortable() == true))  //OrderGame
+                    {
+                        possibleSets.Add(cardSets[i]);
+                    }
+                }
+                break;
+            default:
+                Debug.Log("No such case as given");
+                break;
         }
+
+        //for(int i = 0; i < possibleSets.Count; i++)
+        //{
+        //    Debug.Log("Egy lehetséges set: " + possibleSets[i].getCardSetName());
+        //}
 
         var rand = new System.Random();
         int number = rand.Next(possibleSets.Count);

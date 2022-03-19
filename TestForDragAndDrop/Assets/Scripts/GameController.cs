@@ -112,10 +112,10 @@ public class GameController : MonoBehaviour
         cardManager = cardCollectionManager.GetComponent<CardManager>();
         cardSetManager = cardSetCollectionManager.GetComponent<CardSetManager>();
         camera = GameObject.Find("CardCamera");
+        assetName1 = cardSetManager.drawAsset();
 
-        if(GameData.instance.getGameID() == 2)
+        if (GameData.instance.getGameID() == 2)
         {
-            assetName1 = cardSetManager.drawAsset();
             int k = 0;
             while(k != 1)
             {
@@ -125,13 +125,11 @@ public class GameController : MonoBehaviour
                     k++;
                 }
             }
-            loadAsset.loadAssetBundle(assetName1, false, true, false);
-            loadAsset.loadAssetBundle(assetName2, true, true, true);
+            loadAsset.loadAssetBundles(assetName1, assetName2, true);
         }
         else
         {
-            assetName1 = cardSetManager.drawAsset();
-            loadAsset.loadAssetBundle(assetName1, false, true, true);
+            loadAsset.loadAssetBundle(assetName1, true);
         }
     }
 
@@ -247,12 +245,14 @@ public class GameController : MonoBehaviour
         {
             ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
             ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards1[i].getCardId());
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setUniqueCardId(cardManager.containerOfCards1[i].getUniqueId());
         }
 
         for(int j = listForMain.Count/2; j < listForMain.Count; j++)
         {
             ((GameObject)listForMain[j]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures2[listForMain.Count-j-1];
-            ((GameObject)listForMain[j]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards2[listForMain.Count-j-1].getCardId());
+            ((GameObject)listForMain[j]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards2[listForMain.Count - j - 1].getCardId());
+            ((GameObject)listForMain[j]).GetComponent<CardModel>().setUniqueCardId(cardManager.containerOfCards2[listForMain.Count - j - 1].getUniqueId());
         }
 
         for (int j = 0; j < 10; j++)

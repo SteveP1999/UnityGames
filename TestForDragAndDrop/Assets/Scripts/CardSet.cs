@@ -11,6 +11,7 @@ public class CardSet
     [SerializeField] private string cardSetName;
     [SerializeField] private bool sortable;
     [SerializeField] private string age;
+    [SerializeField] private int size;
     #endregion
 
     #region Getters / Setters
@@ -27,6 +28,11 @@ public class CardSet
     public string getAge()
     {
         return age;
+    }
+
+    public int getSize()
+    {
+        return size;
     }
     #endregion
 

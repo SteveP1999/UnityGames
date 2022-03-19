@@ -7,7 +7,6 @@ public class LoadAsset : MonoBehaviour
     #region Variables
     [SerializeField] private AssetBundle myLoadedAssetBundle1;
     [SerializeField] private AssetBundle myLoadedAssetBundle2;
-    private string path;
     [System.NonSerialized]
     public Texture2D texture;
     private GameObject cardSetCollectionManager;
@@ -49,7 +48,7 @@ public class LoadAsset : MonoBehaviour
         }
     }
 
-    IEnumerator loadBundleFromWeb(string path, bool pairGame, bool calledFromGameControllerStart, bool callLoadCards)
+    IEnumerator loadBundleFromWeb(string path, bool calledFromGameControllerStart)
     {
         UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(path);
         yield return www.SendWebRequest();
@@ -62,26 +61,59 @@ public class LoadAsset : MonoBehaviour
         else
         {
             Debug.Log("Flawless loading");
-            if (pairGame == false)
-            {
-                myLoadedAssetBundle1 = bundle;
-            }
-            else
-            {
-                myLoadedAssetBundle2 = bundle;
-            }
+            myLoadedAssetBundle1 = bundle;
         }
-        if(callLoadCards)
+        loadAllCards(calledFromGameControllerStart);
+    }
+
+    IEnumerator loadBundlesFromWeb(string path1, string path2, bool calledFromGameControllerStart)
+    {
+        UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(path1);
+        yield return www.SendWebRequest();
+        AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(www);
+
+        if (bundle == null)
         {
+            Debug.Log("Error while loading the assetbundle, the following path is not right: " + path1);
+        }
+        else
+        {
+            myLoadedAssetBundle1 = bundle;
+            StartCoroutine(loadSecondBundle(path2, calledFromGameControllerStart));
+        }
+    }
+
+    IEnumerator loadSecondBundle(string path, bool calledFromGameControllerStart)
+    {
+        UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(path);
+        yield return www.SendWebRequest();
+        AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(www);
+        if (bundle == null)
+        {
+            Debug.Log("Error while loading the assetbundle, the following path is not right: " + path);
+        }
+        else
+        {
+            myLoadedAssetBundle2 = bundle;
             loadAllCards(calledFromGameControllerStart);
         }
     }
 
-    public void loadAssetBundle(string assetName, bool pairGame, bool calledFromGameControllerStart, bool callLoadCards)
+    public void loadAssetBundle(string assetName, bool calledFromGameControllerStart)
     {
         //string path = api.GetComponent<API>().data.assets[0].path + "/" + assetName.ToLower(); //WebGL version
         string path = "https://laravel.etalonapps.hu/public/files/dev/" + assetName.ToLower(); //Windows version
-        StartCoroutine(loadBundleFromWeb(path, pairGame, calledFromGameControllerStart, callLoadCards));
+        Debug.Log("Az útvonal ahonnan be fogunk tölteni: " + path);
+        StartCoroutine(loadBundleFromWeb(path, calledFromGameControllerStart));
+    }
+
+    public void loadAssetBundles(string assetName1, string assetName2, bool calledFromGameControllerStart)
+    {
+        //string path1 = api.GetComponent<API>().data.assets[0].path + "/" + assetName1.ToLower(); //WebGL version
+        //string path2 = api.GetComponent<API>().data.assets[0].path + "/" + assetName2.ToLower(); //WebGL version
+        string path1 = "https://laravel.etalonapps.hu/public/files/dev/" + assetName1.ToLower(); //Windows version
+        string path2 = "https://laravel.etalonapps.hu/public/files/dev/" + assetName2.ToLower(); //Windows version
+        StartCoroutine(loadBundlesFromWeb(path1, path2, calledFromGameControllerStart));
     }
 
     public void loadNewArrival()
@@ -95,11 +127,11 @@ public class LoadAsset : MonoBehaviour
 
     public void loadAllCards(bool calledFromGameControllerStart)
     {
-        if(GameData.instance.getGameID() == 2)
+        if (GameData.instance.getGameID() == 2)
         {
             //Put the textures from the first bundle to a list
             cardManager.drawDifferentCards(10, GameController.instance.assetName1, true);
-            for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Texture2D loadedAsset = myLoadedAssetBundle1.LoadAsset(cardManager.containerOfCards1[i].getCardName()) as Texture2D;
                 GameController.instance.textures1.Add(loadedAsset);
