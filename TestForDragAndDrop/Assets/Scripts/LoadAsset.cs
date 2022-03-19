@@ -49,7 +49,7 @@ public class LoadAsset : MonoBehaviour
         }
     }
 
-    IEnumerator loadBundleFromWeb(string path, bool pairGame, bool calledFromGameControllerStart)
+    IEnumerator loadBundleFromWeb(string path, bool pairGame, bool calledFromGameControllerStart, bool callLoadCards)
     {
         UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(path);
         yield return www.SendWebRequest();
@@ -69,21 +69,19 @@ public class LoadAsset : MonoBehaviour
             else
             {
                 myLoadedAssetBundle2 = bundle;
-                loadAllCards(calledFromGameControllerStart);
             }
         }
-        if(!pairGame)
+        if(callLoadCards)
         {
             loadAllCards(calledFromGameControllerStart);
-
         }
     }
 
-    public void loadAssetBundle(string assetName, bool pairGame, bool calledFromGameControllerStart)
+    public void loadAssetBundle(string assetName, bool pairGame, bool calledFromGameControllerStart, bool callLoadCards)
     {
         //string path = api.GetComponent<API>().data.assets[0].path + "/" + assetName.ToLower(); //WebGL version
         string path = "https://laravel.etalonapps.hu/public/files/dev/" + assetName.ToLower(); //Windows version
-        StartCoroutine(loadBundleFromWeb(path, pairGame, calledFromGameControllerStart));
+        StartCoroutine(loadBundleFromWeb(path, pairGame, calledFromGameControllerStart, callLoadCards));
     }
 
     public void loadNewArrival()

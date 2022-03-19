@@ -125,13 +125,13 @@ public class GameController : MonoBehaviour
                     k++;
                 }
             }
-            loadAsset.loadAssetBundle(assetName1, false, true);
-            loadAsset.loadAssetBundle(assetName2, true, true);
+            loadAsset.loadAssetBundle(assetName1, false, true, false);
+            loadAsset.loadAssetBundle(assetName2, true, true, true);
         }
         else
         {
             assetName1 = cardSetManager.drawAsset();
-            loadAsset.loadAssetBundle(assetName1, false, true);
+            loadAsset.loadAssetBundle(assetName1, false, true, true);
         }
     }
 
