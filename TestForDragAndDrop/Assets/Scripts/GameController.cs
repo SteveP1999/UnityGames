@@ -97,7 +97,7 @@ public class GameController : MonoBehaviour
     new private GameObject camera;
     private readonly float[] cameraZPosNewArrival = { -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.5f, -9.0f, -9.0f, -10.5f };
     private readonly float[] cameraZPosOrder = { -7.0f, -7.0f, -7.0f, -8.0f, -7.0f, -7.0f, -10.0f, -12.0f, -12.0f, -10.0f, -10.0f, -12.0f, -12.0f, -12.0f };
-    private readonly float[] cameraZPosPair = { -7.0f, -7.0f, -7.0f, -8.5f, -8.5f, -8.5f, -9.6f, -11.2f, -13.0f, -13.0f, -10.0f, -12.0f, -12.0f, -12.0f };
+    private readonly float[] cameraZPosPair = { -13.5f, -13.5f, -13.5f, -13.5f, -13.5f, -13.5f, -13.5f, -13.5f, -13.5f, -13.0f, -13.5f, -13.5f, -13.5f, -13.5f };
     private float cameraZPosPair1 = -5.3f;
     #endregion
 
@@ -235,7 +235,7 @@ public class GameController : MonoBehaviour
             card.GetComponentInChildren<CardModel>().tag = "CardModel";
             card.transform.Rotate(0, 180, 0);
 
-            if (i == gameLevel - 1)
+            if (i == 10 - 1)
             {
                 x = 5;
             }
@@ -478,46 +478,46 @@ public class GameController : MonoBehaviour
     {
         GameObject[] parent = GameObject.FindGameObjectsWithTag("Parent");
 
-        for (int i = 0; i < gameLevel; i++)
+        for (int i = 0; i < 10; i++)
         {
-            parent[i].GetComponentInChildren<CardModel>().setPair(parent[2 * gameLevel - i - 1]);
+            parent[i].GetComponentInChildren<CardModel>().setPair(parent[2 * 10 - i - 1]);
 
             positionForSmoothStep(parent[i], -1.5f, Constants.yPairInit, 0, true, Constants.speedOfPairGame);
 
-            positionForSmoothStep(parent[2 * gameLevel - i - 1], 1.5f, Constants.yPairInit, 0, true, Constants.speedOfPairGame);
+            positionForSmoothStep(parent[2 * 10 - i - 1], 1.5f, Constants.yPairInit, 0, true, Constants.speedOfPairGame);
 
             yield return new WaitForSeconds(Constants.waitTimeInPairGame);
 
             positionForSmoothStep(parent[i], -5, -10, 0, true, Constants.speedOfPairGame);
 
-            positionForSmoothStep(parent[2 * gameLevel - i - 1], 5, -10, 0, true, Constants.speedOfPairGame);
+            positionForSmoothStep(parent[2 * 10 - i - 1], 5, -10, 0, true, Constants.speedOfPairGame);
         }
 
         yield return new WaitForSeconds(3);
 
-        for(int i = 0; i < gameLevel; i++)
+        for(int i = 0; i < 10; i++)
         {
             parent[i].transform.position = new Vector3(-5, 10, 0);
-            parent[2 * gameLevel - i - 1].transform.position = new Vector3(5, 10, 0);
+            parent[2 * 10 - i - 1].transform.position = new Vector3(5, 10, 0);
         }
 
         counterForPairGame += 1;
-        if(counterForPairGame < 1)
+        if(counterForPairGame < 3)   //Ha rövidebbé akarod tenni csökkentsd a 3-ast 
         {
             StartCoroutine(showPair());
         }
 
-        if(counterForPairGame == 1)
+        if(counterForPairGame == 3)  //Ezt is változtasd!!!
         {
             camera.transform.localPosition = new Vector3(0, 0, cameraZPosPair[gameLevel - 1]);
 
-            double x = calcx(gameLevel, 1);
+            double x = calcx(10, 1);
 
             GameObject[] starterBorder = GameObject.FindGameObjectsWithTag("starterBorder");
             GameObject[] pair1Border = GameObject.FindGameObjectsWithTag("pair1Border");
             GameObject[] pair2Border = GameObject.FindGameObjectsWithTag("pair2Border");
 
-            for (int j = 0; j < gameLevel; j++)
+            for (int j = 0; j < 10; j++)
             {
                 starterBorder[j].GetComponent<Border>().transform.position = new Vector3((float)x, Constants.yPairMid, 0);
                 starterBorder[j].GetComponent<Border>().tag = "Border";

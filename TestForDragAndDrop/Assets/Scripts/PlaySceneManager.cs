@@ -42,7 +42,7 @@ public class PlaySceneManager : MonoBehaviour
                 Debug.Log("megvan");
                 break;
             case 2:
-                mainText.text = "Rendezd párba és sorrendbe a lapokat";
+                mainText.text = "Rendezd párba és sorrendbe";
                 break;
             case 3:
                 mainText.text = "Állítsd párba a lapokat";
