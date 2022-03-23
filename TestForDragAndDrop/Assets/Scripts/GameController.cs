@@ -64,7 +64,6 @@ public class GameController : MonoBehaviour
     private int rightGuesses = 0; //Counter a jó tippekhez
     private int wrongGuesses = 0; //Counter a rossz tippekhez
     private int counterForPairGame = 0;
-    bool gameMode = true;
     private GameObject cardCollectionManager;
     private GameObject cardSetCollectionManager;
     private CardManager cardManager;
@@ -78,6 +77,8 @@ public class GameController : MonoBehaviour
     public DrawNewAssetButton newAssetDrawer;
     [SerializeField] private Text mainText;
     public bool firstRun = true;
+    public int maxLevelOfNewArrival = 14;
+    public int maxLevelOfOrderGame = 9;
 
     //Timing:
     private float waitTimeForRevealReference = 2;
@@ -464,10 +465,6 @@ public class GameController : MonoBehaviour
             loadAsset.loadAllCards(false);
         }
         newAssetDrawer.setDrawNewAssetValue(false);
-
-
-        //putThemInOrder();
-
     }
     #endregion
 
@@ -934,13 +931,13 @@ public class GameController : MonoBehaviour
         }
 
         //Visszaállítja a játékot a kezdő állapotra
-        resetGame();
+        resetNewArrival();
 
         //Elindítja az új játékot
         //newArrival();
     }
 
-    public void resetGame()
+    public void resetNewArrival()
     {
         GameObject[] temp = GameObject.FindGameObjectsWithTag("Parent");
         for (int i = 0; i < temp.Length; i++)
@@ -993,19 +990,21 @@ public class GameController : MonoBehaviour
 
     public void positionForSmoothStep(GameObject parent, float xEnd, float yEnd, float zEnd, bool canStart, float duration)
     {
-        parent.GetComponent<ParentScript>().startTime = Time.time;
+        ParentScript parentScript = parent.GetComponent<ParentScript>();
 
-        parent.GetComponent<ParentScript>().xStart = parent.transform.position.x;
-        parent.GetComponent<ParentScript>().yStart = parent.transform.position.y;
-        parent.GetComponent<ParentScript>().zStart = parent.transform.position.z;
+        parentScript.startTime = Time.time;
 
-        parent.GetComponent<ParentScript>().xEnd = xEnd;
-        parent.GetComponent<ParentScript>().yEnd = yEnd;
-        parent.GetComponent<ParentScript>().zEnd = zEnd;
+        parentScript.xStart = parent.transform.position.x;
+        parentScript.yStart = parent.transform.position.y;
+        parentScript.zStart = parent.transform.position.z;
 
-        parent.GetComponent<ParentScript>().duration = duration;
-        parent.GetComponent<ParentScript>().canStart = canStart;
-        parent.GetComponent<ParentScript>().t = 0;
+        parentScript.xEnd = xEnd;
+        parentScript.yEnd = yEnd;
+        parentScript.zEnd = zEnd;
+
+        parentScript.duration = duration;
+        parentScript.canStart = canStart;
+        parentScript.t = 0;
     }
 
 
@@ -1074,6 +1073,76 @@ public class GameController : MonoBehaviour
         }
         return null;
     }
+
+    public void resetGame()
+    {
+        GameObject[] borderTemp = GameObject.FindGameObjectsWithTag("Border");
+        GameObject[] temp = GameObject.FindGameObjectsWithTag("Parent");
+        GameObject[] borderTemp2 = GameObject.FindGameObjectsWithTag("pair2Border");
+
+        switch (GameData.instance.getGameID())
+        {
+            //New Arrival
+            case 1:
+                waitTimeForReveal = waitTimeForRevealReference;
+                canBeSelected = false;
+                break;
+
+            //PairGame
+            case 2:
+                for (int j = 0; j < borderTemp.Length; j++)
+                {
+                    DestroyImmediate(borderTemp[j]);
+                }
+
+                for (int j = 0; j < borderTemp2.Length; j++)
+                {
+                    DestroyImmediate(borderTemp2[j]);
+                }
+
+                cardManager.containerOfCards2.Clear();
+                ids2.Clear();
+                textures2.Clear();
+                counterForPairGame = 0;
+                evaluateCards.gameObject.SetActive(false);
+                break;
+
+            //OrderGame
+            case 3:
+                orderedIds.Clear();
+
+                for (int j = 0; j < borderTemp.Length; j++)
+                {
+                    DestroyImmediate(borderTemp[j]);
+                }
+                break;
+            default:
+                Debug.Log("No such case as given");
+                break;
+        }
+
+        for (int i = 0; i < temp.Length; i++)
+        {
+            DestroyImmediate(temp[i]);
+        }
+
+        cardManager.containerOfCards1.Clear();
+        listForMain.Clear();
+        ids1.Clear();
+        textures1.Clear();
+
+        newBundle();
+
+        if (newAssetDrawer.getDrawNewAssetValue() == false)
+        {
+            loadAsset.loadAllCards(false);
+        }
+        else
+        {
+            newAssetDrawer.setDrawNewAssetValue(false);
+        }
+    }
+
     #endregion
 
     //----------------------------------------------------------------------------------------------------------------------------------
