@@ -731,7 +731,8 @@ public class GameController : MonoBehaviour
         card.tag = "Parent";
         card.GetComponentInChildren<CardModel>().tag = "CardModel";
         card.GetComponentInChildren<CardModel>().rend.materials[2].mainTexture = textures1[textures1.Count - 1];
-        card.GetComponentInChildren<CardModel>().setCardId(idOfNewArrival);
+        card.GetComponentInChildren<CardModel>().setUniqueCardId(idOfNewArrival);   //setCardId volt
+        card.GetComponentInChildren<CardModel>().setCardId(cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getCardId());
 
         GameObject[] cards = GameObject.FindGameObjectsWithTag("CardModel");
         camera.transform.localPosition = new Vector3(0, 0, cameraZPosNewArrival[cards.Length]);
@@ -1067,7 +1068,7 @@ public class GameController : MonoBehaviour
         GameObject[] parents = GameObject.FindGameObjectsWithTag("Parent");
         foreach(GameObject GO in parents)
         {
-            if(GO.GetComponentInChildren<CardModel>().getCardId() == id)
+            if(GO.GetComponentInChildren<CardModel>().getUniqueCardId() == id)  //getCardId volt
             {
                 return GO;
             }

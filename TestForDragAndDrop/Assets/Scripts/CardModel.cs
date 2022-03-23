@@ -82,12 +82,12 @@ public class CardModel : MonoBehaviour
 
             for (int i = 0; i < parent.Length; i++)
             {
-                if (parent[i].GetComponentInChildren<CardModel>().getCardId() == cardId)
+                if (parent[i].GetComponentInChildren<CardModel>().getUniqueCardId() == uniqueCardId)   //getCardId volt és cardID
                 {
                     GameController.instance.positionForSmoothStep(parent[i], 0, 0, -2f, true, 2f);
                 }
             }
-            if (cardId == GameController.instance.getIdOfNewArrival())
+            if (uniqueCardId == GameController.instance.getIdOfNewArrival())  //cardId volt
             {
                 StartCoroutine(wonOrLostMessage(true));
             }
@@ -125,7 +125,7 @@ public class CardModel : MonoBehaviour
             winOrLost.text = "Sajnos ez most nem sikerült, próbáld újra";
             winOrLost.gameObject.SetActive(true);
 
-            GameObject chosenCard = GameController.instance.findParentObjectByID(cardId);
+            GameObject chosenCard = GameController.instance.findParentObjectByID(uniqueCardId);   //cardId volt
             GameController.instance.positionForSmoothStep(chosenCard, 0, 0, -15f, true, 0.5f);
 
             yield return new WaitForSeconds(0.5f);

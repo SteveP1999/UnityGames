@@ -121,8 +121,8 @@ public class LoadAsset : MonoBehaviour
         cardManager.drawDifferentCard(GameController.instance.assetName1);
         Texture2D newTexture = myLoadedAssetBundle1.LoadAsset(cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getCardName()) as Texture2D;
         GameController.instance.textures1.Add(newTexture);
-        GameController.instance.setIdOfNewArrival(cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getCardId());
-        Debug.Log("Id of new arrival: " + cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getCardId());
+        GameController.instance.setIdOfNewArrival(cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getUniqueId());  //getCardId volt
+        Debug.Log("Id of new arrival: " + cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getUniqueId());   //getCardId volt
     }
 
     public void loadAllCards(bool calledFromGameControllerStart)
