@@ -118,7 +118,7 @@ public class CardModel : MonoBehaviour
             }
             winOrLost.gameObject.SetActive(false);
             yield return new WaitForSeconds(2.0f);
-            GameController.instance.guessedRight(true);
+            GameController.instance.guessedRight2(true);
         }
         else
         {
@@ -136,7 +136,7 @@ public class CardModel : MonoBehaviour
             yield return new WaitForSeconds(3.0f);
 
             winOrLost.gameObject.SetActive(false);
-            GameController.instance.guessedRight(false);
+            GameController.instance.guessedRight2(false);
         }
     }
 }

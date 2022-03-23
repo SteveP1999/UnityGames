@@ -37,8 +37,10 @@ static class Constants
     public const float yPairTemp = -10.0f;
 
     //Game settings:
-    public const int maxLevel = 14; //Maximum level
-    public const int minLevel = 4; //Minimum level
+    public const int minLevelOfNewArrival = 4;
+    public const int maxLevelOfNewArrival = 14;
+    public const int minLevelOfOrderGame = 4;
+    public const int maxLevelOfOrderGame = 9;
     #endregion
 }
 
@@ -77,8 +79,7 @@ public class GameController : MonoBehaviour
     public DrawNewAssetButton newAssetDrawer;
     [SerializeField] private Text mainText;
     public bool firstRun = true;
-    public int maxLevelOfNewArrival = 14;
-    public int maxLevelOfOrderGame = 9;
+
 
     //Timing:
     private float waitTimeForRevealReference = 2;
@@ -286,7 +287,7 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
         {
-            ids1.Add(cardManager.containerOfCards1[i].getCardId());
+            ids1.Add(cardManager.containerOfCards1[i].getUniqueId());    //Ez getCardId volt
         }
 
         camera.transform.localPosition = new Vector3(0, 0, cameraZPosNewArrival[gameLevel - 1]);
@@ -327,7 +328,7 @@ public class GameController : MonoBehaviour
         {
             for (int i = 0; i < ids1.Count; i++)
             {
-                if (parent[i].GetComponentInChildren<CardModel>().getCardId() == (int)ids1[j])
+                if (parent[i].GetComponentInChildren<CardModel>().getUniqueCardId() == (int)ids1[j])   //getCardID volt
                 {
                     GameObject go = parent[i];
                     ParentScript ps = go.GetComponent<ParentScript>();
@@ -340,7 +341,7 @@ public class GameController : MonoBehaviour
         StartCoroutine(waitAndPositionAllCardsInZero(delay + Constants.shuffleDelay));
 
         //Kirakjuk az új felszállót és becsúsztatjuk a 0,0-ba
-        StartCoroutine(WaitaBitAndAddNewArrival(delay + Constants.shuffleDelay + 1.0f));
+        StartCoroutine(WaitaBitAndAddNewArrival(delay + Constants.shuffleDelay)); //Itt volt egy + 1.0f
 
         //Ide jön a shuffle:
         StartCoroutine(shuffle(parent, delay + Constants.shuffleDelay + 2.0f));
@@ -705,7 +706,7 @@ public class GameController : MonoBehaviour
         {
             for (int j = 0; j < ids1.Count; j++)
             {
-                if (cards[j].GetComponent<CardModel>().getCardId() == (int)ids1[i])
+                if (cards[j].GetComponent<CardModel>().getUniqueCardId() == (int)ids1[i])   //getCardId volt
                 {
                     GameObject go = objs[j];
                     go.GetComponent<ParentScript>().reveal();
@@ -726,7 +727,7 @@ public class GameController : MonoBehaviour
         GameObject[] parent = GameObject.FindGameObjectsWithTag("instantiateParent");
         loadAsset.loadNewArrival();
         ids1.Add(idOfNewArrival);
-        var card = Instantiate(parent[0], new Vector3(-13, 5, 0), Quaternion.identity);
+        var card = Instantiate(parent[0], new Vector3(-10, 5, 0), Quaternion.identity); //-13 volt a -10
         card.tag = "Parent";
         card.GetComponentInChildren<CardModel>().tag = "CardModel";
         card.GetComponentInChildren<CardModel>().rend.materials[2].mainTexture = textures1[textures1.Count - 1];
@@ -844,7 +845,7 @@ public class GameController : MonoBehaviour
         {
             for (int j = 0; j < ids1.Count; j++)
             {
-                if (objs[j].GetComponentInChildren<CardModel>().getCardId() == (int)ids1[i])
+                if (objs[j].GetComponentInChildren<CardModel>().getUniqueCardId() == (int)ids1[i])   //getCardID volt
                 {
                     Vector3 b = new Vector3((float)xUpper, (float)yUpper, 0);
                     positionForSmoothStep(objs[j], b.x, b.y, b.z, true, Constants.speedOfFirstPositioning);
@@ -872,7 +873,7 @@ public class GameController : MonoBehaviour
             if (rightGuesses == 2)
             {
                 rightGuesses = 0;                //Emeljük a tétet
-                if (gameLevel < Constants.maxLevel)
+                if (gameLevel < Constants.maxLevelOfNewArrival)
                 {
                     newGameStarted(1);
                 }
@@ -894,7 +895,7 @@ public class GameController : MonoBehaviour
             if (wrongGuesses == 2)
             {
                 wrongGuesses = 0;    //Csökkentjük a tétet
-                if (gameLevel > Constants.minLevel)
+                if (gameLevel > Constants.minLevelOfNewArrival)
                 {
                     newGameStarted(2);
                 }
@@ -1141,6 +1142,59 @@ public class GameController : MonoBehaviour
         {
             newAssetDrawer.setDrawNewAssetValue(false);
         }
+    }
+
+    public void guessedRight2(bool right)
+    {
+        if (right)
+        {
+            rightGuesses += 1;
+            wrongGuesses = 0;
+            Debug.Log("Ügyes vagy eltaláltad");
+            if (rightGuesses == 2)
+            {
+                rightGuesses = 0;                //Emeljük a tétet
+                if(GameData.instance.getGameID() == 1) //NewArrival
+                {
+                    if(gameLevel < Constants.maxLevelOfNewArrival)
+                    {
+                        gameLevel++;
+                    }
+                }
+                else
+                {
+                    if(gameLevel < Constants.maxLevelOfOrderGame)
+                    {
+                        gameLevel++;
+                    }
+                }
+            }
+        }
+        else
+        {
+            wrongGuesses += 1;
+            rightGuesses = 0;
+            Debug.Log("Sajnos ez most nem sikerült");
+            if (wrongGuesses == 2)
+            {
+                wrongGuesses = 0;    //Csökkentjük a tétet
+                if(GameData.instance.getGameID() == 1) //NewArrival
+                {
+                    if(gameLevel > Constants.minLevelOfNewArrival)
+                    {
+                        gameLevel--;
+                    }
+                }
+                else
+                {
+                    if(gameLevel > Constants.minLevelOfOrderGame)
+                    {
+                        gameLevel--;
+                    }
+                }
+            }
+        }
+        resetGame();
     }
 
     #endregion
