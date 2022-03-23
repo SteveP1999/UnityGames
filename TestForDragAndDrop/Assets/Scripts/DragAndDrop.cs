@@ -9,7 +9,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     #region Variables
     private Vector3 _dragOffset;
     private Camera _cam;
-    private int borderNumber = 0;
+    [SerializeField] private int borderNumber = 0;
     private Vector3 startingPos;
     [SerializeField] private bool canDrag = false;
     [SerializeField] private float _speed = 100;
@@ -110,7 +110,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
                         Vector3 destination = oldBorder.GetComponent<Border>().transform.position;
                         for (int i = 0; i < cards.Length; i++)
                         {
-                            if (cards[i].GetComponentInChildren<CardModel>().getCardId() == borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId())
+                            if (cards[i].GetComponentInChildren<CardModel>().getUniqueCardId() == borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getUniqueCardId())
                             {
                                 GameController.instance.positionForSmoothStep(cards[i], destination.x, destination.y, 0, true, Constants.cardChangeSpeed);
                             }
@@ -125,7 +125,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
                         Vector3 dest = borders[borderNumber].transform.position;
                         for (int i = 0; i < cards.Length; i++)
                         {
-                            if (cards[i].GetComponentInChildren<CardModel>().getCardId() == this.GetComponentInChildren<CardModel>().getCardId())
+                            if (cards[i].GetComponentInChildren<CardModel>().getUniqueCardId() == this.GetComponentInChildren<CardModel>().getUniqueCardId())
                             {
                                 GameController.instance.positionForSmoothStep(cards[i], dest.x, dest.y, dest.z, true, Constants.cardChangeSpeed);
                             }
@@ -148,7 +148,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
                             Vector3 destination2 = newBorder.transform.position;
                             for (int i = 0; i < cards.Length; i++)
                             {
-                                if (cards[i].GetComponentInChildren<CardModel>().getCardId() == borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getCardId())
+                                if (cards[i].GetComponentInChildren<CardModel>().getUniqueCardId() == borders[borderNumber].GetComponent<Border>().getCard().GetComponent<CardModel>().getUniqueCardId())
                                 {
                                     GameController.instance.positionForSmoothStep(cards[i], destination2.x, destination2.y, destination2.z, true, Constants.cardChangeSpeed);
                                 }
@@ -168,7 +168,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
                         Vector3 dest = borders[borderNumber].transform.position;
                         for (int i = 0; i < cards.Length; i++)
                         {
-                            if (cards[i].GetComponentInChildren<CardModel>().getCardId() == this.GetComponentInChildren<CardModel>().getCardId())
+                            if (cards[i].GetComponentInChildren<CardModel>().getUniqueCardId() == this.GetComponentInChildren<CardModel>().getUniqueCardId())
                             {
                                 GameController.instance.positionForSmoothStep(cards[i], dest.x, dest.y, dest.z, true, Constants.cardChangeSpeed);
                             }
