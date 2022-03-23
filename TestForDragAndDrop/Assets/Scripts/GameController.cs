@@ -96,7 +96,7 @@ public class GameController : MonoBehaviour
     //Camera settings:
     new private GameObject camera;
     private readonly float[] cameraZPosNewArrival = { -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.5f, -9.0f, -9.0f, -10.5f };
-    private readonly float[] cameraZPosOrder = { -7.0f, -7.0f, -7.0f, -8.0f, -7.0f, -7.0f, -10.0f, -10.0f, -10.0f, -10.0f, -10.0f, -12.0f, -12.0f, -12.0f };
+    private readonly float[] cameraZPosOrder = { -7.0f, -7.0f, -7.0f, -8.0f, -7.0f, -7.0f, -10.0f, -12.0f, -12.0f, -10.0f, -10.0f, -12.0f, -12.0f, -12.0f };
     private readonly float[] cameraZPosPair = { -7.0f, -7.0f, -7.0f, -8.5f, -8.5f, -8.5f, -9.6f, -11.2f, -13.0f, -13.0f, -10.0f, -12.0f, -12.0f, -12.0f };
     private float cameraZPosPair1 = -5.3f;
     #endregion
@@ -181,8 +181,8 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < listForMain.Count; i++)
         {
             ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().setUniqueCardId((int)orderedIds[i]);  //normal
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards1[i].getUniqueId());  //unique
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setUniqueCardId(cardManager.containerOfCards1[i].getUniqueId());
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards1[i].getCardId()); 
         }
 
         orderedIds.Sort();
@@ -414,23 +414,24 @@ public class GameController : MonoBehaviour
                 }
             }
 
-            if (counter == gameLevel)
-            {
-                Debug.Log("Nyertél");
-            }
-            else
-            {
-                Debug.Log("Elvesztetted");
-            }
-
             GameObject[] cards = GameObject.FindGameObjectsWithTag("Parent");
             for (int j = 0; j < cards.Length; j++)
             {
                 cards[j].GetComponent<ParentScript>().reveal();
             }
 
-            StartCoroutine(resetOrderGame());
+            if (counter == gameLevel)
+            {
+                Debug.Log("Nyertél");
+                guessedRight2(true);
+            }
+            else
+            {
+                Debug.Log("Elvesztetted");
+                guessedRight2(false);
+            }
 
+            //StartCoroutine(resetOrderGame());
         }
         else
         {

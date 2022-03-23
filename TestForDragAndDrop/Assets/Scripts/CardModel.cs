@@ -75,7 +75,6 @@ public class CardModel : MonoBehaviour
 
     public void OnMouseDown()
     {
-
         if (GameData.instance.getGameID() == 1 && GameController.instance.getCanBeSelected())
         {
             GameObject[] parent = GameObject.FindGameObjectsWithTag("Parent");
