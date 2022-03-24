@@ -31,7 +31,7 @@ static class Constants
     public const float yOrderBorder = 1.0f;
 
     public const float yPairUpper = 1.0f;
-    public const float yPairLower = -5.0f;
+    public const float yPairLower = -4.8f;
     public const float yPairMid = -1.9f;
     public const float yPairInit = -0.4f;
     public const float yPairTemp = -10.0f;
@@ -502,12 +502,12 @@ public class GameController : MonoBehaviour
         }
 
         counterForPairGame += 1;
-        if(counterForPairGame < 3)   //Ha rövidebbé akarod tenni csökkentsd a 3-ast 
+        if(counterForPairGame < 2)   //Ha rövidebbé akarod tenni csökkentsd a 3-ast 
         {
             StartCoroutine(showPair());
         }
 
-        if(counterForPairGame == 3)  //Ezt is változtasd!!!
+        if(counterForPairGame == 2)  //Ezt is változtasd!!!
         {
             camera.transform.localPosition = new Vector3(0, 0, cameraZPosPair[gameLevel - 1]);
 
@@ -523,7 +523,7 @@ public class GameController : MonoBehaviour
                 starterBorder[j].GetComponent<Border>().tag = "Border";
                 starterBorder[j].GetComponent<Border>().setOccupied(true);
                 starterBorder[j].GetComponent<Border>().setCard(parent[j].GetComponentInChildren<CardModel>());
-                starterBorder[j].GetComponent<Border>().setId(parent[j].GetComponentInChildren<CardModel>().getCardId());
+                starterBorder[j].GetComponent<Border>().setId(parent[j].GetComponentInChildren<CardModel>().getUniqueCardId());
 
                 pair1Border[j].GetComponent<Border>().transform.position = new Vector3((float)x, Constants.yPairTemp, 0);
 
@@ -554,17 +554,59 @@ public class GameController : MonoBehaviour
             }
         }
 
-        if (counter == gameLevel)
+        if (counter == 10)
         {
             camera.transform.localPosition = new Vector3(0, 0, -15);
             giveNextCards.gameObject.SetActive(false);
-            evaluateCards.gameObject.SetActive(true);
+            //evaluateCards.gameObject.SetActive(true);
 
-            GameObject[] border = GameObject.FindGameObjectsWithTag("Border");
+            GameObject[] pair1Border = GameObject.FindGameObjectsWithTag("pair1Border");
             GameObject[] parent = GameObject.FindGameObjectsWithTag("Parent");
 
-            double x = calcx(gameLevel, 1);
+            for(int i = 0; i < borders.Length; i++)
+            {
+                if(borders[i].GetComponent<Border>().getCard() != null)
+                {
+                    borders[i].GetComponent<Border>().tag = "pair1Border";
+                    borders[i].GetComponent<Border>().setIsAvailable(false);
+                    borders[i].GetComponent<Border>().getCard().GetComponentInParent<DragAndDrop>().setDrag(false);
+                }
+                else
+                {
+                    borders[i].GetComponent<Border>().setIsStarter(false);
+                    borders[i].GetComponent<Border>().setIsAvailable(true);
+                }
+            }
 
+            double x = calcx(10, 1);
+
+            List<GameObject> remainingCards = new List<GameObject>();
+            for (int i = 0; i < parent.Length; i++)
+            {
+                if (parent[i].GetComponentInChildren<CardModel>().getBorder() == null)
+                {
+                    remainingCards.Add(parent[i]);
+                }
+            }
+
+            for (int i = 0; i < pair1Border.Length; i++)
+            {
+                pair1Border[i].transform.position = new Vector3((float)x, Constants.yPairLower, 0);
+                pair1Border[i].GetComponent<Border>().tag = "Border";
+                pair1Border[i].GetComponent<Border>().setCard(remainingCards[i].GetComponentInChildren<CardModel>());
+                pair1Border[i].GetComponent<Border>().setId(remainingCards[i].GetComponentInChildren<CardModel>().getUniqueCardId());
+                pair1Border[i].GetComponent<Border>().setOccupied(true);
+                pair1Border[i].GetComponent<Border>().setIsAvailable(true);
+                pair1Border[i].GetComponent<Border>().setIsStarter(true);
+
+                remainingCards[i].transform.position = new Vector3((float)x, Constants.yPairLower, 0);
+                remainingCards[i].GetComponentInChildren<CardModel>().setBorder(pair1Border[i].GetComponent<Border>());
+                remainingCards[i].GetComponentInChildren<DragAndDrop>().setDrag(true);
+                x += Constants.padding + Constants.cardSize;
+            }
+           
+
+            /*
             for (int i = 0; i < border.Length; i++)
             {
                 if (border[i].GetComponent<Border>().getOccupied())
@@ -606,6 +648,7 @@ public class GameController : MonoBehaviour
             {
                 pair2Border[j].GetComponent<Border>().getCard().GetComponentInParent<DragAndDrop>().setDrag(false);
             }
+            */
         }
     }
 
