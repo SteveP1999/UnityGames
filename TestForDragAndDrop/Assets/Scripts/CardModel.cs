@@ -15,7 +15,7 @@ public class CardModel : MonoBehaviour
     //Unique id of the card
     [SerializeField] private int uniqueCardId;
 
-    private GameObject pair;
+    [SerializeField] private CardModel pair;
 
     [SerializeField] private Border border;
 
@@ -46,12 +46,12 @@ public class CardModel : MonoBehaviour
         return border;
     }
 
-    public void setPair(GameObject pair)
+    public void setPair(CardModel pair)
     {
         this.pair = pair;
     }
 
-    public GameObject getPair()
+    public CardModel getPair()
     {
         return pair;
     }
