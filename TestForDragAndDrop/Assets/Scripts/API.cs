@@ -5,9 +5,11 @@ using System.Net;
 using System.IO;
 using System;
 using UnityEngine.Networking;
+using TMPro;
 
 public class API : MonoBehaviour
 {
+    public TextMeshProUGUI openingText;
     public static API api;
     public CardManager cardManager;
     public CardSetManager cardSetManager;
@@ -69,6 +71,22 @@ public class API : MonoBehaviour
                 data.userID = userId;
                 data.token = token;
                 data.config = path;
+
+                switch (data.chosenGameMode)
+                {
+                    case 1:
+                        openingText.text = "Gyere és játssz te is az új felszállóval!";
+                        break;
+                    case 2:
+                        openingText.text = "Gyere és játssz te is párbarakósat!";
+                        break;
+                    case 3:
+                        openingText.text = "Gyere és játssz te is sorbarakósat!";
+                        break;
+                    default:
+                        Debug.Log("No such case as given");
+                        break;
+                }
                 StartCoroutine(getCardSetJSON(data.assets[1].path));
                 StartCoroutine(getCardsJSON(data.assets[2].path));
             }

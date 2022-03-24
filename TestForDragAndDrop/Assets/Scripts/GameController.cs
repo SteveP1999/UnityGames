@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 static class Constants
 {
@@ -79,8 +80,10 @@ public class GameController : MonoBehaviour
     public DrawNewAssetButton newAssetDrawer;
     [SerializeField] private Text mainText;
     public bool firstRun = true;
-    private List<GameObject> orderOfCardsInPairGame = new List<GameObject>(); 
-
+    private List<GameObject> orderOfCardsInPairGame = new List<GameObject>();
+    public GameObject serialScoreText;
+    public GameObject sequencialScoreText;
+    public GameObject orderGameResutlText;
 
     //Timing:
     private float waitTimeForRevealReference = 2;
@@ -422,15 +425,13 @@ public class GameController : MonoBehaviour
             if (counter == gameLevel)
             {
                 Debug.Log("Nyertél");
-                guessedRight2(true);
+                StartCoroutine(endAndRestartOrdeGame(true));
             }
             else
             {
                 Debug.Log("Elvesztetted");
-                guessedRight2(false);
+                StartCoroutine(endAndRestartOrdeGame(false));
             }
-
-            //StartCoroutine(resetOrderGame());
         }
         else
         {
@@ -438,34 +439,21 @@ public class GameController : MonoBehaviour
         }
     }
 
-    IEnumerator resetOrderGame()
+    IEnumerator endAndRestartOrdeGame(bool winner)
     {
+        if(winner)
+        {
+            orderGameResutlText.GetComponent<TextMeshProUGUI>().text = "Ügyes vagy ez jó lett!";
+        }
+        else
+        {
+            orderGameResutlText.GetComponent<TextMeshProUGUI>().text = "Ez most nem sikerült, de nem baj";
+        }
+        orderGameResutlText.SetActive(true);
         yield return new WaitForSeconds(4);
-        GameObject[] temp = GameObject.FindGameObjectsWithTag("Parent");
-        GameObject[] borderTemp = GameObject.FindGameObjectsWithTag("Border");
-        for (int i = 0; i < temp.Length; i++)
-        {
-            DestroyImmediate(temp[i]);
-        }
-        for(int j = 0; j < borderTemp.Length;j++)
-        {
-            DestroyImmediate(borderTemp[j]);
-        }
+        orderGameResutlText.SetActive(false);
+        guessedRight2(winner);
 
-        newBundle();
-
-        listForMain.Clear();
-        orderedIds.Clear();
-        ids1.Clear();
-        textures1.Clear();
-        cardManager.containerOfCards1.Clear();
-        cardManager.containerOfCards2.Clear();
-
-        if(newAssetDrawer.getDrawNewAssetValue() == false)
-        {
-            loadAsset.loadAllCards(false);
-        }
-        newAssetDrawer.setDrawNewAssetValue(false);
     }
     #endregion
 
@@ -669,13 +657,26 @@ public class GameController : MonoBehaviour
             }
             Debug.Log("serial score: " + serialScore);
             Debug.Log("sequencial score: " + sequencialScore);
-            resetGame();
+            StartCoroutine(endAndRestartGame(serialScore, sequencialScore));
         }
         else
         {
             Debug.Log("Nem minden kártya van még a helyén!");
         }
 
+    }
+
+    IEnumerator endAndRestartGame(int serialScore, int sequencialScore)
+    {
+        serialScoreText.GetComponent<TextMeshProUGUI>().text = "Szeriális érték: " + serialScore;
+        serialScoreText.SetActive(true);
+        sequencialScoreText.GetComponent<TextMeshProUGUI>().text = "Szekvenciális érték: " + sequencialScore;
+        sequencialScoreText.SetActive(true);
+
+        yield return new WaitForSeconds(4);
+        serialScoreText.SetActive(false);
+        sequencialScoreText.SetActive(false);
+        resetGame();
     }
 
     public void resetPairGame()
@@ -1106,6 +1107,7 @@ public class GameController : MonoBehaviour
         GameObject[] borderTemp = GameObject.FindGameObjectsWithTag("Border");
         GameObject[] temp = GameObject.FindGameObjectsWithTag("Parent");
         GameObject[] borderTemp2 = GameObject.FindGameObjectsWithTag("pair2Border");
+        GameObject[] borderTemp1 = GameObject.FindGameObjectsWithTag("pair1Border");
 
         switch (GameData.instance.getGameID())
         {
@@ -1125,6 +1127,7 @@ public class GameController : MonoBehaviour
                 for (int j = 0; j < borderTemp2.Length; j++)
                 {
                     DestroyImmediate(borderTemp2[j]);
+                    DestroyImmediate(borderTemp1[j]);
                 }
 
                 cardManager.containerOfCards2.Clear();
