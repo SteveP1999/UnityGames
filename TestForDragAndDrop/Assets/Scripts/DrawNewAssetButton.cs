@@ -26,7 +26,8 @@ public class DrawNewAssetButton : MonoBehaviour
         string newAsset1;
         string newAsset2;
 
-        if (GameData.instance.getGameID() == 2)
+        API api = new API();
+        if (api.data.chosenGameMode == 2)
         {
             newAsset1 = cardSetManager.drawAsset();
             newAsset2 = cardSetManager.drawAsset();

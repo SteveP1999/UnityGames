@@ -34,8 +34,8 @@ public class PlaySceneManager : MonoBehaviour
                 Debug.Log("No such case as given");
                 break;
         }
-
-        switch (GameData.instance.getGameID())
+        API api = new API();
+        switch (api.data.chosenGameMode)
         {
             case 1:
                 mainText.text = "Ki az új felszálló";

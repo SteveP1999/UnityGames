@@ -32,8 +32,8 @@ public class API : MonoBehaviour
             Destroy(gameObject);
         }
 
-        //string httpsLink = Application.absoluteURL;
-        string httpsLink = "https://laravel.etalonapps.hu/games/default/?user_id=973&game_id=1&token=0&config_url=https://laravel.etalonapps.hu/api/games/config/";
+        string httpsLink = Application.absoluteURL;
+        //string httpsLink = "https://laravel.etalonapps.hu/games/default/?user_id=973&game_id=1&token=0&config_url=https://laravel.etalonapps.hu/api/games/config/";
         string p = httpsLink.Split('?')[1];
         string user = p.Split('=')[1];
         string game = p.Split('=')[2];
@@ -56,7 +56,7 @@ public class API : MonoBehaviour
 
     public IEnumerator getData(string _path)
     {
-        using (UnityWebRequest unityWebRequest = UnityWebRequest.Get("https://laravel.etalonapps.hu/api/games/config/13")) //"https://laravel.etalonapps.hu/api/games/config/13"
+        using (UnityWebRequest unityWebRequest = UnityWebRequest.Get(_path)) //"https://laravel.etalonapps.hu/api/games/config/13"
         {
             yield return unityWebRequest.SendWebRequest();
             if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)

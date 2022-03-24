@@ -84,6 +84,7 @@ public class GameController : MonoBehaviour
     public GameObject serialScoreText;
     public GameObject sequencialScoreText;
     public GameObject orderGameResutlText;
+    public API api = new API();
 
     //Timing:
     private float waitTimeForRevealReference = 2;
@@ -120,7 +121,7 @@ public class GameController : MonoBehaviour
         camera = GameObject.Find("CardCamera");
         assetName1 = cardSetManager.drawAsset();
 
-        if (GameData.instance.getGameID() == 2)
+        if (api.data.chosenGameMode == 2)
         {
             int k = 0;
             while(k != 1)
@@ -1109,7 +1110,7 @@ public class GameController : MonoBehaviour
         GameObject[] borderTemp2 = GameObject.FindGameObjectsWithTag("pair2Border");
         GameObject[] borderTemp1 = GameObject.FindGameObjectsWithTag("pair1Border");
 
-        switch (GameData.instance.getGameID())
+        switch (api.data.chosenGameMode)
         {
             //New Arrival
             case 1:
@@ -1184,7 +1185,7 @@ public class GameController : MonoBehaviour
             if (rightGuesses == 2)
             {
                 rightGuesses = 0;                //Emeljük a tétet
-                if(GameData.instance.getGameID() == 1) //NewArrival
+                if(api.data.chosenGameMode == 1) //NewArrival
                 {
                     if(gameLevel < Constants.maxLevelOfNewArrival)
                     {
@@ -1208,7 +1209,7 @@ public class GameController : MonoBehaviour
             if (wrongGuesses == 2)
             {
                 wrongGuesses = 0;    //Csökkentjük a tétet
-                if(GameData.instance.getGameID() == 1) //NewArrival
+                if(api.data.chosenGameMode == 1) //NewArrival
                 {
                     if(gameLevel > Constants.minLevelOfNewArrival)
                     {
