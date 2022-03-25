@@ -8,7 +8,6 @@ public class JSONReader : MonoBehaviour
     #region Variables
     public testFORJSON jsonContainer = new testFORJSON();
     public CardManager cardManager;
-    public API api;
     public CardSetManager cardSetManager;
     [SerializeField] private DataFromAPI data;
     public static JSONReader jsonReader;
@@ -30,7 +29,7 @@ public class JSONReader : MonoBehaviour
         //    Destroy(gameObject);
         //}
 
-        //string httpsLink = "https://laravel.etalonapps.hu/games/default/?user_id=973&game_id=1&token=0&config_url=https://laravel.etalonapps.hu/api/games/config/";
+        //string httpsLink = "https://laravel.etalonapps.hu/games/default/?user_id=973&game_id=2&token=0&config_url=https://laravel.etalonapps.hu/api/games/config/";
         //string p = httpsLink.Split('?')[1];
         //string user = p.Split('=')[1];
         //string game = p.Split('=')[2];

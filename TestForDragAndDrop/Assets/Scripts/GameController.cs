@@ -56,7 +56,6 @@ public class GameController : MonoBehaviour
     [SerializeField] private Button orderGame;
     [SerializeField] private Button pairGame;
     [SerializeField] private Button giveNextCards;
-    [SerializeField] private Button evaluateCards;
 
     //Game:
     private int idOfNewArrival = 0; //Contains the id of the new arrival
@@ -84,7 +83,6 @@ public class GameController : MonoBehaviour
     public GameObject serialScoreText;
     public GameObject sequencialScoreText;
     public GameObject orderGameResutlText;
-    public API api = new API();
 
     //Timing:
     private float waitTimeForRevealReference = 2;
@@ -121,7 +119,7 @@ public class GameController : MonoBehaviour
         camera = GameObject.Find("CardCamera");
         assetName1 = cardSetManager.drawAsset();
 
-        if (api.data.chosenGameMode == 2)
+        if (API.instance.data.chosenGameMode == 2)
         {
             int k = 0;
             while(k != 1)
@@ -706,7 +704,6 @@ public class GameController : MonoBehaviour
         cardManager.containerOfCards2.Clear();
 
         counterForPairGame = 0;
-        evaluateCards.gameObject.SetActive(false);
 
         newBundle();
 
@@ -1110,7 +1107,7 @@ public class GameController : MonoBehaviour
         GameObject[] borderTemp2 = GameObject.FindGameObjectsWithTag("pair2Border");
         GameObject[] borderTemp1 = GameObject.FindGameObjectsWithTag("pair1Border");
 
-        switch (api.data.chosenGameMode)
+        switch (API.instance.data.chosenGameMode)
         {
             //New Arrival
             case 1:
@@ -1185,7 +1182,7 @@ public class GameController : MonoBehaviour
             if (rightGuesses == 2)
             {
                 rightGuesses = 0;                //Emeljük a tétet
-                if(api.data.chosenGameMode == 1) //NewArrival
+                if(API.instance.data.chosenGameMode == 1) //NewArrival
                 {
                     if(gameLevel < Constants.maxLevelOfNewArrival)
                     {
@@ -1209,7 +1206,7 @@ public class GameController : MonoBehaviour
             if (wrongGuesses == 2)
             {
                 wrongGuesses = 0;    //Csökkentjük a tétet
-                if(api.data.chosenGameMode == 1) //NewArrival
+                if(API.instance.data.chosenGameMode == 1) //NewArrival
                 {
                     if(gameLevel > Constants.minLevelOfNewArrival)
                     {

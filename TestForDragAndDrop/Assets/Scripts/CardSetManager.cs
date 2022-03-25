@@ -39,8 +39,7 @@ public class CardSetManager : MonoBehaviour
         {
             age = "N";  //If not Kicsi then Nagy
         }
-        API api = new API();
-        switch (api.data.chosenGameMode)
+        switch (API.instance.data.chosenGameMode)
         {
             case 1:
                 for (int i = 0; i < cardSets.Count; i++)

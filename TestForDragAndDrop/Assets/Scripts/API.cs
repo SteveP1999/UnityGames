@@ -19,9 +19,11 @@ public class API : MonoBehaviour
     int userId;
     string token;
     string path;
+    public static API instance;
 
     public void Awake()
     {
+        instance = this;
         if (api == null)
         {
             DontDestroyOnLoad(gameObject);
@@ -33,7 +35,7 @@ public class API : MonoBehaviour
         }
 
         string httpsLink = Application.absoluteURL;
-        //string httpsLink = "https://laravel.etalonapps.hu/games/default/?user_id=973&game_id=1&token=0&config_url=https://laravel.etalonapps.hu/api/games/config/";
+        //string httpsLink = "https://laravel.etalonapps.hu/games/default/?user_id=973&game_id=2&token=0&config_url=https://laravel.etalonapps.hu/api/games/config/";
         string p = httpsLink.Split('?')[1];
         string user = p.Split('=')[1];
         string game = p.Split('=')[2];
@@ -49,13 +51,24 @@ public class API : MonoBehaviour
 
     public void Start()
     {
+        string pathToFiles;
         jsonTEST = new testFORJSON();
-        string pathToFiles = data.config + data.gameID;
+        if(data.config[data.config.Length - 1] == '/')
+        {
+            pathToFiles = data.config + data.gameID;
+        }
+        else
+        {
+            pathToFiles = data.config + "/" + data.gameID;
+            Debug.Log("Hozzá kellett!");
+
+        }
         StartCoroutine(getData(pathToFiles));
     }
 
     public IEnumerator getData(string _path)
     {
+        Debug.Log("A path: " + _path);
         using (UnityWebRequest unityWebRequest = UnityWebRequest.Get(_path)) //"https://laravel.etalonapps.hu/api/games/config/13"
         {
             yield return unityWebRequest.SendWebRequest();
@@ -71,7 +84,7 @@ public class API : MonoBehaviour
                 data.userID = userId;
                 data.token = token;
                 data.config = path;
-
+                //data.chosenGameMode = 1;
                 switch (data.chosenGameMode)
                 {
                     case 1:

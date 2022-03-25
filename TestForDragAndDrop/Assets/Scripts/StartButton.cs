@@ -35,8 +35,7 @@ public class StartButton : MonoBehaviour
         }
         else if(SceneManager.GetActiveScene().buildIndex == 1 && GameController.instance.firstRun == true && GameController.instance.textures1.Count > 0 )
         {
-            API api = new API();
-            switch (api.data.chosenGameMode)
+            switch (API.instance.data.chosenGameMode)
             {
                 case 1:
                     GameController.instance.newArrival();

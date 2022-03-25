@@ -34,12 +34,10 @@ public class PlaySceneManager : MonoBehaviour
                 Debug.Log("No such case as given");
                 break;
         }
-        API api = new API();
-        switch (api.data.chosenGameMode)
+        switch (API.instance.data.chosenGameMode)
         {
             case 1:
                 mainText.text = "Ki az új felszálló";
-                Debug.Log("megvan");
                 break;
             case 2:
                 mainText.text = "Rendezd párba és sorrendbe";

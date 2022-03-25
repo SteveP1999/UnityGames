@@ -13,7 +13,6 @@ public class LoadAsset : MonoBehaviour
     private GameObject cardCollectionManager;
     private CardSetManager cardSetManager;
     private CardManager cardManager;
-    private API api = new API();
     #endregion
 
     public AssetBundle getAssetBundle1()
@@ -100,16 +99,15 @@ public class LoadAsset : MonoBehaviour
 
     public void loadAssetBundle(string assetName, bool calledFromGameControllerStart)
     {
-        string path = api.GetComponent<API>().data.assets[0].path + "/" + assetName.ToLower(); //WebGL version
+        string path = API.instance.data.assets[0].path + "/" + assetName.ToLower(); //WebGL version
         //string path = "https://laravel.etalonapps.hu/public/files/dev/" + assetName.ToLower(); //Windows version
-        Debug.Log("Az útvonal ahonnan be fogunk tölteni: " + path);
         StartCoroutine(loadBundleFromWeb(path, calledFromGameControllerStart));
     }
 
     public void loadAssetBundles(string assetName1, string assetName2, bool calledFromGameControllerStart)
     {
-        string path1 = api.GetComponent<API>().data.assets[0].path + "/" + assetName1.ToLower(); //WebGL version
-        string path2 = api.GetComponent<API>().data.assets[0].path + "/" + assetName2.ToLower(); //WebGL version
+        string path1 = API.instance.data.assets[0].path + "/" + assetName1.ToLower(); //WebGL version
+        string path2 = API.instance.data.assets[0].path + "/" + assetName2.ToLower(); //WebGL version
         //string path1 = "https://laravel.etalonapps.hu/public/files/dev/" + assetName1.ToLower(); //Windows version
         //string path2 = "https://laravel.etalonapps.hu/public/files/dev/" + assetName2.ToLower(); //Windows version
         StartCoroutine(loadBundlesFromWeb(path1, path2, calledFromGameControllerStart));
@@ -126,7 +124,7 @@ public class LoadAsset : MonoBehaviour
 
     public void loadAllCards(bool calledFromGameControllerStart)
     {
-        if (api.data.chosenGameMode == 2)
+        if (API.instance.data.chosenGameMode == 2)
         {
             //Put the textures from the first bundle to a list
             cardManager.drawDifferentCards(10, GameController.instance.assetName1, true);
@@ -165,7 +163,7 @@ public class LoadAsset : MonoBehaviour
             }
             else
             {
-                switch (api.data.chosenGameMode)
+                switch (API.instance.data.chosenGameMode)
                 {
                     case 1:
                         GameController.instance.newArrival();
