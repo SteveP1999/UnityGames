@@ -73,11 +73,6 @@ public class CardSetManager : MonoBehaviour
                 break;
         }
 
-        //for(int i = 0; i < possibleSets.Count; i++)
-        //{
-        //    Debug.Log("Egy lehetséges set: " + possibleSets[i].getCardSetName());
-        //}
-
         var rand = new System.Random();
         int number = rand.Next(possibleSets.Count);
         return possibleSets[number].getCardSetName();

@@ -107,6 +107,8 @@ public class LoadAsset : MonoBehaviour
 
     public void loadAssetBundles(string assetName1, string assetName2, bool calledFromGameControllerStart)
     {
+        Debug.Log("assetname1: " + assetName1);
+        Debug.Log("assetname2: " + assetName2);
 #if win
         string path1 = "https://laravel.etalonapps.hu/public/files/dev/" + assetName1.ToLower(); //Windows version
         string path2 = "https://laravel.etalonapps.hu/public/files/dev/" + assetName2.ToLower(); //Windows version
@@ -124,7 +126,7 @@ public class LoadAsset : MonoBehaviour
         Texture2D newTexture = myLoadedAssetBundle1.LoadAsset(cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getCardName()) as Texture2D;
         GameController.instance.textures1.Add(newTexture);
         GameController.instance.setIdOfNewArrival(cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getUniqueId());
-        Debug.Log("Id of new arrival: " + cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getUniqueId());
+
     }
 
     public void loadAllCards(bool calledFromGameControllerStart)

@@ -16,7 +16,6 @@ public class MainMenu : MonoBehaviour
 
     public void setBackGround()
     {
-        Debug.Log("chosenGame: " + API.instance.data.chosenGameMode);
         switch (API.instance.data.chosenGameMode)
         {
             case 1:

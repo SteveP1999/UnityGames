@@ -42,8 +42,9 @@ public class DrawNewAssetButton : MonoBehaviour
             GameController.instance.assetName2 = newAsset2;
 
             loadAsset.unloadAsset();
-            loadAsset.loadAssetBundle(newAsset1, false);
-            loadAsset.loadAssetBundle(newAsset2, false);
+            loadAsset.loadAssetBundles(newAsset1, newAsset2, false);
+            //loadAsset.loadAssetBundle(newAsset1, false);
+            //loadAsset.loadAssetBundle(newAsset2, false);
         }
         else
         {

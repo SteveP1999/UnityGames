@@ -94,7 +94,7 @@ public class API : MonoBehaviour
                 data.token = token;
                 data.config = path;
 #if win
-                data.chosenGameMode = 3;
+                data.chosenGameMode = 2;
 #endif
                 MainMenu.GetComponent<MainMenu>().setBackGround();
                 StartCoroutine(getCardSetJSON(data.assets[1].path));
@@ -185,7 +185,6 @@ public class API : MonoBehaviour
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Accept", "application/json");
         yield return request.SendWebRequest();
-        Debug.Log("Status Code: " + request.responseCode);
     }
 
     public testFORJSON getCards(string path)
