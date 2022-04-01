@@ -56,6 +56,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private Button orderGame;
     [SerializeField] private Button pairGame;
     [SerializeField] private Button giveNextCards;
+    [SerializeField] private Button changeTexturesButton;
+    [SerializeField] private GameObject startGameObject;
+    public TextMeshProUGUI informationText;
 
     //Game:
     private int idOfNewArrival = 0; //Contains the id of the new arrival
@@ -99,7 +102,7 @@ public class GameController : MonoBehaviour
     //Camera settings:
     new private GameObject camera;
     private readonly float[] cameraZPosNewArrival = { -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.0f, -8.5f, -9.0f, -9.0f, -10.5f };
-    private readonly float[] cameraZPosOrder = { -7.0f, -7.0f, -7.0f, -8.0f, -7.0f, -7.0f, -10.0f, -12.0f, -12.0f, -10.0f, -10.0f, -12.0f, -12.0f, -12.0f };
+    private readonly float[] cameraZPosOrder = { -8.0f, -8.0f, -8.0f, -9.0f, -9.0f, -9.0f, -10.0f, -12.0f, -12.0f, -10.0f, -10.0f, -12.0f, -12.0f, -12.0f };
     private readonly float[] cameraZPosPair = { -13.5f, -13.5f, -13.5f, -13.5f, -13.5f, -13.5f, -13.5f, -13.5f, -13.5f, -13.0f, -13.5f, -13.5f, -13.5f, -13.5f };
     private float cameraZPosPair1 = -5.3f;
     #endregion
@@ -136,11 +139,17 @@ public class GameController : MonoBehaviour
         {
             loadAsset.loadAssetBundle(assetName1, true);
         }
+        if(API.instance.data.chosenGameMode == 3)
+        {
+            changeTexturesButton.gameObject.SetActive(true);
+        }
     }
 
     #region OrderGameCode
     public void putThemInOrder()
     {
+        orderGame.gameObject.SetActive(true);
+
         for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
         {
             ids1.Add(cardManager.containerOfCards1[i].getCardId());
@@ -150,8 +159,6 @@ public class GameController : MonoBehaviour
         {
             orderedIds.Add(cardManager.containerOfCards1[i].getUniqueId());
         }
-
-        orderGame.gameObject.SetActive(true);
 
         camera.transform.localPosition = new Vector3(0, 0, cameraZPosOrder[gameLevel - 1]);
 
@@ -180,10 +187,9 @@ public class GameController : MonoBehaviour
         }
 
         loadInObjects();
-
         for (int i = 0; i < listForMain.Count; i++)
         {
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[1].mainTexture = textures1[i];
             ((GameObject)listForMain[i]).GetComponent<CardModel>().setUniqueCardId(cardManager.containerOfCards1[i].getUniqueId());
             ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards1[i].getCardId()); 
         }
@@ -246,14 +252,14 @@ public class GameController : MonoBehaviour
 
         for (int i = 0; i < listForMain.Count / 2; i++)
         {
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[1].mainTexture = textures1[i];
             ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards1[i].getCardId());
             ((GameObject)listForMain[i]).GetComponent<CardModel>().setUniqueCardId(cardManager.containerOfCards1[i].getUniqueId());
         }
 
         for(int j = listForMain.Count/2; j < listForMain.Count; j++)
         {
-            ((GameObject)listForMain[j]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures2[listForMain.Count-j-1];
+            ((GameObject)listForMain[j]).GetComponent<CardModel>().rend.materials[1].mainTexture = textures2[listForMain.Count-j-1];
             ((GameObject)listForMain[j]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards2[listForMain.Count - j - 1].getCardId());
             ((GameObject)listForMain[j]).GetComponent<CardModel>().setUniqueCardId(cardManager.containerOfCards2[listForMain.Count - j - 1].getUniqueId());
         }
@@ -310,7 +316,7 @@ public class GameController : MonoBehaviour
 
         for (int i = 0; i < listForMain.Count; i++)
         {
-            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[2].mainTexture = textures1[i];
+            ((GameObject)listForMain[i]).GetComponent<CardModel>().rend.materials[1].mainTexture = textures1[i];
             ((GameObject)listForMain[i]).GetComponent<CardModel>().setCardId(cardManager.containerOfCards1[i].getCardId());
             ((GameObject)listForMain[i]).GetComponent<CardModel>().setUniqueCardId(cardManager.containerOfCards1[i].getUniqueId());
         }
@@ -342,7 +348,7 @@ public class GameController : MonoBehaviour
         StartCoroutine(waitAndPositionAllCardsInZero(delay + Constants.shuffleDelay));
 
         //Kirakjuk az új felszállót és becsúsztatjuk a 0,0-ba
-        StartCoroutine(WaitaBitAndAddNewArrival(delay + Constants.shuffleDelay)); //Itt volt egy + 1.0f
+        StartCoroutine(WaitaBitAndAddNewArrival(delay + Constants.shuffleDelay + 1.0f)); //Itt volt egy + 1.0f
 
         //Ide jön a shuffle:
         StartCoroutine(shuffle(parent, delay + Constants.shuffleDelay + 2.0f));
@@ -451,7 +457,7 @@ public class GameController : MonoBehaviour
         orderGameResutlText.SetActive(true);
         yield return new WaitForSeconds(4);
         orderGameResutlText.SetActive(false);
-        guessedRight2(winner);
+        guessedRight(winner);
 
     }
     #endregion
@@ -675,43 +681,11 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(4);
         serialScoreText.SetActive(false);
         sequencialScoreText.SetActive(false);
-        resetGame();
+        startGameObject.SetActive(true);
+        firstRun = true;
+        //resetGame();
     }
 
-    public void resetPairGame()
-    {
-        GameObject[] temp = GameObject.FindGameObjectsWithTag("Parent");
-        GameObject[] borderTemp = GameObject.FindGameObjectsWithTag("Border");
-        GameObject[] borderTemp2 = GameObject.FindGameObjectsWithTag("pair2Border");
-        for (int i = 0; i < temp.Length; i++)
-        {
-            DestroyImmediate(temp[i]);
-            DestroyImmediate(borderTemp[i]);
-        }
-
-        for(int j = 0; j < borderTemp2.Length; j++)
-        {
-            DestroyImmediate(borderTemp2[j]);
-        }
-
-        listForMain.Clear();
-        orderedIds.Clear();
-        ids1.Clear();
-        ids2.Clear();
-        textures1.Clear();
-        textures2.Clear();
-        cardManager.containerOfCards1.Clear();
-        cardManager.containerOfCards2.Clear();
-
-        counterForPairGame = 0;
-
-        newBundle();
-
-        newAssetDrawer.setDrawNewAssetValue(false);
-        loadAsset.loadAllCards(false);
-
-        pairThem();
-    }
     #endregion
 
     //----------------------------------------------------------------------------------------------------------------------------------
@@ -754,12 +728,14 @@ public class GameController : MonoBehaviour
         var card = Instantiate(parent[0], new Vector3(-10, 5, 0), Quaternion.identity); //-13 volt a -10
         card.tag = "Parent";
         card.GetComponentInChildren<CardModel>().tag = "CardModel";
-        card.GetComponentInChildren<CardModel>().rend.materials[2].mainTexture = textures1[textures1.Count - 1];
+        card.GetComponentInChildren<CardModel>().rend.materials[1].mainTexture = textures1[textures1.Count - 1];
+        Color c = new Color(0.0f, 0.9f, 0.0f, 1.0f);
+        card.GetComponentInChildren<CardModel>().rend.materials[1].color = c;
         card.GetComponentInChildren<CardModel>().setUniqueCardId(idOfNewArrival);   //setCardId volt
         card.GetComponentInChildren<CardModel>().setCardId(cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getCardId());
 
         GameObject[] cards = GameObject.FindGameObjectsWithTag("CardModel");
-        camera.transform.localPosition = new Vector3(0, 0, cameraZPosNewArrival[cards.Length]);
+        camera.transform.localPosition = new Vector3(0, 0, cameraZPosNewArrival[cards.Length - 2]);
 
         positionForSmoothStep(card, 0, 0, gameLevel * -0.2f, true, Constants.speedOfArrivalZeroing);
     }
@@ -885,120 +861,6 @@ public class GameController : MonoBehaviour
             }
         }
     }
-
-    public void guessedRight(bool right)
-    {
-        newBundle();
-
-        if (right)
-        {
-            rightGuesses += 1;
-            wrongGuesses = 0;
-            Debug.Log("Ügyes vagy eltaláltad");
-            if (rightGuesses == 2)
-            {
-                rightGuesses = 0;                //Emeljük a tétet
-                if (gameLevel < Constants.maxLevelOfNewArrival)
-                {
-                    newGameStarted(1);
-                }
-                else
-                {
-                    newGameStarted(3);
-                }
-            }
-            else
-            {
-                newGameStarted(3);    //Tartjuk a tétet
-            }
-        }
-        else
-        {
-            wrongGuesses += 1;
-            rightGuesses = 0;
-            Debug.Log("Sajnos ez most nem sikerült");
-            if (wrongGuesses == 2)
-            {
-                wrongGuesses = 0;    //Csökkentjük a tétet
-                if (gameLevel > Constants.minLevelOfNewArrival)
-                {
-                    newGameStarted(2);
-                }
-                else
-                {
-                    newGameStarted(3);
-                }
-            }
-            else
-            {
-                newGameStarted(3);  //Tartjuk a tétet
-            }
-        }
-    }
-
-
-    //Új játékot indít
-    public void newGameStarted(int value)
-    {
-        //Beállítja a játék szintjét
-        switch (value)
-        {
-            case 1:
-                gameLevel += 1;
-                break;
-            case 2:
-                gameLevel -= 1;
-                break;
-            case 3:
-                break;
-            default:
-                Debug.Log("There is no such case as given case");
-                break;
-        }
-
-        //Visszaállítja a játékot a kezdő állapotra
-        resetNewArrival();
-
-        //Elindítja az új játékot
-        //newArrival();
-    }
-
-    public void resetNewArrival()
-    {
-        GameObject[] temp = GameObject.FindGameObjectsWithTag("Parent");
-        for (int i = 0; i < temp.Length; i++)
-        {
-            DestroyImmediate(temp[i]);
-        }
-
-        //Visszaállítjuk a várakozásokat a helyes értékekre
-        waitTimeForReveal = waitTimeForRevealReference;
-        canBeSelected = false;
-
-
-        cardManager.containerOfCards1.Clear();
-        cardManager.containerOfCards2.Clear();
-
-        //Kiürítjuk a listánkat
-        listForMain.Clear();
-
-        //Kiüríti az id listát
-        ids1.Clear();
-
-        //Üríti a textúrák listáját
-        textures1.Clear();
-
-        if(newAssetDrawer.getDrawNewAssetValue() == false)
-        {
-            //Újra kisorsolunk textúrákat
-            loadAsset.loadAllCards(false);
-        }
-        else
-        {
-            //DrawNewAsset value értékét visszaállítjuk
-            newAssetDrawer.setDrawNewAssetValue(false);
-        }
-    }
     #endregion
 
     //----------------------------------------------------------------------------------------------------------------------------------
@@ -1107,12 +969,26 @@ public class GameController : MonoBehaviour
         GameObject[] borderTemp2 = GameObject.FindGameObjectsWithTag("pair2Border");
         GameObject[] borderTemp1 = GameObject.FindGameObjectsWithTag("pair1Border");
 
+        for (int i = 0; i < temp.Length; i++)
+        {
+            DestroyImmediate(temp[i]);
+        }
+
+        cardManager.containerOfCards1.Clear();
+        listForMain.Clear();
+        ids1.Clear();
+        textures1.Clear();
+
+        ParticleSystem[] particleSystems = FindObjectsOfType<ParticleSystem>();
+        particleSystems[0].transform.parent.position = new Vector3(0, 0, 0);
+
         switch (API.instance.data.chosenGameMode)
         {
             //New Arrival
             case 1:
                 waitTimeForReveal = waitTimeForRevealReference;
                 canBeSelected = false;
+                newAssetDrawer.DrawNewAsset();
                 break;
 
             //PairGame
@@ -1134,45 +1010,38 @@ public class GameController : MonoBehaviour
                 counterForPairGame = 0;
                 pairGame.gameObject.SetActive(false);
                 orderOfCardsInPairGame.Clear();
+                newAssetDrawer.DrawNewAsset();
                 break;
 
             //OrderGame
             case 3:
                 orderedIds.Clear();
-
                 for (int j = 0; j < borderTemp.Length; j++)
                 {
                     DestroyImmediate(borderTemp[j]);
+                }
+                if (newAssetDrawer.getDrawNewAssetValue() == true)
+                {
+                    newAssetDrawer.DrawNewAsset();
+                    newAssetDrawer.setDrawNewAssetValue(false);
+                }
+                else
+                {
+                    loadAsset.loadAllCards(false);
                 }
                 break;
             default:
                 Debug.Log("No such case as given");
                 break;
         }
-
-        for (int i = 0; i < temp.Length; i++)
-        {
-            DestroyImmediate(temp[i]);
-        }
-
-        cardManager.containerOfCards1.Clear();
-        listForMain.Clear();
-        ids1.Clear();
-        textures1.Clear();
-
-        newBundle();
-
-        if (newAssetDrawer.getDrawNewAssetValue() == false)
-        {
-            loadAsset.loadAllCards(false);
-        }
-        else
-        {
-            newAssetDrawer.setDrawNewAssetValue(false);
-        }
     }
 
-    public void guessedRight2(bool right)
+    public void lockCards()
+    {
+        canBeSelected = false;
+    }
+
+    public void guessedRight(bool right)
     {
         if (right)
         {
@@ -1222,7 +1091,8 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-        resetGame();
+        startGameObject.SetActive(true);
+        firstRun = true;
     }
 
     #endregion

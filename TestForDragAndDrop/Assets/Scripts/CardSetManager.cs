@@ -35,7 +35,7 @@ public class CardSetManager : MonoBehaviour
     {
         List<CardSet> possibleSets = new List<CardSet>();
         string age = "K";  //The starting age is kicsi
-        if (profileManager.profiles[profileManager.getActivePlayerIndex()].getAge() == "old")
+        if (profileManager.subUsers[profileManager.getActivePlayerIndex()].age == "old")
         {
             age = "N";  //If not Kicsi then Nagy
         }
@@ -53,7 +53,7 @@ public class CardSetManager : MonoBehaviour
             case 2:
                 for (int i = 0; i < cardSets.Count; i++)
                 {
-                    if ((cardSets[i].getAge() == age && cardSets[i].getSize() >= 10) || (cardSets[i].getAge() == "KN" && cardSets[i].getSize() >= 10))    //PairGame
+                    if ((cardSets[i].getAge() == age && cardSets[i].getSize() >= 10 && cardSets[i].getSortable() == false) || (cardSets[i].getAge() == "KN" && cardSets[i].getSize() >= 10 && cardSets[i].getSortable() == false))    //PairGame
                     {
                         possibleSets.Add(cardSets[i]);
                     }

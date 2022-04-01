@@ -8,8 +8,6 @@ public class SubUser
     public string userName;
     public string age;   // young-old
     public int levelInNewArrival;
-    public int bestScoreInOrderGame;
-    public int bestSerialScoreInPairGame;
-    public int bestParallelScoreInPairGame;
+    public int levelInOrderGame;
     public bool active;
 }

@@ -9,7 +9,6 @@ public class StartButton : MonoBehaviour
     [SerializeField] private Toggle Toggle2;
     [SerializeField] private Toggle Toggle3;
     [SerializeField] private ProfileManager profileManager;
-    public bool gameOn = false;     //Visszaállítani ha kiléptünk a játékből a menübe !!!!!!!!!!!!!!!!!
     #endregion
 
     public void OnMouseDown()
@@ -19,38 +18,25 @@ public class StartButton : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             if(Toggle1.isOn)
             {
-                profileManager.profiles[0].setActive(true);
+                profileManager.subUsers[0].active = true;
                 profileManager.setActivePlayerIndex(0);
             }
             else if (Toggle2.isOn)
             {
-                profileManager.profiles[1].setActive(true);
+                profileManager.subUsers[1].active = true;
                 profileManager.setActivePlayerIndex(1);
             }
             else
             {
-                profileManager.profiles[2].setActive(true);
+                profileManager.subUsers[2].active = true;
                 profileManager.setActivePlayerIndex(2);
             }
         }
         else if(SceneManager.GetActiveScene().buildIndex == 1 && GameController.instance.firstRun == true && GameController.instance.textures1.Count > 0 )
         {
-            switch (API.instance.data.chosenGameMode)
-            {
-                case 1:
-                    GameController.instance.newArrival();
-                    break;
-                case 2:
-                    GameController.instance.pairThem();
-                    break;
-                case 3:
-                    GameController.instance.putThemInOrder();
-                    break;
-                default:
-                    Debug.Log("No such case as given");
-                    break;
-            }
+            GameController.instance.resetGame();
             GameController.instance.firstRun = false;
+            gameObject.SetActive(false);
         }
     }
 }

@@ -24,7 +24,8 @@ public class ProfileManager : MonoBehaviour
     [SerializeField] private DbManager dbManager;
 
     public static ProfileManager profileManager;
-    public Profile[] profiles = new Profile[3];
+    public SubUser[] subUsers = new SubUser[3];
+    public Scores[] scores = new Scores[3];
     private int activePlayerIndex = -1;
     #endregion
 
@@ -43,16 +44,26 @@ public class ProfileManager : MonoBehaviour
     }
     void Start()
     {
-        profiles = new Profile[3];
-        Profile player1 = new Profile();
-        Profile player2 = new Profile();
-        Profile player3 = new Profile();
-        player1.setName("Kis Béla");
-        player2.setName("Nagy Anna");
-        player3.setName("Kovács Lacika");
-        profiles[0] = player1;
-        profiles[1] = player2;
-        profiles[2] = player3;
+        subUsers = new SubUser[3];
+        scores = new Scores[3];
+        SubUser player1 = new SubUser();
+        SubUser player2 = new SubUser();
+        SubUser player3 = new SubUser();
+        Scores score1 = new Scores();
+        score1.bestParallelScoreInPairGame = 2;
+        Scores score2 = new Scores();
+        score2.bestParallelScoreInPairGame = 3;
+        Scores score3 = new Scores();
+        score3.bestParallelScoreInPairGame = 8;
+        scores[0] = score1;
+        scores[1] = score2;
+        scores[2] = score3;
+        player1.userName = "Kis Béla";
+        player2.userName = "Nagy Anna";
+        player3.userName = "Kovács Lacika";
+        subUsers[0] = player1;
+        subUsers[1] = player2;
+        subUsers[2] = player3;
     }
 
     public void setActivePlayerIndex(int val)
@@ -65,91 +76,82 @@ public class ProfileManager : MonoBehaviour
         return activePlayerIndex;
     }
 
-    public void dataChanged()
-    {
-        modifyData();
-
-        for (int i = 0; i < profiles.Length; i++)
-        {
-            //StartCoroutine(dbManager.saveUser(profiles[i].getName(), profiles[i].getAge(), profiles[i].getLevel(), profiles[i].getPlayer(), profiles[i].getActive()));
-        }
-    }
 
     public void modifyData()
     {
         //First user:
-        profiles[0].setName(inputField1.text);
+        subUsers[0].userName = inputField1.text;
 
         if (toggle1Kicsi.isOn == true)
         {
-            profiles[0].setAge("young");
+            subUsers[0].age = "young";
         }
         else if (toggle1Nagy.isOn == true)
         {
-            profiles[0].setAge("old");
+            subUsers[0].age = "old";
         }
         else
         {
-            profiles[0].setAge("");
+            subUsers[0].age = "";
         }
 
         if(toggle1Active.isOn)
         {
-            profiles[0].setActive(true);
+            subUsers[0].active = true;
         }
         else
         {
-            profiles[0].setActive(false);
+            subUsers[0].active = false;
         }
-        
+
         //Second user:
-        profiles[1].setName(inputField2.text);
+        subUsers[1].userName = inputField2.text;
 
         if (toggle2Kicsi.isOn == true)
         {
-            profiles[1].setAge("young");
+            subUsers[1].age = "young";
         }
         else if (toggle2Nagy.isOn == true)
         {
-            profiles[1].setAge("old");
+            subUsers[1].age = "old";
         }
         else
         {
-            profiles[1].setAge("");
+            subUsers[1].age = "";
         }
 
         if (toggle2Active.isOn)
         {
-            profiles[1].setActive(true);
+            subUsers[1].active = true;
         }
         else
         {
-            profiles[1].setActive(false);
+            subUsers[1].active = false;
         }
 
         //Third user:
-        profiles[2].setName(inputField3.text);
+        subUsers[2].userName = inputField3.text;
 
         if (toggle3Kicsi.isOn == true)
         {
-            profiles[2].setAge("young");
+            subUsers[2].age = "young";
         }
         else if (toggle3Nagy.isOn == true)
         {
-            profiles[2].setAge("old");
+            subUsers[2].age = "old";
         }
         else
         {
-            profiles[2].setAge("");
+            subUsers[2].age = "";
         }
 
         if (toggle3Active.isOn)
         {
-            profiles[2].setActive(true);
+            subUsers[2].active = true;
         }
         else
         {
-            profiles[2].setActive(false);
+            subUsers[2].active = false;
         }
     }
 }

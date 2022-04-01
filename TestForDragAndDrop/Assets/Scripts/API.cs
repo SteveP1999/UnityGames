@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#define win 
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Net;
@@ -6,20 +8,23 @@ using System.IO;
 using System;
 using UnityEngine.Networking;
 using TMPro;
+using System.Text;
 
 public class API : MonoBehaviour
 {
-    public TextMeshProUGUI openingText;
+    public GameObject MainMenu;
     public static API api;
     public CardManager cardManager;
     public CardSetManager cardSetManager;
     public DataFromAPI data;
+    public DataToServer dataToServer;
     testFORJSON jsonTEST;
     int gameId;
     int userId;
     string token;
     string path;
     public static API instance;
+
 
     public void Awake()
     {
@@ -34,8 +39,11 @@ public class API : MonoBehaviour
             Destroy(gameObject);
         }
 
+    #if win
+        string httpsLink = "https://laravel.etalonapps.hu/games/default/?user_id=973&game_id=2&token=0&config_url=https://laravel.etalonapps.hu/api/games/config/";
+    #else
         string httpsLink = Application.absoluteURL;
-        //string httpsLink = "https://laravel.etalonapps.hu/games/default/?user_id=973&game_id=2&token=0&config_url=https://laravel.etalonapps.hu/api/games/config/";
+    #endif
         string p = httpsLink.Split('?')[1];
         string user = p.Split('=')[1];
         string game = p.Split('=')[2];
@@ -60,16 +68,17 @@ public class API : MonoBehaviour
         else
         {
             pathToFiles = data.config + "/" + data.gameID;
-            Debug.Log("Hozzá kellett!");
-
         }
         StartCoroutine(getData(pathToFiles));
     }
 
     public IEnumerator getData(string _path)
     {
-        Debug.Log("A path: " + _path);
-        using (UnityWebRequest unityWebRequest = UnityWebRequest.Get(_path)) //"https://laravel.etalonapps.hu/api/games/config/13"
+#if win
+        _path = "https://laravel.etalonapps.hu/api/games/config/13";
+#endif
+        Debug.Log("The path: " + _path);
+        using (UnityWebRequest unityWebRequest = UnityWebRequest.Get(_path))
         {
             yield return unityWebRequest.SendWebRequest();
             if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
@@ -84,24 +93,13 @@ public class API : MonoBehaviour
                 data.userID = userId;
                 data.token = token;
                 data.config = path;
-                //data.chosenGameMode = 1;
-                switch (data.chosenGameMode)
-                {
-                    case 1:
-                        openingText.text = "Gyere és játssz te is az új felszállóval!";
-                        break;
-                    case 2:
-                        openingText.text = "Gyere és játssz te is párbarakósat!";
-                        break;
-                    case 3:
-                        openingText.text = "Gyere és játssz te is sorbarakósat!";
-                        break;
-                    default:
-                        Debug.Log("No such case as given");
-                        break;
-                }
+#if win
+                data.chosenGameMode = 3;
+#endif
+                MainMenu.GetComponent<MainMenu>().setBackGround();
                 StartCoroutine(getCardSetJSON(data.assets[1].path));
                 StartCoroutine(getCardsJSON(data.assets[2].path));
+                StartCoroutine(sendData());
             }
         }
     }
@@ -159,14 +157,35 @@ public class API : MonoBehaviour
             {
                 string json = unityWebRequest.downloadHandler.text;
                 json = json.Remove(0, 1);
-                jsonTEST = JsonUtility.FromJson<testFORJSON>(json);
+                dataToServer = JsonUtility.FromJson<DataToServer>(json);
             }
         }
     }
 
     public IEnumerator sendData()
     {
-        yield return new WaitForEndOfFrame();
+        dataToServer.scores = ProfileManager.profileManager.scores;
+        dataToServer.custom = ProfileManager.profileManager.subUsers;
+#if win
+        dataToServer.gameId = 25;
+        dataToServer.userId = 973;
+        dataToServer.token = "ujAE5CZrqdqhgWFfHUuHx3YeCjPunfaj";
+#else
+        dataToServer.gameId = data.gameID;
+        dataToServer.userId = data.userID;
+        dataToServer.token = data.token;
+#endif
+
+        string json = JsonUtility.ToJson(dataToServer);
+        
+        var request = new UnityWebRequest("https://laravel.etalonapps.hu/api/games/result", "POST");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Accept", "application/json");
+        yield return request.SendWebRequest();
+        Debug.Log("Status Code: " + request.responseCode);
     }
 
     public testFORJSON getCards(string path)

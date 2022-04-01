@@ -77,21 +77,15 @@ public class CardModel : MonoBehaviour
     {
         if (API.instance.data.chosenGameMode == 1 && GameController.instance.getCanBeSelected())
         {
-            GameObject[] parent = GameObject.FindGameObjectsWithTag("Parent");
-
-            for (int i = 0; i < parent.Length; i++)
-            {
-                if (parent[i].GetComponentInChildren<CardModel>().getUniqueCardId() == uniqueCardId)   //getCardId volt és cardID
-                {
-                    GameController.instance.positionForSmoothStep(parent[i], 0, 0, -2f, true, 2f);
-                }
-            }
+            GameController.instance.lockCards();
             if (uniqueCardId == GameController.instance.getIdOfNewArrival())  //cardId volt
             {
                 StartCoroutine(wonOrLostMessage(true));
             }
             else
             {
+                Color c = new Color(1.0f, 0.5f, 0.9f, 1.0f);
+                rend.materials[1].color = c;
                 StartCoroutine(wonOrLostMessage(false));
             }
         }
@@ -99,13 +93,15 @@ public class CardModel : MonoBehaviour
 
     IEnumerator wonOrLostMessage(bool won)
     {
-        yield return new WaitForSeconds(1.5f);
+        //yield return new WaitForSeconds(1.5f);
         ParticleSystem[] particleSystems = FindObjectsOfType<ParticleSystem>();
         if (won)
         {
+            GameController.instance.guessedRight(true);
             foreach (ParticleSystem PE in particleSystems)
             {
                 PE.Play();
+                GameController.instance.positionForSmoothStep(PE.transform.parent.gameObject, 8.5f, 0f, 0f, true, 1.0f);
             }
             winOrLost.text = "Gratulálok, ügyes vagy nyertél!";
             winOrLost.gameObject.SetActive(true);
@@ -117,25 +113,21 @@ public class CardModel : MonoBehaviour
             }
             winOrLost.gameObject.SetActive(false);
             yield return new WaitForSeconds(2.0f);
-            GameController.instance.guessedRight2(true);
         }
         else
         {
             winOrLost.text = "Sajnos ez most nem sikerült, próbáld újra";
             winOrLost.gameObject.SetActive(true);
+            GameController.instance.guessedRight(false);
 
-            GameObject chosenCard = GameController.instance.findParentObjectByID(uniqueCardId);   //cardId volt
-            GameController.instance.positionForSmoothStep(chosenCard, 0, 0, -15f, true, 0.5f);
-
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1.0f);
 
             GameObject newArrival = GameController.instance.findParentObjectByID(GameController.instance.getIdOfNewArrival());
-            GameController.instance.positionForSmoothStep(newArrival, 0, 0, -2f, true, 2f);
+            GameController.instance.positionForSmoothStep(newArrival, newArrival.transform.position.x, newArrival.transform.position.y, -1.0f, true, 1f);
 
             yield return new WaitForSeconds(3.0f);
 
             winOrLost.gameObject.SetActive(false);
-            GameController.instance.guessedRight2(false);
         }
     }
 }

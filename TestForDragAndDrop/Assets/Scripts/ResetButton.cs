@@ -16,10 +16,11 @@ public class ResetButton : MonoBehaviour
         toggle2.isOn = false;
         activePlayer.isOn = false;
         inputField.text = "";
-        profileManager.profiles[id].setName("");
-        profileManager.profiles[id].setAge("");
-        profileManager.profiles[id].setLevel(4);
-        profileManager.profiles[id].setActive(false);
-        StartCoroutine(dbManager.saveUser(profileManager.profiles[id].getName(), profileManager.profiles[id].getAge(), profileManager.profiles[id].getLevel(), profileManager.profiles[id].getPlayer(), profileManager.profiles[id].getActive()));
+        profileManager.subUsers[id].userName = "";
+        profileManager.subUsers[id].age = "";
+        profileManager.subUsers[id].levelInNewArrival = 4;
+        profileManager.subUsers[id].levelInOrderGame = 4;
+        profileManager.subUsers[id].active = false;
+        //StartCoroutine(dbManager.saveUser(profileManager.profiles[id].getName(), profileManager.profiles[id].getAge(), profileManager.profiles[id].getLevel(), profileManager.profiles[id].getPlayer(), profileManager.profiles[id].getActive()));
     }
 }

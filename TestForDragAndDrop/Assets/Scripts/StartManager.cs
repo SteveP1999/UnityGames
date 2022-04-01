@@ -24,16 +24,16 @@ public class StartManager : MonoBehaviour
 
     public void setUpMenu()
     {
-        inputField1.text = profileManager.profiles[0].getName();
-        inputField2.text = profileManager.profiles[1].getName();
-        inputField3.text = profileManager.profiles[2].getName();
+        inputField1.text = profileManager.subUsers[0].userName;
+        inputField2.text = profileManager.subUsers[1].userName;
+        inputField3.text = profileManager.subUsers[2].userName;
 
-        if (profileManager.profiles[0].getAge() == "old")
+        if (profileManager.subUsers[0].age == "old")
         {
             toggle1Kicsi.isOn = false;
             toggle1Nagy.isOn = true;
         }
-        else if(profileManager.profiles[0].getAge() == "young")
+        else if(profileManager.subUsers[0].age == "young")
         {
             toggle1Kicsi.isOn = true;
             toggle1Nagy.isOn = false;
@@ -44,16 +44,16 @@ public class StartManager : MonoBehaviour
             toggle1Nagy.isOn = false;
         }
 
-        if (profileManager.profiles[1].getAge() == "old")
+        if (profileManager.subUsers[1].age == "old")
             toggle2Kicsi.isOn = false;
             toggle2Nagy.isOn = true;
 
-        if (profileManager.profiles[2].getAge() == "old")
+        if (profileManager.subUsers[2].age == "old")
             toggle3Kicsi.isOn = false;
             toggle3Nagy.isOn = true;
 
-        toggle1Active.isOn = profileManager.profiles[0].getActive();
-        toggle2Active.isOn = profileManager.profiles[1].getActive();
-        toggle3Active.isOn = profileManager.profiles[2].getActive();
+        toggle1Active.isOn = profileManager.subUsers[0].active;
+        toggle2Active.isOn = profileManager.subUsers[1].active;
+        toggle3Active.isOn = profileManager.subUsers[2].active;
     }
 }

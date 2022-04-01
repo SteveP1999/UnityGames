@@ -5,8 +5,8 @@ using UnityEngine;
 public class DrawNewAssetButton : MonoBehaviour
 {
     #region Variables
-    private CardSetManager cardSetManager;
-    private bool hasNewLoaded = false;
+    [SerializeField] private CardSetManager cardSetManager;
+    [SerializeField] private bool hasNewLoaded = false;
     [SerializeField] private StartButton startButton;
     [SerializeField] private LoadAsset loadAsset;
     #endregion
@@ -23,6 +23,8 @@ public class DrawNewAssetButton : MonoBehaviour
 
     public void DrawNewAsset()
     {
+        cardSetManager = GameObject.FindGameObjectWithTag("cardSetCollectionManager").GetComponent<CardSetManager>();
+
         string newAsset1;
         string newAsset2;
 

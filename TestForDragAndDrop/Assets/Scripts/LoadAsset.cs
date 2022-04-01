@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#define win
+
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -7,11 +9,8 @@ public class LoadAsset : MonoBehaviour
     #region Variables
     [SerializeField] private AssetBundle myLoadedAssetBundle1;
     [SerializeField] private AssetBundle myLoadedAssetBundle2;
-    [System.NonSerialized]
-    public Texture2D texture;
-    private GameObject cardSetCollectionManager;
+    [System.NonSerialized] public Texture2D texture;
     private GameObject cardCollectionManager;
-    private CardSetManager cardSetManager;
     private CardManager cardManager;
     #endregion
 
@@ -27,10 +26,8 @@ public class LoadAsset : MonoBehaviour
 
     void Awake()
     {
-        cardSetCollectionManager = GameObject.FindGameObjectWithTag("cardSetCollectionManager");
         cardCollectionManager = GameObject.FindGameObjectWithTag("cardCollectionManager");
         cardManager = cardCollectionManager.GetComponent<CardManager>();
-        cardSetManager = cardSetCollectionManager.GetComponent<CardSetManager>();
     }
 
 
@@ -44,6 +41,16 @@ public class LoadAsset : MonoBehaviour
         {
             myLoadedAssetBundle2.Unload(false);
         }
+    }
+
+    public void loadAssetBundle(string assetName, bool calledFromGameControllerStart)
+    {
+#if win
+        string path = "https://laravel.etalonapps.hu/public/files/dev/" + assetName.ToLower(); //Windows version
+#else
+        string path = API.instance.data.assets[0].path + "/" + assetName.ToLower(); //WebGL version
+#endif
+        StartCoroutine(loadBundleFromWeb(path, calledFromGameControllerStart));
     }
 
     IEnumerator loadBundleFromWeb(string path, bool calledFromGameControllerStart)
@@ -97,19 +104,17 @@ public class LoadAsset : MonoBehaviour
         }
     }
 
-    public void loadAssetBundle(string assetName, bool calledFromGameControllerStart)
-    {
-        string path = API.instance.data.assets[0].path + "/" + assetName.ToLower(); //WebGL version
-        //string path = "https://laravel.etalonapps.hu/public/files/dev/" + assetName.ToLower(); //Windows version
-        StartCoroutine(loadBundleFromWeb(path, calledFromGameControllerStart));
-    }
 
     public void loadAssetBundles(string assetName1, string assetName2, bool calledFromGameControllerStart)
     {
+#if win
+        string path1 = "https://laravel.etalonapps.hu/public/files/dev/" + assetName1.ToLower(); //Windows version
+        string path2 = "https://laravel.etalonapps.hu/public/files/dev/" + assetName2.ToLower(); //Windows version
+#else
         string path1 = API.instance.data.assets[0].path + "/" + assetName1.ToLower(); //WebGL version
         string path2 = API.instance.data.assets[0].path + "/" + assetName2.ToLower(); //WebGL version
-        //string path1 = "https://laravel.etalonapps.hu/public/files/dev/" + assetName1.ToLower(); //Windows version
-        //string path2 = "https://laravel.etalonapps.hu/public/files/dev/" + assetName2.ToLower(); //Windows version
+#endif
+
         StartCoroutine(loadBundlesFromWeb(path1, path2, calledFromGameControllerStart));
     }
 
@@ -118,8 +123,8 @@ public class LoadAsset : MonoBehaviour
         cardManager.drawDifferentCard(GameController.instance.assetName1);
         Texture2D newTexture = myLoadedAssetBundle1.LoadAsset(cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getCardName()) as Texture2D;
         GameController.instance.textures1.Add(newTexture);
-        GameController.instance.setIdOfNewArrival(cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getUniqueId());  //getCardId volt
-        Debug.Log("Id of new arrival: " + cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getUniqueId());   //getCardId volt
+        GameController.instance.setIdOfNewArrival(cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getUniqueId());
+        Debug.Log("Id of new arrival: " + cardManager.containerOfCards1[cardManager.containerOfCards1.Count - 1].getUniqueId());
     }
 
     public void loadAllCards(bool calledFromGameControllerStart)
@@ -155,53 +160,20 @@ public class LoadAsset : MonoBehaviour
             }
         }
 
-        if (!calledFromGameControllerStart)
+        switch (API.instance.data.chosenGameMode)
         {
-            if (GameController.instance.firstRun == true)
-            {
-                GameController.instance.firstRun = false;
-            }
-            else
-            {
-                switch (API.instance.data.chosenGameMode)
-                {
-                    case 1:
-                        GameController.instance.newArrival();
-                        break;
-                    case 2:
-                        GameController.instance.pairThem();
-                        break;
-                    case 3:
-                        GameController.instance.putThemInOrder();
-                        break;
-                    default:
-                        Debug.Log("No such case as given");
-                        break;
-                }
-            }
+            case 1:
+                GameController.instance.newArrival();
+                break;
+            case 2:
+                GameController.instance.pairThem();
+                break;
+            case 3:
+                GameController.instance.putThemInOrder();
+                break;
+            default:
+                Debug.Log("No such case as given");
+                break;
         }
-
-
-
-        ////Put the textures from the first bundle to a list
-        //cardManager.drawDifferentCards(GameController.instance.getGameLevel(), GameController.instance.assetName1, true);
-        //for (int i = 0; i < cardManager.containerOfCards1.Count; i++)
-        //{
-        //    Texture2D loadedAsset = myLoadedAssetBundle1.LoadAsset(cardManager.containerOfCards1[i].getCardName()) as Texture2D;
-        //    GameController.instance.textures1.Add(loadedAsset);
-        //}
-
-        ////Put the textures from the second bundle to a list if needed
-        //if (GameData.instance.getGameID() == 2)
-        //{
-        //    cardManager.drawDifferentCards(GameController.instance.getGameLevel(), GameController.instance.assetName2, false);
-        //    {
-        //        for (int i = 0; i < cardManager.containerOfCards2.Count; i++)
-        //        {
-        //            Texture2D loadedAsset = myLoadedAssetBundle2.LoadAsset(cardManager.containerOfCards2[i].getCardName()) as Texture2D;
-        //            GameController.instance.textures2.Add(loadedAsset);
-        //        }
-        //    }
-        //}
     }
 }

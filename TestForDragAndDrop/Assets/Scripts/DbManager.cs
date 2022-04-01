@@ -62,22 +62,22 @@ public class DbManager : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < profileManager.profiles.Length; i++)
-        {
-            string player1 = trimmedjsonArray.Split('}')[i];
-            if (i == 0)
-            {
-                player1 += "}";
-            }
-            else
-            {
-                player1 = player1.Substring(1);
-                player1 += "}";
-            }
-            Profile profile1 = new Profile();
-            profile1.loadFromJson(player1);
-            profileManager.profiles[i] = profile1;
-        }
+        //for (int i = 0; i < profileManager.profiles.Length; i++)
+        //{
+        //    string player1 = trimmedjsonArray.Split('}')[i];
+        //    if (i == 0)
+        //    {
+        //        player1 += "}";
+        //    }
+        //    else
+        //    {
+        //        player1 = player1.Substring(1);
+        //        player1 += "}";
+        //    }
+        //    Profile profile1 = new Profile();
+        //    profile1.loadFromJson(player1);
+        //    //profileManager.profiles[i] = profile1;
+        //}
         startManager.setUpMenu();
     }
 

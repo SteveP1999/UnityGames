@@ -20,15 +20,15 @@ public class PlaySceneManager : MonoBehaviour
         {
             case 0:
                 playerImage.sprite = playerImage1;
-                nameText.text = go.GetComponent<ProfileManager>().profiles[0].getName();
+                nameText.text = go.GetComponent<ProfileManager>().subUsers[0].userName;
                 break;
             case 1:
                 playerImage.sprite = playerImage2;
-                nameText.text = go.GetComponent<ProfileManager>().profiles[1].getName();
+                nameText.text = go.GetComponent<ProfileManager>().subUsers[1].userName;
                 break;
             case 2:
                 playerImage.sprite = playerImage3;
-                nameText.text = go.GetComponent<ProfileManager>().profiles[2].getName();
+                nameText.text = go.GetComponent<ProfileManager>().subUsers[2].userName;
                 break;
             default:
                 Debug.Log("No such case as given");
@@ -43,7 +43,7 @@ public class PlaySceneManager : MonoBehaviour
                 mainText.text = "Rendezd párba és sorrendbe";
                 break;
             case 3:
-                mainText.text = "Állítsd párba a lapokat";
+                mainText.text = "Rendezd sorba";
                 break;
             default:
                 Debug.Log("No such case as given");
