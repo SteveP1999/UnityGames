@@ -21,6 +21,7 @@ TagManager:
   - cardSetCollectionManager
   - JSON
   - API
+  - LevelIndicator
   layers:
   - Default
   - TransparentFX

@@ -1,13 +1,10 @@
 ﻿#define win 
 
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.Net;
 using System.IO;
-using System;
 using UnityEngine.Networking;
-using TMPro;
 using System.Text;
 
 public class API : MonoBehaviour
@@ -75,13 +72,13 @@ public class API : MonoBehaviour
     public IEnumerator getData(string _path)
     {
 #if win
-        _path = "https://laravel.etalonapps.hu/api/games/config/13";
+        _path = "https://laravel.etalonapps.hu/api/games/config/25";
 #endif
         Debug.Log("The path: " + _path);
         using (UnityWebRequest unityWebRequest = UnityWebRequest.Get(_path))
         {
             yield return unityWebRequest.SendWebRequest();
-            if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
+            if (unityWebRequest.result != UnityWebRequest.Result.Success)
             {
                 Debug.Log("Error: " + unityWebRequest.error);
             }
@@ -94,7 +91,7 @@ public class API : MonoBehaviour
                 data.token = token;
                 data.config = path;
 #if win
-                data.chosenGameMode = 2;
+                data.chosenGameMode = 1;
 #endif
                 MainMenu.GetComponent<MainMenu>().setBackGround();
                 StartCoroutine(getCardSetJSON(data.assets[1].path));
@@ -109,7 +106,7 @@ public class API : MonoBehaviour
         using (UnityWebRequest unityWebRequest = UnityWebRequest.Get(path))
         {
             yield return unityWebRequest.SendWebRequest();
-            if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
+            if (unityWebRequest.result != UnityWebRequest.Result.Success)
             {
                 Debug.Log("Error: " + unityWebRequest.error);
             }
@@ -129,7 +126,7 @@ public class API : MonoBehaviour
         using (UnityWebRequest unityWebRequest = UnityWebRequest.Get(path))
         {
             yield return unityWebRequest.SendWebRequest();
-            if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
+            if (unityWebRequest.result != UnityWebRequest.Result.Success)
             {
                 Debug.Log("Error: " + unityWebRequest.error);
             }
@@ -149,7 +146,7 @@ public class API : MonoBehaviour
         using (UnityWebRequest unityWebRequest = UnityWebRequest.Get(path))
         {
             yield return unityWebRequest.SendWebRequest();
-            if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
+            if (unityWebRequest.result != UnityWebRequest.Result.Success)
             {
                 Debug.Log("Error: " + unityWebRequest.error);
             }

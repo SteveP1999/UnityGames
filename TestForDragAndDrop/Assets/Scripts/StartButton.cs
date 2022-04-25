@@ -36,7 +36,6 @@ public class StartButton : MonoBehaviour
         {
             GameController.instance.resetGame();
             GameController.instance.firstRun = false;
-            gameObject.SetActive(false);
         }
     }
 }

@@ -7,4 +7,6 @@ public class Scores
 {
     public int bestSerialScoreInPairGame;
     public int bestParallelScoreInPairGame;
+    public int levelInNewArrival;
+    public int levelInOrderGame;
 }

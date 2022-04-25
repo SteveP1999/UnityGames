@@ -7,7 +7,5 @@ public class SubUser
 {
     public string userName;
     public string age;   // young-old
-    public int levelInNewArrival;
-    public int levelInOrderGame;
     public bool active;
 }

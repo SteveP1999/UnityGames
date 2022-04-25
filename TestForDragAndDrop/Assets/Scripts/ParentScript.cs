@@ -45,6 +45,10 @@ public class ParentScript : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         anim.SetBool("triggerFlag", true);
+        if (FindObjectOfType<SoundButtonScript>().soundOn < 2)
+        {
+            FindObjectOfType<AudioManager>().Play("Turn");
+        }
         StartCoroutine(turnBack());
     }
 
@@ -53,6 +57,10 @@ public class ParentScript : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
         anim.SetBool("triggerFlag", false);
         StartCoroutine(turnOriginal());
+        if (FindObjectOfType<SoundButtonScript>().soundOn < 2)
+        {
+            FindObjectOfType<AudioManager>().Play("Turn");
+        }
     }
 
     IEnumerator turnOriginal()

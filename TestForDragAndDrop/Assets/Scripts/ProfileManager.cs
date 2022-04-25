@@ -26,7 +26,7 @@ public class ProfileManager : MonoBehaviour
     public static ProfileManager profileManager;
     public SubUser[] subUsers = new SubUser[3];
     public Scores[] scores = new Scores[3];
-    private int activePlayerIndex = -1;
+    [SerializeField]private int activePlayerIndex = -1;
     #endregion
 
     void Awake()
@@ -98,6 +98,7 @@ public class ProfileManager : MonoBehaviour
         if(toggle1Active.isOn)
         {
             subUsers[0].active = true;
+            activePlayerIndex = 0;
         }
         else
         {
@@ -123,6 +124,7 @@ public class ProfileManager : MonoBehaviour
         if (toggle2Active.isOn)
         {
             subUsers[1].active = true;
+            activePlayerIndex = 1;
         }
         else
         {
@@ -148,6 +150,7 @@ public class ProfileManager : MonoBehaviour
         if (toggle3Active.isOn)
         {
             subUsers[2].active = true;
+            activePlayerIndex = 2;
         }
         else
         {

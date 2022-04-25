@@ -97,6 +97,10 @@ public class CardModel : MonoBehaviour
         ParticleSystem[] particleSystems = FindObjectsOfType<ParticleSystem>();
         if (won)
         {
+            if (FindObjectOfType<SoundButtonScript>().soundOn < 2)
+            {
+                FindObjectOfType<AudioManager>().Play("Win");
+            }
             GameController.instance.guessedRight(true);
             foreach (ParticleSystem PE in particleSystems)
             {
@@ -116,6 +120,10 @@ public class CardModel : MonoBehaviour
         }
         else
         {
+            if (FindObjectOfType<SoundButtonScript>().soundOn < 2)
+            {
+                FindObjectOfType<AudioManager>().Play("Lose");
+            }
             winOrLost.text = "Sajnos ez most nem sikerült, próbáld újra";
             winOrLost.gameObject.SetActive(true);
             GameController.instance.guessedRight(false);

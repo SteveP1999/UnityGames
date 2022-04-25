@@ -57,7 +57,6 @@ public class GameController : MonoBehaviour
     [SerializeField] private Button pairGame;
     [SerializeField] private Button giveNextCards;
     [SerializeField] private Button changeTexturesButton;
-    [SerializeField] private GameObject startGameObject;
     public TextMeshProUGUI informationText;
 
     //Game:
@@ -86,6 +85,10 @@ public class GameController : MonoBehaviour
     public GameObject serialScoreText;
     public GameObject sequencialScoreText;
     public GameObject orderGameResutlText;
+    public Sprite levelIndicatorImage;
+    public GameObject wonMessage;
+    public GameObject lostMessage;
+
 
     //Timing:
     private float waitTimeForRevealReference = 2;
@@ -143,6 +146,20 @@ public class GameController : MonoBehaviour
         {
             changeTexturesButton.gameObject.SetActive(true);
         }
+
+        GameObject levelIndicator = GameObject.FindGameObjectWithTag("LevelIndicator");
+        Image[] images = levelIndicator.GetComponentsInChildren<Image>();
+        for(int i = 0; i < images.Length; i++)
+        {
+            if(i < gameLevel)
+            {
+                images[i].sprite = levelIndicatorImage;
+                var tempColor = images[i].color;
+                tempColor.a = 1f;
+                images[i].color = tempColor;
+            }
+        }
+
     }
 
     #region OrderGameCode
@@ -662,6 +679,15 @@ public class GameController : MonoBehaviour
             }
             Debug.Log("serial score: " + serialScore);
             Debug.Log("sequencial score: " + sequencialScore);
+            UpdateUserStats(serialScore, sequencialScore);
+            if (serialScore == 10 && sequencialScore == 10)
+            {
+                wonMessage.GetComponent<Animator>().SetBool("open", true);
+            }
+            else
+            {
+                lostMessage.GetComponent<Animator>().SetBool("open", true);
+            }
             StartCoroutine(endAndRestartGame(serialScore, sequencialScore));
         }
         else
@@ -681,9 +707,7 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(4);
         serialScoreText.SetActive(false);
         sequencialScoreText.SetActive(false);
-        startGameObject.SetActive(true);
         firstRun = true;
-        //resetGame();
     }
 
     #endregion
@@ -902,7 +926,13 @@ public class GameController : MonoBehaviour
         float x = 2 * Constants.cardSize;
         for (int i = 0; i < 4; i++)
         {
+
             positionForSmoothStep(parent[i], x, parent[i].transform.position.y, (gameLevel + 1 + i) * -0.2f, true, Constants.speedOfThreeShuffles);
+
+            if (FindObjectOfType<SoundButtonScript>().soundOn < 2)
+            {
+                FindObjectOfType<AudioManager>().Play("Slide");
+            }
 
             yield return new WaitForSeconds(Constants.speedOfThreeShuffles);
 
@@ -954,7 +984,7 @@ public class GameController : MonoBehaviour
         GameObject[] parents = GameObject.FindGameObjectsWithTag("Parent");
         foreach(GameObject GO in parents)
         {
-            if(GO.GetComponentInChildren<CardModel>().getUniqueCardId() == id)  //getCardId volt
+            if(GO.GetComponentInChildren<CardModel>().getUniqueCardId() == id)
             {
                 return GO;
             }
@@ -981,6 +1011,34 @@ public class GameController : MonoBehaviour
 
         ParticleSystem[] particleSystems = FindObjectsOfType<ParticleSystem>();
         particleSystems[0].transform.parent.position = new Vector3(0, 0, 0);
+
+
+        GameObject levelIndicator = GameObject.FindGameObjectWithTag("LevelIndicator");
+        Image[] images = levelIndicator.GetComponentsInChildren<Image>();
+        for (int i = 0; i < images.Length; i++)
+        {
+            if (i < gameLevel)
+            {
+                images[i].sprite = levelIndicatorImage;
+                var tempColor = images[i].color;
+                tempColor.a = 1f;
+                images[i].color = tempColor;
+            }
+            else
+            {
+                images[i].sprite = null;
+                var tempColor = images[i].color;
+                tempColor.a = 0f;
+                images[i].color = tempColor;
+            }
+        }
+
+        //wonMessage.SetActive(false);
+        //lostMessage.SetActive(false);
+        wonMessage.GetComponent<Animator>().SetBool("open", false);
+        lostMessage.GetComponent<Animator>().SetBool("open", false);
+
+
 
         switch (API.instance.data.chosenGameMode)
         {
@@ -1045,6 +1103,8 @@ public class GameController : MonoBehaviour
     {
         if (right)
         {
+            wonMessage.GetComponent<Animator>().SetBool("open", true);
+
             rightGuesses += 1;
             wrongGuesses = 0;
             Debug.Log("Ügyes vagy eltaláltad");
@@ -1069,6 +1129,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            lostMessage.GetComponent<Animator>().SetBool("open", true);
             wrongGuesses += 1;
             rightGuesses = 0;
             Debug.Log("Sajnos ez most nem sikerült");
@@ -1091,9 +1152,30 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-        startGameObject.SetActive(true);
+        UpdateUserStats(gameLevel, 0);
         firstRun = true;
     }
+
+    private void UpdateUserStats(int score1, int score2)
+    {
+        switch (API.instance.data.chosenGameMode)
+        {
+            case 1:
+                ProfileManager.profileManager.scores[ProfileManager.profileManager.getActivePlayerIndex()].levelInNewArrival = score1;
+                break;
+            case 2:
+                ProfileManager.profileManager.scores[ProfileManager.profileManager.getActivePlayerIndex()].bestSerialScoreInPairGame = score1;
+                ProfileManager.profileManager.scores[ProfileManager.profileManager.getActivePlayerIndex()].bestParallelScoreInPairGame = score2;
+                break;
+            case 3:
+                ProfileManager.profileManager.scores[ProfileManager.profileManager.getActivePlayerIndex()].levelInOrderGame = score1;
+                break;
+            default:
+                Debug.Log("No such case as given");
+                break;
+        }
+    }
+
 
     #endregion
 

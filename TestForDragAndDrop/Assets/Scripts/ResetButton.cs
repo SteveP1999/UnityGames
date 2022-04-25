@@ -18,8 +18,8 @@ public class ResetButton : MonoBehaviour
         inputField.text = "";
         profileManager.subUsers[id].userName = "";
         profileManager.subUsers[id].age = "";
-        profileManager.subUsers[id].levelInNewArrival = 4;
-        profileManager.subUsers[id].levelInOrderGame = 4;
+        //profileManager.subUsers[id].levelInNewArrival = 4;
+        //profileManager.subUsers[id].levelInOrderGame = 4;
         profileManager.subUsers[id].active = false;
         //StartCoroutine(dbManager.saveUser(profileManager.profiles[id].getName(), profileManager.profiles[id].getAge(), profileManager.profiles[id].getLevel(), profileManager.profiles[id].getPlayer(), profileManager.profiles[id].getActive()));
     }

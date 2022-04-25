@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SoundButtonScript : MonoBehaviour
 {
-    private int soundOn = 0;   //0: megy a sound 1: megy az effekt hang 2: minden megy
+    public int soundOn = 0;   //0: minden megy 1: csak a hang effekt megy 2: semmi nem megy
     public Sprite[] sprites;
     public Image soundButton;
 
@@ -16,7 +16,7 @@ public class SoundButtonScript : MonoBehaviour
             AudioManager am = FindObjectOfType<AudioManager>();
             foreach (Sound s in am.sounds)
             {
-                if (s.name == "BackGroundMusic")
+                if (s.name == "BackGround")
                 {
                     s.source.Stop();
                 }
@@ -26,12 +26,12 @@ public class SoundButtonScript : MonoBehaviour
         }
         else if(soundOn == 1)
         {
-            FindObjectOfType<AudioManager>().Play("BackGroundMusic");
             soundOn = 2;
             soundButton.sprite = sprites[0];
         }
         else
         {
+            FindObjectOfType<AudioManager>().Play("BackGround");
             soundOn = 0;
             soundButton.sprite = sprites[1];
         }

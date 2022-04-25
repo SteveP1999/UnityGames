@@ -8,12 +8,23 @@ public class AudioManager : MonoBehaviour
 {
     //List of the sounds
     public Sound[] sounds;
+    public static AudioManager audioManager;
 
 
     //Finds the audio source for all sounds in the list
     void Awake()
     {
-        foreach(Sound s in sounds)
+        if (audioManager == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            audioManager = this;
+        }
+        else if (audioManager != this)
+        {
+            Destroy(gameObject);
+        }
+
+        foreach (Sound s in sounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
@@ -33,9 +44,17 @@ public class AudioManager : MonoBehaviour
     }
 
 
+    public void Stop(string name)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        if (s == null)
+            return;
+        s.source.Stop();
+    }
+
     //Starts the background music when the games starts
     void Start()
     {
-        Play("BackGroundMusic");
+        Play("BackGround");
     }
 }
